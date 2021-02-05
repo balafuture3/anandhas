@@ -15,6 +15,9 @@ class _BulkOrderState extends State<BulkOrder> {
   int _current = 0;
 
   TextEditingController datefromcontroller = new TextEditingController();
+  TextEditingController cntcontroller = new TextEditingController();
+  TextEditingController cnt1controller = new TextEditingController();
+  TextEditingController cnt2controller = new TextEditingController();
   TextEditingController cnt3controller = new TextEditingController();
 
   var dropdownValue = "Select";
@@ -23,7 +26,17 @@ class _BulkOrderState extends State<BulkOrder> {
 
   var cnt=0,cnt1=0,cnt2=0,cnt3=0;
   @override
+  void initState() {
+    cnt1controller.text="0";
+    cnt2controller.text="0";
+    cnt3controller.text="0";
+    cntcontroller.text="0";
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -549,12 +562,12 @@ color: Color.fromRGBO(160, 27, 37, 1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
                     Flexible(
-                      flex: 1,
+                      flex: 3,
                       child: Column(
                         children: [
-                          Text("Parota"),
+                          Text("Parrota"),
                           Text(
                             "Rs.30",
                             style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
@@ -563,15 +576,11 @@ color: Color.fromRGBO(160, 27, 37, 1),
                       ),
                     ),
                     Flexible(
-                      flex: 1,
+                      flex: 5,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
+
                             Card(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -580,14 +589,26 @@ color: Color.fromRGBO(160, 27, 37, 1),
                                   {
                                     setState(() {
                                       cnt--;
-
+                                      cntcontroller.text=cnt.toString();
                                     });
                                   },),
-                                  Text("$cnt"),
+                                  Container(
+                                    width: width/20,
+                                    child: TextField(
+                                      onSubmitted: (value)
+                                      {
+                                        cnt3=int.parse(cntcontroller.text);
+                                      },
+                                      enabled:true,
+                                      controller: cntcontroller,
+                                    ),
+                                  ),
                                   IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
                                   {
                                     setState(() {
                                       cnt++;
+                                      cntcontroller.text=cnt.toString();
+
                                     });
 
                                   },),
@@ -607,9 +628,9 @@ color: Color.fromRGBO(160, 27, 37, 1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
                     Flexible(
-                      flex: 1,
+                      flex: 3,
                       child: Column(
                         children: [
                           Text("Chappathi"),
@@ -621,15 +642,11 @@ color: Color.fromRGBO(160, 27, 37, 1),
                       ),
                     ),
                     Flexible(
-                      flex: 1,
+                      flex: 5,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
+
                             Card(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -638,14 +655,26 @@ color: Color.fromRGBO(160, 27, 37, 1),
                                   {
                                     setState(() {
                                       cnt1--;
-
+                                      cnt1controller.text=cnt1.toString();
                                     });
                                   },),
-                                  Text("$cnt1"),
+                                  Container(
+                                    width: width/20,
+                                    child: TextField(
+                                      onSubmitted: (value)
+                                      {
+                                        cnt1=int.parse(cnt1controller.text);
+                                      },
+                                      enabled:true,
+                                      controller: cnt1controller,
+                                    ),
+                                  ),
                                   IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
                                   {
                                     setState(() {
                                       cnt1++;
+                                      cnt1controller.text=cnt1.toString();
+
                                     });
 
                                   },),
@@ -665,9 +694,9 @@ color: Color.fromRGBO(160, 27, 37, 1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
                     Flexible(
-                      flex: 1,
+                      flex: 3,
                       child: Column(
                         children: [
                           Text("Naan"),
@@ -679,15 +708,11 @@ color: Color.fromRGBO(160, 27, 37, 1),
                       ),
                     ),
                     Flexible(
-                      flex: 1,
+                      flex: 5,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
+
                             Card(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -696,14 +721,26 @@ color: Color.fromRGBO(160, 27, 37, 1),
                                   {
                                     setState(() {
                                       cnt2--;
-
+                                      cnt2controller.text=cnt2.toString();
                                     });
                                   },),
-                                  Text("$cnt2"),
+                                  Container(
+                                    width: width/20,
+                                    child: TextField(
+                                      onSubmitted: (value)
+                                      {
+                                        cnt2=int.parse(cnt2controller.text);
+                                      },
+                                      enabled:true,
+                                      controller: cnt2controller,
+                                    ),
+                                  ),
                                   IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
                                   {
                                     setState(() {
                                       cnt2++;
+                                      cnt2controller.text=cnt2.toString();
+
                                     });
 
                                   },),
@@ -723,9 +760,9 @@ color: Color.fromRGBO(160, 27, 37, 1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
                     Flexible(
-                      flex: 1,
+                      flex: 3,
                       child: Column(
                         children: [
                           Text("Pongal"),
@@ -737,15 +774,11 @@ color: Color.fromRGBO(160, 27, 37, 1),
                       ),
                     ),
                     Flexible(
-                      flex: 2,
+                      flex: 5,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
+
                             Card(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -758,7 +791,7 @@ cnt3controller.text=cnt3.toString();
                                     });
                                   },),
                                   Container(
-                                    width: 30,
+                                    width: width/20,
                                     child: TextField(
                                       onSubmitted: (value)
                                       {
@@ -771,8 +804,9 @@ cnt3controller.text=cnt3.toString();
                                   IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
                                   {
                                     setState(() {
-                                      cnt3controller.text=cnt3.toString();
                                       cnt3++;
+                                      cnt3controller.text=cnt3.toString();
+
                                     });
 
                                   },),
