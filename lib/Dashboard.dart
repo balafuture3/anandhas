@@ -1,3 +1,4 @@
+import 'package:anandhasapp/HallBooking.dart';
 import 'package:anandhasapp/NewOrder.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -92,17 +93,22 @@ child:
                    ),
                  ),
                ),
-               Card(
-                 elevation: 5,
-                 child: Column(
-                   children: [
-                     Padding(
-                       padding: const EdgeInsets.all(8.0),
-                       child: Image.asset("logo.jpg",height:height/8,width: width/2.5,),
-                     ),
-                     Text("Hall Booking"),
-                     SizedBox(height: height/20,)
-                   ],
+               InkWell(
+                 onTap: (){
+                   Navigator.push(context,MaterialPageRoute(builder: (context) => HallBooking()));
+                 },
+                 child: Card(
+                   elevation: 5,
+                   child: Column(
+                     children: [
+                       Padding(
+                         padding: const EdgeInsets.all(8.0),
+                         child: Image.asset("logo.jpg",height:height/8,width: width/2.5,),
+                       ),
+                       Text("Hall Booking"),
+                       SizedBox(height: height/20,)
+                     ],
+                   ),
                  ),
                )
              ],

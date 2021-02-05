@@ -34,8 +34,13 @@ class _NewOrderState extends State<NewOrder> {
           child: Column(children: [
             SizedBox(height: height/30,),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("Select Date"),
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text("Select Date"),
+            ],
+          ),
         ),
         Padding(
             padding: const EdgeInsets.only(left: 24, right: 24),
@@ -72,8 +77,13 @@ class _NewOrderState extends State<NewOrder> {
               ),
             )),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("Select Slot"),
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text("Select Slot"),
+            ],
+          ),
         ),
         Container(
           margin: const EdgeInsets.only(left: 24.0, right: 24.0),
@@ -88,6 +98,7 @@ class _NewOrderState extends State<NewOrder> {
               onChanged: (String newValue) {
                 setState(() {
                   dropdownValue = newValue;
+                  dropdownValue1="Select";
                   if(dropdownValue=="Breakfast")
                   stringlist=["Select","7 AM","8 AM","9 AM"];
                   else if(dropdownValue=="Lunch")
@@ -111,8 +122,13 @@ class _NewOrderState extends State<NewOrder> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("Select Time"),
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text("Select Time"),
+            ],
+          ),
         ),
         Container(
           margin: const EdgeInsets.only(left: 24.0, right: 24.0),
@@ -140,12 +156,12 @@ class _NewOrderState extends State<NewOrder> {
         ),
       ])),
       appBar: AppBar(
-          title: Center(
-              child: Text(
+          title: Text(
         "Order",
         style: TextStyle(fontWeight: FontWeight.w700),
-      ))),
-      floatingActionButton: FloatingActionButton.extended(onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context) => BulkOrder())); },icon: Icon(Icons.navigate_next), label: Text("Next"),),
+      )),
+      floatingActionButton: FloatingActionButton.extended(onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context) => BulkOrder(food: dropdownValue,))); },icon: Icon(Icons.navigate_next),backgroundColor:Color.fromRGBO(
+          160, 27, 37, 1) ,label: Text("Next"),),
     );
   }
 }
