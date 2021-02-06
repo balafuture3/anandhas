@@ -29,8 +29,19 @@ child:
             children: [
               CarouselSlider(
                   items: imgList.map((item) => Container(
+                    decoration:BoxDecoration(
+      shape: BoxShape.circle) ,
                     child: Center(
-                        child: Image.network(item, fit: BoxFit.cover)
+                        child: Card(
+
+                            elevation:5,child:
+                          Image.network(
+                            item,
+                            // height: 100,
+                            // width: 100,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                     ),
                   )).toList(),
                   options: CarouselOptions(

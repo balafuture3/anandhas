@@ -54,110 +54,77 @@ class _BulkOrderState extends State<BulkOrder> {
 
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Flexible(flex: 1, child: Image.asset("logo.jpg")),
-                  Flexible(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Text("Kesari"),
-                        Text(
-                          "Rs.30",
-                          style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                        )
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                             'Qty',
-                                ),),
-                          Card(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt--;
-
-                                    });
-                                  },),
-                                Text("$cnt"),
-                                IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                {
-                                  setState(() {
-                                    cnt++;
-                                  });
-
-                                },),
-
-                              ],
-                            ),
-                          )
-]
-                            ),
-                          ),
-                        ],
-                      )),
-          ) ,
-          Card(
-            child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
                     Flexible(
-                      flex: 1,
+                      flex: 3,
                       child: Column(
                         children: [
-                          Text("Idly(set)"),
+                          Text("Pongal"),
                           Text(
-                            "Rs.20",
+                            "Rs.30",
                             style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
                           )
                         ],
                       ),
                     ),
                     Flexible(
-                      flex: 1,
+                      flex: 5,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
+
                             Card(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt1--;
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt--;
+                                        cntcontroller.text=cnt.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
 
-                                    });
-                                  },),
-                                  Text("$cnt1"),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt1++;
-                                    });
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt=int.parse(cntcontroller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cntcontroller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt++;
+                                        cntcontroller.text=cnt.toString();
 
-                                  },),
+                                      });
+
+                                    },),
+                                  ),
 
                                 ],
                               ),
@@ -174,9 +141,92 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
                     Flexible(
-                      flex: 1,
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          Text("Chappathi"),
+                          Text(
+                            "Rs.20",
+                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 5,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+
+                            Card(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt1--;
+                                        cnt1controller.text=cnt1.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt1=int.parse(cnt1controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt1controller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt1++;
+                                        cnt1controller.text=cnt1.toString();
+
+                                      });
+
+                                    },),
+                                  ),
+
+                                ],
+                              ),
+                            )
+                          ]
+                      ),
+                    ),
+                  ],
+                )),
+          ) ,
+          Card(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(
+                      flex: 3,
                       child: Column(
                         children: [
                           Text("Dosa"),
@@ -188,34 +238,59 @@ class _BulkOrderState extends State<BulkOrder> {
                       ),
                     ),
                     Flexible(
-                      flex: 1,
+                      flex: 5,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
+
                             Card(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt2--;
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt2--;
+                                        cnt2controller.text=cnt2.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
 
-                                    });
-                                  },),
-                                  Text("$cnt2"),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt2++;
-                                    });
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt2=int.parse(cnt2controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt2controller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt2++;
+                                        cnt2controller.text=cnt2.toString();
 
-                                  },),
+                                      });
+
+                                    },),
+                                  ),
 
                                 ],
                               ),
@@ -232,12 +307,12 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
                     Flexible(
-                      flex: 1,
+                      flex: 3,
                       child: Column(
                         children: [
-                          Text("Pongal"),
+                          Text("Veg Biriyani"),
                           Text(
                             "Rs.50",
                             style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
@@ -246,286 +321,59 @@ class _BulkOrderState extends State<BulkOrder> {
                       ),
                     ),
                     Flexible(
-                      flex: 1,
+                      flex: 5,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
+
                             Card(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt3--;
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt3--;
+                                        cnt3controller.text=cnt3.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
 
-                                    });
-                                  },),
-                                  Text("$cnt3"),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt3++;
-                                    });
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt3=int.parse(cnt3controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt3controller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt3++;
+                                        cnt3controller.text=cnt3.toString();
 
-                                  },),
+                                      });
 
-                                ],
-                              ),
-                            )
-                          ]
-                      ),
-                    ),
-                  ],
-                )),
-          ) ,
-          SizedBox(height: height/30,),
-          Container(
-            width: width,
-            color: Color.fromRGBO(160, 27, 37, 1),
-            child: Card(
-color: Color.fromRGBO(160, 27, 37, 1),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text("Item Total : ${((cnt1*20)+(cnt2*40)+(cnt3*50)+(cnt*30))}",style: TextStyle(color: Colors.white),),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-
-        ]):widget.food=="Lunch"?Column(children: [
-
-          Card(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                        children: [
-                          Text("Lemon Rice"),
-                          Text(
-                            "Rs.30",
-                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                          )
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
-                            Card(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt--;
-
-                                    });
-                                  },),
-                                  Text("$cnt"),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt++;
-                                    });
-
-                                  },),
-
-                                ],
-                              ),
-                            )
-                          ]
-                      ),
-                    ),
-                  ],
-                )),
-          ) ,
-          Card(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                        children: [
-                          Text("Sambar Rice"),
-                          Text(
-                            "Rs.20",
-                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                          )
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
-                            Card(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt1--;
-
-                                    });
-                                  },),
-                                  Text("$cnt1"),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt1++;
-                                    });
-
-                                  },),
-
-                                ],
-                              ),
-                            )
-                          ]
-                      ),
-                    ),
-                  ],
-                )),
-          ) ,
-          Card(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                        children: [
-                          Text("Biriyani"),
-                          Text(
-                            "Rs.40",
-                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                          )
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
-                            Card(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt2--;
-
-                                    });
-                                  },),
-                                  Text("$cnt2"),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt2++;
-                                    });
-
-                                  },),
-
-                                ],
-                              ),
-                            )
-                          ]
-                      ),
-                    ),
-                  ],
-                )),
-          ) ,
-          Card(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(flex: 1, child: Image.asset("logo.jpg")),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                        children: [
-                          Text("Noodles"),
-                          Text(
-                            "Rs.50",
-                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                          )
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Qty',
-                              ),),
-                            Card(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt3--;
-
-                                    });
-                                  },),
-                                  Text("$cnt3"),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt3++;
-                                    });
-
-                                  },),
+                                    },),
+                                  ),
 
                                 ],
                               ),
@@ -585,33 +433,50 @@ color: Color.fromRGBO(160, 27, 37, 1),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt--;
-                                      cntcontroller.text=cnt.toString();
-                                    });
-                                  },),
-                                  Container(
-                                    width: width/20,
-                                    child: TextField(
-                                      onSubmitted: (value)
-                                      {
-                                        cnt3=int.parse(cntcontroller.text);
-                                      },
-                                      enabled:true,
-                                      controller: cntcontroller,
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt--;
+                                        cntcontroller.text=cnt.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt=int.parse(cntcontroller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cntcontroller,
+                                      ),
                                     ),
                                   ),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt++;
-                                      cntcontroller.text=cnt.toString();
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt++;
+                                        cntcontroller.text=cnt.toString();
 
-                                    });
+                                      });
 
-                                  },),
+                                    },),
+                                  ),
 
                                 ],
                               ),
@@ -651,33 +516,50 @@ color: Color.fromRGBO(160, 27, 37, 1),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt1--;
-                                      cnt1controller.text=cnt1.toString();
-                                    });
-                                  },),
-                                  Container(
-                                    width: width/20,
-                                    child: TextField(
-                                      onSubmitted: (value)
-                                      {
-                                        cnt1=int.parse(cnt1controller.text);
-                                      },
-                                      enabled:true,
-                                      controller: cnt1controller,
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt1--;
+                                        cnt1controller.text=cnt1.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt1=int.parse(cnt1controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt1controller,
+                                      ),
                                     ),
                                   ),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt1++;
-                                      cnt1controller.text=cnt1.toString();
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt1++;
+                                        cnt1controller.text=cnt1.toString();
 
-                                    });
+                                      });
 
-                                  },),
+                                    },),
+                                  ),
 
                                 ],
                               ),
@@ -717,33 +599,50 @@ color: Color.fromRGBO(160, 27, 37, 1),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt2--;
-                                      cnt2controller.text=cnt2.toString();
-                                    });
-                                  },),
-                                  Container(
-                                    width: width/20,
-                                    child: TextField(
-                                      onSubmitted: (value)
-                                      {
-                                        cnt2=int.parse(cnt2controller.text);
-                                      },
-                                      enabled:true,
-                                      controller: cnt2controller,
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt2--;
+                                        cnt2controller.text=cnt2.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt2=int.parse(cnt2controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt2controller,
+                                      ),
                                     ),
                                   ),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt2++;
-                                      cnt2controller.text=cnt2.toString();
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt2++;
+                                        cnt2controller.text=cnt2.toString();
 
-                                    });
+                                      });
 
-                                  },),
+                                    },),
+                                  ),
 
                                 ],
                               ),
@@ -783,33 +682,403 @@ color: Color.fromRGBO(160, 27, 37, 1),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt3--;
-cnt3controller.text=cnt3.toString();
-                                    });
-                                  },),
-                                  Container(
-                                    width: width/20,
-                                    child: TextField(
-                                      onSubmitted: (value)
-                                      {
-                                        cnt3=int.parse(cnt3controller.text);
-                                      },
-                                      enabled:true,
-                                      controller: cnt3controller,
-                                        ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt3--;
+                                        cnt3controller.text=cnt3.toString();
+                                      });
+                                    },),
                                   ),
-                                  IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                  {
-                                    setState(() {
-                                      cnt3++;
-                                      cnt3controller.text=cnt3.toString();
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
 
-                                    });
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt3=int.parse(cnt3controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt3controller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt3++;
+                                        cnt3controller.text=cnt3.toString();
 
-                                  },),
+                                      });
+
+                                    },),
+                                  ),
+
+                                ],
+                              ),
+                            )
+                          ]
+                      ),
+                    ),
+                  ],
+                )),
+          ) ,
+          SizedBox(height: height/30,),
+          Container(
+            width: width,
+            color: Color.fromRGBO(160, 27, 37, 1),
+            child: Card(
+              color: Color.fromRGBO(160, 27, 37, 1),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text("Item Total : ${((cnt1*20)+(cnt2*40)+(cnt3*50)+(cnt*30))}",style: TextStyle(color: Colors.white),),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+
+
+        ]):widget.food=="Lunch"?Column(children: [
+
+          Card(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          Text("Lemon Rice"),
+                          Text(
+                            "Rs.30",
+                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 5,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+
+                            Card(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt--;
+                                        cntcontroller.text=cnt.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                    height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt=int.parse(cntcontroller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cntcontroller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt++;
+                                        cntcontroller.text=cnt.toString();
+
+                                      });
+
+                                    },),
+                                  ),
+
+                                ],
+                              ),
+                            )
+                          ]
+                      ),
+                    ),
+                  ],
+                )),
+          ) ,
+          Card(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          Text("White Rice"),
+                          Text(
+                            "Rs.20",
+                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 5,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+
+                            Card(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt1--;
+                                        cnt1controller.text=cnt1.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt1=int.parse(cnt1controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt1controller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt1++;
+                                        cnt1controller.text=cnt1.toString();
+
+                                      });
+
+                                    },),
+                                  ),
+
+                                ],
+                              ),
+                            )
+                          ]
+                      ),
+                    ),
+                  ],
+                )),
+          ) ,
+          Card(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          Text("Veg Rice"),
+                          Text(
+                            "Rs.40",
+                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 5,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+
+                            Card(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt2--;
+                                        cnt2controller.text=cnt2.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt2=int.parse(cnt2controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt2controller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt2++;
+                                        cnt2controller.text=cnt2.toString();
+
+                                      });
+
+                                    },),
+                                  ),
+
+                                ],
+                              ),
+                            )
+                          ]
+                      ),
+                    ),
+                  ],
+                )),
+          ) ,
+          Card(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          Text("Curd Rice"),
+                          Text(
+                            "Rs.50",
+                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 5,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+
+                            Card(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt3--;
+                                        cnt3controller.text=cnt3.toString();
+                                      });
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onSubmitted: (value)
+                                        {
+                                          cnt3=int.parse(cnt3controller.text);
+                                        },
+                                        enabled:true,
+                                        controller: cnt3controller,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    {
+                                      setState(() {
+                                        cnt3++;
+                                        cnt3controller.text=cnt3.toString();
+
+                                      });
+
+                                    },),
+                                  ),
 
                                 ],
                               ),

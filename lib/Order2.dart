@@ -233,7 +233,7 @@ class _Order2State extends State<Order2> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Order3(title: "Order02",)));
+              context, MaterialPageRoute(builder: (context) => Order3(title: "Order",)));
         },
         icon: Icon(Icons.navigate_next),backgroundColor:Color.fromRGBO(
           160, 27, 37, 1) ,

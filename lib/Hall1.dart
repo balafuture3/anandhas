@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Hall1 extends StatefulWidget {
+  Hall1({Key key, this.title});
+  String title;
   @override
   _Hall1State createState() => _Hall1State();
 }
@@ -47,154 +49,14 @@ class _Hall1State extends State<Hall1> {
       body: SingleChildScrollView(
           child: Column(children: [
             SizedBox(height: height/30,),
-            ExpansionTile(title: Text("Menu 1"),
-            children:
-            [
-              Padding(
-                padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                child: Text("Sweets",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Sweet Halwa"),
-                    Checkbox(value: val1,   onChanged: (bool value) {
-                      setState(() {
-                        val1 = value;
-                      });
-                    },  ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Ghee Kesari"),
-                  Checkbox(value: val2,   onChanged: (bool value) {
-                    setState(() {
-                      val2 = value;
-                    });
-                  },  ),
-                ],
-              ),),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Special Halwa"),
-                  Checkbox(value: val3,   onChanged: (bool value) {
-                    setState(() {
-                      val3 = value;
-                    });
-                  },  ),
-                ],
-              ),),
-              Padding(
-                padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                child: Text("Starter",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Vadai"),
-                  Checkbox(value: val4,   onChanged: (bool value) {
-                    setState(() {
-                      val4 = value;
-                    });
-                  },  ),
-                ],
-              ),),
-              Padding(
-                padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                child: Text("Dosa",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Veg Dosa"),
-                  Checkbox(value: val5,   onChanged: (bool value) {
-                    setState(() {
-                      val5 = value;
-                    });
-                  },  ),
-                ],
-              ),),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Onion Dosa"),
-                  Checkbox(value: val6,   onChanged: (bool value) {
-                    setState(() {
-                      val6 = value;
-                    });
-                  },  ),
-                ],
-              ),),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Masal Dosa"),
-                  Checkbox(value: val7,   onChanged: (bool value) {
-                    setState(() {
-                      val7 = value;
-                    });
-                  },  ),
-                ],
-              ),),
-              Padding(
-                padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                child: Text("Drinks",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Tea"),
-                  Checkbox(value: val8,   onChanged: (bool value) {
-                    setState(() {
-                      val8 = value;
-                    });
-                  },  ),
-                ],
-              ),),
-              Container(
-                margin: EdgeInsets.only(left: 24,right: 24),
-                child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Coffee"),
-                  Checkbox(value: val9,   onChanged: (bool value) {
-                    setState(() {
-                      val9 = value;
-                    });
-                  },  ),
-                ],
-              ),
-              )
-
-
-            ],),
-            SizedBox(height: height/30,),
-            ExpansionTile(title: Text("Menu 2"),
+            ExpansionTile(title: Text("${widget.title} Menu 1",style: TextStyle(color: Color.fromRGBO(160,27,37, 1),fontWeight: FontWeight.w700),),
               children:
               [
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Sweets",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Sweets",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -236,9 +98,11 @@ class _Hall1State extends State<Hall1> {
                       },  ),
                     ],
                   ),),
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Starter",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Starter",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -253,9 +117,11 @@ class _Hall1State extends State<Hall1> {
                       },  ),
                     ],
                   ),),
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Dosa",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Dosa",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -296,9 +162,11 @@ class _Hall1State extends State<Hall1> {
                       },  ),
                     ],
                   ),),
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Drinks",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Drinks",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -331,12 +199,14 @@ class _Hall1State extends State<Hall1> {
 
               ],),
             SizedBox(height: height/30,),
-            ExpansionTile(title: Text("Menu 3"),
+            ExpansionTile(title: Text("${widget.title} Menu 2",style: TextStyle(color: Color.fromRGBO(160,27,37, 1),fontWeight: FontWeight.w700),),
               children:
               [
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Sweets",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Sweets",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -378,9 +248,11 @@ class _Hall1State extends State<Hall1> {
                       },  ),
                     ],
                   ),),
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Starter",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Starter",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -395,9 +267,11 @@ class _Hall1State extends State<Hall1> {
                       },  ),
                     ],
                   ),),
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Dosa",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Dosa",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -438,9 +312,11 @@ class _Hall1State extends State<Hall1> {
                       },  ),
                     ],
                   ),),
-                Padding(
-                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
-                  child: Text("Drinks",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Drinks",style: TextStyle(color: Colors.white),)
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 24,right: 24),
@@ -472,7 +348,157 @@ class _Hall1State extends State<Hall1> {
 
 
               ],),
+            SizedBox(height: height/30,),
+            ExpansionTile(title: Text("${widget.title} Menu 3",style: TextStyle(color: Color.fromRGBO(160,27,37, 1),fontWeight: FontWeight.w700),),
+              children:
+              [
+                Container(
+                  width: width,
+                  color: Color.fromRGBO(160,27,37, 1),
+                  padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                  child: Text("Sweets",style: TextStyle(color: Colors.white),)
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Sweet Halwa"),
+                      Checkbox(value: val1,   onChanged: (bool value) {
+                        setState(() {
+                          val1 = value;
+                        });
+                      },  ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Ghee Kesari"),
+                      Checkbox(value: val2,   onChanged: (bool value) {
+                        setState(() {
+                          val2 = value;
+                        });
+                      },  ),
+                    ],
+                  ),),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Special Halwa"),
+                      Checkbox(value: val3,   onChanged: (bool value) {
+                        setState(() {
+                          val3 = value;
+                        });
+                      },  ),
+                    ],
+                  ),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Starter",style: TextStyle(color: Colors.white),)
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Vadai"),
+                      Checkbox(value: val4,   onChanged: (bool value) {
+                        setState(() {
+                          val4 = value;
+                        });
+                      },  ),
+                    ],
+                  ),),
+                Container(
+                    width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Dosa",style: TextStyle(color: Colors.white),)
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Veg Dosa"),
+                      Checkbox(value: val5,   onChanged: (bool value) {
+                        setState(() {
+                          val5 = value;
+                        });
+                      },  ),
+                    ],
+                  ),),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Onion Dosa"),
+                      Checkbox(value: val6,   onChanged: (bool value) {
+                        setState(() {
+                          val6 = value;
+                        });
+                      },  ),
+                    ],
+                  ),),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Masal Dosa"),
+                      Checkbox(value: val7,   onChanged: (bool value) {
+                        setState(() {
+                          val7 = value;
+                        });
+                      },  ),
+                    ],
+                  ),),
+                Container(
+                  width: width,
+                    color: Color.fromRGBO(160,27,37, 1),
+                    padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
+                    child: Text("Drinks",style: TextStyle(color: Colors.white),)
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Tea"),
+                      Checkbox(value: val8,   onChanged: (bool value) {
+                        setState(() {
+                          val8 = value;
+                        });
+                      },  ),
+                    ],
+                  ),),
+                Container(
+                  margin: EdgeInsets.only(left: 24,right: 24),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Coffee"),
+                      Checkbox(value: val9,   onChanged: (bool value) {
+                        setState(() {
+                          val9 = value;
+                        });
+                      },  ),
+                    ],
+                  ),
+                )
 
+
+              ],),
+SizedBox(height: height/2,)
           ])),
       appBar: AppBar(
           title: Text(

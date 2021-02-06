@@ -157,26 +157,29 @@ class _HallBookingState extends State<HallBooking> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text("Place : Vadavalli"),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left:24,right: 24),
+                        FlatButton(
+                          onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
+
+                            },
+                          child: Container(
+                            height: 40,
+                            margin: EdgeInsets.only(left:24,right: 24),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
-
-                              },
-                              child: Text(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                            child: Text(
                                 "Book",
                                 style: TextStyle(
                                     color: Colors.white,
                               ),
-                            )),)
+                            ),
+                          ),
+                        )
                       ],
                     ),),
                   ),
@@ -203,26 +206,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Lakshmi mills"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -249,26 +255,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Sundharam"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -298,26 +307,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Lakshmi mills"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -344,26 +356,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Sundharam"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -390,26 +405,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Vadavalli"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -441,26 +459,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Sundharam"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -487,26 +508,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Vadavalli"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -533,26 +557,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Lakshmi mills"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -579,26 +606,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Vadavalli"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
@@ -625,26 +655,29 @@ class _HallBookingState extends State<HallBooking> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Place : Lakshmi mills"),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(left:24,right: 24),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    160, 27, 37, 1),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(50))),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1()));
+                          FlatButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => Hall1(title:dropdownValue)));
 
-                                },
-                                child: Text(
+                              },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.only(left:24,right: 24),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(
+                                      160, 27, 37, 1),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(50))),
+                              child: Text(
                                   "Book",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )),)
+                                ),
+                            ),
+                          )
                         ],
                       ),),
                   ),
