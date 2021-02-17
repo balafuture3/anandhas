@@ -1,5 +1,5 @@
 import 'package:anandhasapp/BulkOrder.dart';
-import 'package:anandhasapp/Dashboard.dart';
+import 'package:anandhasapp/Screens/Dashboard.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';

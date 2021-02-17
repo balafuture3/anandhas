@@ -58,7 +58,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -141,7 +141,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -224,7 +224,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -307,7 +307,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -410,7 +410,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -493,7 +493,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -576,7 +576,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -659,7 +659,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -763,7 +763,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -846,7 +846,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -929,7 +929,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(
@@ -1012,7 +1012,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(flex: 3, child: Image.asset("logo.jpg")),
+                    Flexible(flex: 3, child: Image.asset("logo.png")),
                     Flexible(
                       flex: 3,
                       child: Column(

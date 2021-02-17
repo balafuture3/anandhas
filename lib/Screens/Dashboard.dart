@@ -1,0 +1,186 @@
+import 'package:anandhasapp/HallBooking.dart';
+import 'package:anandhasapp/NewOrder.dart';
+import 'package:anandhasapp/Screens/LoginPage.dart';
+import 'package:anandhasapp/String_Values.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class Dashboard extends StatefulWidget {
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  int _current = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final List<String> imgList = [
+      "https://www.shreeanandhaas.com/images/special-menu/2-in-1-Idiyappam.jpg",
+      "https://www.shreeanandhaas.com/images/special-menu/Garlic-Kesari.jpg",
+      "https://www.shreeanandhaas.com/images/special-menu/Wheat-Rava-Idly.jpg",
+      "https://www.shreeanandhaas.com/images/special-menu/Podi-Idly.jpg",
+      "https://www.shreeanandhaas.com/images/special-menu/Diet-Breakfast.jpg",
+    ];
+    return Scaffold(
+      body: SingleChildScrollView(
+          child: Column(
+        children: [
+          CarouselSlider(
+              items: imgList
+                  .map((item) => Container(
+                        decoration: BoxDecoration(
+                          image: new DecorationImage(
+                            image: new NetworkImage(
+                              item,
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                          border: Border.all(
+                              color: String_Values.primarycolor, width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(width / 8)),
+                        ),
+                        margin: EdgeInsets.only(top: 16),
+                      ))
+                  .toList(),
+              options: CarouselOptions(
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                },
+                initialPage: 0,
+                height: height / 3,
+                enableInfiniteScroll: false,
+                reverse: false,
+                autoPlay: true,
+
+                autoPlayInterval: Duration(seconds: 3),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                scrollDirection: Axis.horizontal,
+              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: imgList.map((url) {
+              int index = imgList.indexOf(url);
+              return Container(
+                width: _current == index ? 10 : 8.0,
+                height: _current == index ? 10 : 8.0,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _current == index
+                      ? Color.fromRGBO(51, 155, 111, 1)
+                      : Color.fromRGBO(0, 0, 0, 0.4),
+                ),
+              );
+            }).toList(),
+          ),
+          SizedBox(
+            height: height / 20,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 16, right: 16),
+            height: height - height / 9,
+            width: width,
+            child: GridView.count(
+              crossAxisSpacing: width / 40,
+              mainAxisSpacing: height / 60,
+              crossAxisCount: 2,
+              children: <Widget>[
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NewOrder()));
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "logo.png",
+                            height: height / 8,
+                            width: width / 2.5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 50,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          color: String_Values.primarycolor,
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            "Party Order",
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 20,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HallBooking()));
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "logo.png",
+                            height: height / 8,
+                            width: width / 2.5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 50,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          color: String_Values.primarycolor,
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            "Hall Booking",
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 20,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      )),
+      appBar: AppBar(
+          title: Center(
+              child: Text(
+        "DashBoard",
+        style: TextStyle(fontWeight: FontWeight.w700),
+      )),
+      actions: [IconButton(icon: Icon(Icons.logout,color: Colors.white,), onPressed:(){ Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context)=>LoginPage()), (route) => false);})],),
+    );
+  }
+}

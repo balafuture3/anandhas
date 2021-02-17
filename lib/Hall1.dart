@@ -49,12 +49,12 @@ class _Hall1State extends State<Hall1> {
       body: SingleChildScrollView(
           child: Column(children: [
             SizedBox(height: height/30,),
-            ExpansionTile(title: Text("${widget.title} Menu 1",style: TextStyle(color: Color.fromRGBO(160,27,37, 1),fontWeight: FontWeight.w700),),
+            ExpansionTile(title: Text("${widget.title} Menu 1",style: TextStyle(color: Color.fromRGBO(51,155,111,1),fontWeight: FontWeight.w700),),
               children:
               [
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Sweets",style: TextStyle(color: Colors.white),)
                 ),
@@ -100,7 +100,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Starter",style: TextStyle(color: Colors.white),)
                 ),
@@ -119,7 +119,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Dosa",style: TextStyle(color: Colors.white),)
                 ),
@@ -164,7 +164,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Drinks",style: TextStyle(color: Colors.white),)
                 ),
@@ -199,12 +199,12 @@ class _Hall1State extends State<Hall1> {
 
               ],),
             SizedBox(height: height/30,),
-            ExpansionTile(title: Text("${widget.title} Menu 2",style: TextStyle(color: Color.fromRGBO(160,27,37, 1),fontWeight: FontWeight.w700),),
+            ExpansionTile(title: Text("${widget.title} Menu 2",style: TextStyle(color: Color.fromRGBO(51,155,111,1),fontWeight: FontWeight.w700),),
               children:
               [
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Sweets",style: TextStyle(color: Colors.white),)
                 ),
@@ -250,7 +250,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Starter",style: TextStyle(color: Colors.white),)
                 ),
@@ -269,7 +269,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Dosa",style: TextStyle(color: Colors.white),)
                 ),
@@ -314,7 +314,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Drinks",style: TextStyle(color: Colors.white),)
                 ),
@@ -349,12 +349,12 @@ class _Hall1State extends State<Hall1> {
 
               ],),
             SizedBox(height: height/30,),
-            ExpansionTile(title: Text("${widget.title} Menu 3",style: TextStyle(color: Color.fromRGBO(160,27,37, 1),fontWeight: FontWeight.w700),),
+            ExpansionTile(title: Text("${widget.title} Menu 3",style: TextStyle(color: Color.fromRGBO(51,155,111,1),fontWeight: FontWeight.w700),),
               children:
               [
                 Container(
                   width: width,
-                  color: Color.fromRGBO(160,27,37, 1),
+                  color: Color.fromRGBO(51,155,111,1),
                   padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                   child: Text("Sweets",style: TextStyle(color: Colors.white),)
                 ),
@@ -400,7 +400,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Starter",style: TextStyle(color: Colors.white),)
                 ),
@@ -419,7 +419,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                     width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Dosa",style: TextStyle(color: Colors.white),)
                 ),
@@ -464,7 +464,7 @@ class _Hall1State extends State<Hall1> {
                   ),),
                 Container(
                   width: width,
-                    color: Color.fromRGBO(160,27,37, 1),
+                    color: Color.fromRGBO(51,155,111,1),
                     padding: const EdgeInsets.only(left:24,right:8.0,top:8.0,bottom:8.0),
                     child: Text("Drinks",style: TextStyle(color: Colors.white),)
                 ),

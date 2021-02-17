@@ -43,7 +43,7 @@ class _Order2State extends State<Order2> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text("Catering Service",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+              Text("Catering Service",style: TextStyle(color: Color.fromRGBO(51,155,111,1)),),
             ],
           ),
         ),
@@ -63,9 +63,9 @@ class _Order2State extends State<Order2> {
                   });
                 },
                 value: catcheck,
-                activeColor: Color.fromRGBO(160,27,37, 1),
+                activeColor: Color.fromRGBO(51,155,111,1),
                 activeTrackColor: Color.fromRGBO(160,27,37, 0.5),
-                inactiveThumbColor: Color.fromRGBO(160,27,37, 1),
+                inactiveThumbColor: Color.fromRGBO(51,155,111,1),
                 inactiveTrackColor: Colors.grey,
               )
             ],
@@ -99,7 +99,7 @@ class _Order2State extends State<Order2> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text("Vessel Set",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+              Text("Vessel Set",style: TextStyle(color: Color.fromRGBO(51,155,111,1)),),
             ],
           ),
         ),
@@ -119,9 +119,9 @@ class _Order2State extends State<Order2> {
                   });
                 },
                 value: vescheck,
-                activeColor: Color.fromRGBO(160,27,37, 1),
+                activeColor: Color.fromRGBO(51,155,111,1),
                 activeTrackColor: Color.fromRGBO(160,27,37, 0.5),
-                inactiveThumbColor: Color.fromRGBO(160,27,37, 1),
+                inactiveThumbColor: Color.fromRGBO(51,155,111,1),
                 inactiveTrackColor: Colors.grey,
               )
             ],
@@ -155,7 +155,7 @@ class _Order2State extends State<Order2> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Vehicle Section",style: TextStyle(color: Color.fromRGBO(160,27,37, 1)),),
+                  Text("Vehicle Section",style: TextStyle(color: Color.fromRGBO(51,155,111,1)),),
                 ],
               ),
             ),
@@ -175,9 +175,9 @@ class _Order2State extends State<Order2> {
                       });
                     },
                     value: vehcheck,
-                    activeColor: Color.fromRGBO(160,27,37, 1),
+                    activeColor: Color.fromRGBO(51,155,111,1),
                     activeTrackColor: Color.fromRGBO(160,27,37, 0.5),
-                    inactiveThumbColor: Color.fromRGBO(160,27,37, 1),
+                    inactiveThumbColor: Color.fromRGBO(51,155,111,1),
                     inactiveTrackColor: Colors.grey,
                   )
                 ],
