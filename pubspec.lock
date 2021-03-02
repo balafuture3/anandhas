@@ -390,6 +390,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.19"
+  image_gallery_saver:
+    dependency: "direct main"
+    description:
+      name: image_gallery_saver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.7"
   image_picker:
     dependency: "direct main"
     description:
@@ -495,6 +502,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.2"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.0+2"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   petitparser:
     dependency: transitive
     description:
@@ -689,6 +710,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.19-nullsafety.2"
+  time_picker_widget:
+    dependency: "direct main"
+    description:
+      name: time_picker_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+9"
   typed_data:
     dependency: transitive
     description:
@@ -739,12 +767,19 @@ packages:
     source: hosted
     version: "0.1.2"
   xml:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.5.1"
+  xml2json:
+    dependency: "direct main"
+    description:
+      name: xml2json
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.4.0"
   yaml:
     dependency: transitive
     description:

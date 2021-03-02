@@ -1,9 +1,10 @@
-import 'package:anandhasapp/BulkOrder.dart';
-import 'package:anandhasapp/Order3.dart';
+
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'Screens/Order2 .dart';
 
 class Hall1 extends StatefulWidget {
   Hall1({Key key, this.title});
@@ -505,8 +506,9 @@ SizedBox(height: height/2,)
             "Hall Booking",
             style: TextStyle(fontWeight: FontWeight.w700),
           )),
-      floatingActionButton: FloatingActionButton.extended(onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context) => Order3(title:"Hall Booking"))); },icon: Icon(Icons.navigate_next),backgroundColor:Color.fromRGBO(
+      floatingActionButton: FloatingActionButton.extended(onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context) => Order3())); },icon: Icon(Icons.navigate_next),backgroundColor:Color.fromRGBO(
           160, 27, 37, 1) , label: Text("Next"),),
     );
   }
 }
+

@@ -28,9 +28,12 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  image_gallery_saver: ^1.6.7
+  permission_handler: ^5.1.0+2
   carousel_slider: ^3.0.0
   flutter_signature_pad: ^2.0.3
   eva_icons_flutter: ^2.0.1
+  time_picker_widget: ^1.0.0+9
   icons_helper: ^1.0.4
   font_awesome_flutter: ^8.10.0
   email_validator: ^1.0.0
@@ -57,6 +60,8 @@ dependencies:
   fluttertoast: ^7.1.4
   imei_plugin: ^1.2.0
   device_info: ^0.4.0+4
+  xml: ^4.5.1
+  xml2json: ^4.4.0
 
 
 dev_dependencies:
@@ -66,7 +71,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "logo.jpg"
+  image_path: "logo.png"
 
 
 # For information on the generic Dart part of this file, see the

@@ -1,9 +1,20 @@
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:anandhasapp/Models/BranchModel.dart';
+import 'package:anandhasapp/Models/Category.dart';
+import 'package:anandhasapp/Models/ItemModel.dart';
+import 'package:anandhasapp/Models/Login.dart';
 import 'package:anandhasapp/Screens/Dashboard.dart';
+import 'package:anandhasapp/String_Values.dart';
 import 'package:anandhasapp/Widgets/AllWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart'as http;
+import 'package:xml/xml.dart' as xml;
+import 'package:xml2json/xml2json.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -21,75 +32,391 @@ class LoginPageState extends State<LoginPage> {
   var dropdownValue1= "Select Branch";
 
   var stringlist =["Select Branch","Coimbatore","Chennai"];
-  // Future<http.Response> postRequest() async {
-  //   setState(() {
-  //     loading = true;
-  //   });
-  //   var url;
-  //
-  //   url = String_values.base_url + 'login';
-  //   Map data = {
-  //     "email": EmailController.text,
-  //     "password": PasswordController.text
-  //   };
-  //   print("data: ${data}");
-  //   print(url);
-  //   //encode Map to JSON
-  //   var body = json.encode(data);
-  //   print("response: ${body}");
-  //   var response = await http.post(url,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         //   'Authorization':
-  //         //       'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxIiwidXR5cGUiOiJFTVAifQ.AhfTPvo5C_rCMIexbUd1u6SEoHkQCjt3I7DVDLwrzUs'
-  //         //
-  //       },
-  //       body: body);
-  //   if (response.statusCode == 200) {
-  //     li = LoginResponse.fromJson(json.decode(response.body));
-  //     setState(() {
-  //       loading = false;
-  //     });
-  //
-  //     if (li.status)
-  //     {
-  //       setRegistered(rolename, roleid, token);
-  //       rolename=li.authUserRolename;
-  //       roleid = li.authUserRole;
-  //       token = li.tokenType;
-  //       Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientList()));
-  //
-  //
-  //     } else
-  //       showDialog<void>(
-  //           context: context,
-  //           barrierDismissible: false, // user must tap button!
-  //           builder: (BuildContext context) {
-  //             return AlertDialog(
-  //               content:
-  //                    Text(li.alert),
-  //               actions: <Widget>[
-  //                 TextButton(
-  //                   child: Text('OK'),
-  //                   onPressed: () {
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                 ),
-  //               ],
-  //             );
-  //           });
-  //
-  //
-  //   } else {
-  //     setState(() {
-  //       loading = false;
-  //     });
-  //     print("Retry");
-  //   }
-  //   print("response: ${response.statusCode}");
-  //   print("response: ${response.body}");
-  //   return response;
-  // }
+
+  BranchModelList li2;
+
+  int branchid=0;
+
+  LoginModel li3;
+
+  CategoryModelList li4;
+
+  ItemModelList li5;
+
+  Future<http.Response> postRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_GETUSERLOGIN xmlns="http://tempuri.org/">
+      <UserName>${EmailController.text}</UserName>
+      <Password>${PasswordController.text}</Password>
+      <BranchID>${branchid}</BranchID>
+    </IN_MOB_GETUSERLOGIN>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GETUSERLOGIN';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      if (parsedXml.text != "[]")
+      {
+
+
+      final decoded = json.decode(parsedXml.text);
+      li3 = LoginModel.fromJson(decoded[0]);
+      print(li3.name);
+
+        Fluttertoast.showToast(
+            msg:"Login Success",
+           toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: String_Values.primarycolor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                Dashboard()),
+      );
+
+      } else
+        Fluttertoast.showToast(
+            msg: "Please check your login details,No users found",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: String_Values.primarycolor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
+
+  Future<http.Response> categoryRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_CATEGORYMASTER xmlns="http://tempuri.org/">
+      <BranchID>1</BranchID>
+      <UserID>1</UserID>
+    </IN_MOB_CATEGORYMASTER>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_CATEGORYMASTER';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+      li4 = CategoryModelList.fromJson(decoded);
+      print(li4.details[0].categoryName);
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
+
+  Future<http.Response> itemRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_GETITEMMASTER xmlns="http://tempuri.org/">
+      <BranchID>1</BranchID>
+      <CategoryID>1</CategoryID>
+      <UserID>1</UserID>
+    </IN_MOB_GETITEMMASTER>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GETITEMMASTER';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+      li5 = ItemModelList.fromJson(decoded);
+      print(li5.details[0].itemName);
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
+
+  Future<http.Response> getOrderRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
+      <OrderNo>string</OrderNo>
+    </IN_MOB_GET_ORDER_NO>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GET_ORDER_NO';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+      li5 = ItemModelList.fromJson(decoded);
+      print(li5.details[0].itemName);
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
+
+  Future<http.Response> branchRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_LOCATIONMASTER xmlns="http://tempuri.org/">
+      <FormID>1</FormID>
+      <UserID>1</UserID>
+      <LocationID>string</LocationID>
+    </IN_MOB_LOCATIONMASTER>
+  </soap:Body>
+</soap:Envelope>''';
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_LOCATIONMASTER';
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    print(response.body);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+      li2 = BranchModelList.fromJson(decoded);
+
+      setState(() {
+        stringlist.clear();
+        stringlist.add("Select Branch");
+        for(int i=0;i<li2.details.length;i++)
+          stringlist.add(li2.details[i].branchName);
+      });
+
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
   Future<bool> setRegistered(rolename, roleid, token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('rolename', rolename);
@@ -103,6 +430,16 @@ class LoginPageState extends State<LoginPage> {
   static TextEditingController PasswordController = new TextEditingController();
 
   static IconData toggle = Icons.visibility_off;
+
+
+  @override
+  void initState() {
+    branchRequest();
+    categoryRequest();
+    itemRequest();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -119,14 +456,13 @@ class LoginPageState extends State<LoginPage> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Colors.teal,
+                          String_Values.primarycolor,
                           Colors.white70,
                           Colors.white70,
-                          Colors.teal,
+                          String_Values.primarycolor,
                         ]),
                     borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(width / 3),
-                        topLeft: Radius.circular(width / 3))),
+                        bottomRight: Radius.circular(width / 3),)),
                 child: Column(
                   children: [
                     Container(
@@ -134,7 +470,7 @@ class LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           SizedBox(
-                            height: height / 20,
+                            height: height / 10,
                           ),
                           Container(
                               padding: EdgeInsets.only(
@@ -142,10 +478,27 @@ class LoginPageState extends State<LoginPage> {
                               child: Widgetsfield().myImageAsset("logo.png",
                                   () {}, context, height / 4, width/2)),
                           SizedBox(
-                            height: height / 20,
+                            height: height / 50,
                           ),
                         ],
                       ),
+                    ),
+
+                    Widgetsfield().myTextField(Icon(Icons.email),
+                        EmailController, "Email", () {}, null),
+                    Widgetsfield().myTextField(
+                        Icon(Icons.lock),
+                        PasswordController,
+                        "Password",
+                        () {},
+                        IconButton(
+                          icon: Icon(toggle),
+                          onPressed: () {
+                            togglestate();
+                          },
+                        )),
+                    SizedBox(
+                      height: height / 50,
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -160,13 +513,12 @@ class LoginPageState extends State<LoginPage> {
                           onChanged: (String newValue) {
                             setState(() {
                               dropdownValue1 = newValue;
-                              // for(int i=0;i<li4.details.length;i++)
-                              //   if(li4.details[i].delivery==newValue)
-                              //   {
-                              //     MtrController.text=li4.details[i].material;
-                              //     MtrDesController.text=li4.details[i].materialdescription;
-                              //     ReqSegController.text=li4.details[i].requirementsegment;
-                              //   }
+
+                              for(int i=0;i<li2.details.length;i++)
+                                if(li2.details[i].branchName==newValue)
+                                {
+                                 branchid=li2.details[i].branchID;
+                                }
 
                             });
                           },
@@ -180,22 +532,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height / 50,
-                    ),
-                    Widgetsfield().myTextField(Icon(Icons.email),
-                        EmailController, "Email", () {}, null),
-                    Widgetsfield().myTextField(
-                        Icon(Icons.lock),
-                        PasswordController,
-                        "Password",
-                        () {},
-                        IconButton(
-                          icon: Icon(toggle),
-                          onPressed: () {
-                            togglestate();
-                          },
-                        )),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -207,11 +544,11 @@ class LoginPageState extends State<LoginPage> {
                       ],
                     ),
                     SizedBox(
-                      height: height / 20,
+                      height: height / 50,
                     ),
-                    Widgetsfield().myButton("Submit", () {
-                      // postRequest();
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
+                    Widgetsfield().myButton("Login", () {
+                      postRequest();
+                      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
                     }, width / 2)
                   ],
                 ),
@@ -240,3 +577,7 @@ class LoginPageState extends State<LoginPage> {
         fontSize: 16.0);
   }
 }
+
+
+
+

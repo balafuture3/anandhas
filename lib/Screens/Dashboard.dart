@@ -1,5 +1,6 @@
 import 'package:anandhasapp/HallBooking.dart';
-import 'package:anandhasapp/NewOrder.dart';
+import 'package:anandhasapp/Screens/ExistingDeliveryOrder.dart';
+import 'package:anandhasapp/Screens/NewOrder.dart';
 import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -30,6 +31,9 @@ class _DashboardState extends State<Dashboard> {
       body: SingleChildScrollView(
           child: Column(
         children: [
+          SizedBox(
+            height: height / 30,
+          ),
           CarouselSlider(
               items: imgList
                   .map((item) => Container(
@@ -55,7 +59,7 @@ class _DashboardState extends State<Dashboard> {
                   });
                 },
                 initialPage: 0,
-                height: height / 3,
+                height: 220,
                 enableInfiniteScroll: false,
                 reverse: false,
                 autoPlay: true,
@@ -66,6 +70,7 @@ class _DashboardState extends State<Dashboard> {
                 enlargeCenterPage: true,
                 scrollDirection: Axis.horizontal,
               )),
+          SizedBox(height: height/50,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: imgList.map((url) {
@@ -91,17 +96,113 @@ class _DashboardState extends State<Dashboard> {
             height: height - height / 9,
             width: width,
             child: GridView.count(
+
               crossAxisSpacing: width / 40,
               mainAxisSpacing: height / 60,
               crossAxisCount: 2,
               children: <Widget>[
                 InkWell(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NewOrder()));
+                    showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white.withOpacity(0),
+                            title: Container(
+                              decoration: BoxDecoration(
+                                color: String_Values.primarycolor,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(50),
+                                    bottomRight: Radius.circular(50),
+                                    topLeft: Radius.circular(50),
+                                    topRight: Radius.circular(50)),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(24.0),
+                                    child: Image.asset(
+                                      "logo.png",
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+                                  Text(
+                                    "Please Choose",
+                                    style: TextStyle(
+                                        color: Colors.amber, fontSize: 16),
+                                  ),
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(left:16,right: 16),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(50))),
+                                          child: FlatButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            Navigator.push(context,MaterialPageRoute(builder: (context)=>ExistingDeliveryOrder()));
+                                              // Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => Dashboard()));
+
+                                            },
+                                            child: Text(
+
+                                              "Existing Delivery Order",
+                                              style: TextStyle(
+
+                                                  color: String_Values.primarycolor),
+                                            ),
+                                          )),
+                                      SizedBox(height: height/50,),
+                                      Container(
+                                          margin: EdgeInsets.only(left:16,right: 16),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(50))),
+                                          child: FlatButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              "GST Invoice",
+                                              style: TextStyle(
+                                                  color: String_Values.primarycolor),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
                   },
                   child: Card(
-                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(25.0),),
+                    elevation: 10,
                     child: Column(
                       children: [
                         Container(
@@ -112,9 +213,7 @@ class _DashboardState extends State<Dashboard> {
                             width: width / 2.5,
                           ),
                         ),
-                        SizedBox(
-                          height: height / 50,
-                        ),
+
                         Container(
                           width: double.infinity,
                           color: String_Values.primarycolor,
@@ -126,7 +225,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
                         SizedBox(
-                          height: height / 20,
+                          height: height / 50,
                         )
                       ],
                     ),
@@ -134,11 +233,122 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HallBooking()));
+                    showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white.withOpacity(0),
+                            title: Container(
+                              decoration: BoxDecoration(
+                                color: String_Values.primarycolor,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(50),
+                                    bottomRight: Radius.circular(50),
+                                    topLeft: Radius.circular(50),
+                                    topRight: Radius.circular(50)),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Image.asset(
+                                      "logo.png",
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+                                  Text(
+                                    "Order Confirmation",
+                                    style: TextStyle(
+                                        color: Colors.amber, fontSize: 16),
+                                  ),
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Are you sure want to confirm your order",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(50))),
+                                          child: FlatButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => Dashboard()),
+                                                    (Route<dynamic> route) => false,
+                                              );
+                                              // Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => Dashboard()));
+
+                                            },
+                                            child: Text(
+                                              "Confirm",
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      160, 27, 37, 1)),
+                                            ),
+                                          )),
+                                      Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(50))),
+                                          child: FlatButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: height / 30,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                    //
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => HallBooking()));
                   },
                   child: Card(
-                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),),
+                    elevation: 10,
                     child: Column(
                       children: [
                         Container(
@@ -149,9 +359,7 @@ class _DashboardState extends State<Dashboard> {
                             width: width / 2.5,
                           ),
                         ),
-                        SizedBox(
-                          height: height / 50,
-                        ),
+
                         Container(
                           width: double.infinity,
                           color: String_Values.primarycolor,
@@ -163,7 +371,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
                         SizedBox(
-                          height: height / 20,
+                          height: height / 50,
                         )
                       ],
                     ),

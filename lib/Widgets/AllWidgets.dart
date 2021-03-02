@@ -1,6 +1,8 @@
 import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 
+import '../String_Values.dart';
+
 class Widgetsfield
 {
   Widget myTextField(icon,controller,label,void action(),suffix)
@@ -32,7 +34,7 @@ class Widgetsfield
       child: RaisedButton(onPressed: action,
 
       child: Text(label,style: TextStyle(color: Colors.white),),
-      color: Colors.teal,
+      color: String_Values.primarycolor,
       padding: EdgeInsets.all(16),
 
       elevation: 10,
