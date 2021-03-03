@@ -59,7 +59,7 @@ class _DashboardState extends State<Dashboard> {
                   });
                 },
                 initialPage: 0,
-                height: 220,
+                height: 180,
                 enableInfiniteScroll: false,
                 reverse: false,
                 autoPlay: true,

@@ -291,7 +291,17 @@ for(int i=0;i<li5.details.length;i++)
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          if(total!=0)
           Navigator.push(context,MaterialPageRoute(builder: (context) => Order2()));
+          else
+            Fluttertoast.showToast(
+                msg: "Please choose Item",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
         },
         icon: Icon(Icons.navigate_next,color: String_Values.primarycolor,),backgroundColor:Colors.white ,
         label: Text("Next",style: TextStyle(color:String_Values.primarycolor),),

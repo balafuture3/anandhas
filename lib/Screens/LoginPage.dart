@@ -35,7 +35,7 @@ class LoginPageState extends State<LoginPage> {
 
   BranchModelList li2;
 
-  int branchid=0;
+  static int branchid=0;
 
   LoginModel li3;
 
@@ -459,10 +459,12 @@ class LoginPageState extends State<LoginPage> {
                           String_Values.primarycolor,
                           Colors.white70,
                           Colors.white70,
+                          Colors.white70,
                           String_Values.primarycolor,
                         ]),
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(width / 3),)),
+                    // borderRadius: BorderRadius.only(
+                    //     bottomRight: Radius.circular(width / 3),)
+                ),
                 child: Column(
                   children: [
                     Container(
@@ -484,8 +486,8 @@ class LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                    Widgetsfield().myTextField(Icon(Icons.email),
-                        EmailController, "Email", () {}, null),
+                    Widgetsfield().myTextField(Icon(Icons.person),
+                        EmailController, "User Name", () {}, null),
                     Widgetsfield().myTextField(
                         Icon(Icons.lock),
                         PasswordController,
@@ -547,7 +549,38 @@ class LoginPageState extends State<LoginPage> {
                       height: height / 50,
                     ),
                     Widgetsfield().myButton("Login", () {
+                      if(EmailController.text.length!=0&&PasswordController.text.length!=0&&dropdownValue1!="Select Branch")
                       postRequest();
+                      else
+                        {
+                          if(EmailController.text.length==0)
+                          Fluttertoast.showToast(
+                              msg: "User Name cannot be empty",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.SNACKBAR,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                          else if(PasswordController.text.length==0)
+                            Fluttertoast.showToast(
+                                msg: "Password cannot be empty",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.SNACKBAR,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          else
+                            Fluttertoast.showToast(
+                                msg: "Please select Branch",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.SNACKBAR,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                        }
                       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
                     }, width / 2)
                   ],

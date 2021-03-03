@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:anandhasapp/Models/InsertOrderResponse.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
+import 'package:anandhasapp/Screens/Dashboard.dart';
+import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/Screens/NewOrder.dart';
 import 'package:anandhasapp/Screens/Order2 .dart';
 import 'package:anandhasapp/Screens/Order3.dart';
@@ -20,6 +23,23 @@ class _OrderSummaryState extends State<OrderSummary> {
   bool loading = false;
 
   ItemModelList li5;
+
+  var dropdownValue1="Advance Type";
+
+  var stringlist=["Advance Type","Half Advance","Full Advance"];
+
+  var dropdownValue2="Payment Mode";
+  var stringlist2=["Payment Mode","Cash","Card","Net Banking"];
+
+  SaveResponse li6;
+
+  String vehtot;
+
+  String vestot;
+
+  String cattot;
+
+  String bookingitem;
 
   Future<http.Response> itemRequest() async {
     setState(() {
@@ -100,24 +120,237 @@ class _OrderSummaryState extends State<OrderSummary> {
     return response;
   }
 
+  Future<http.Response> postRequest() async {
+
+    bookingitem = "";
+    for (int i = 0; i < li5.details.length; i++)
+      if (Order3State.cnt[i] != 0)
+      bookingitem = "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5.details[i].itemCode}</ItemCode><ItemName>${li5.details[i].itemName}</ItemName><Qty>${Order3State.cnt[i]}</Qty><UOM></UOM><Price>${(Order3State.cnt[i] * li5.details[i].price).toString()}</Price></Table1>";
+
+    bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
+print(bookingitem);
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_INSERT_ORDER xmlns="http://tempuri.org/">
+      <DocNo>0</DocNo>
+      <OrderDate>${NewOrderState.datefromcontroller.text}</OrderDate>
+      <OrderTime>${NewOrderState.timeupload}</OrderTime>      
+      <CateringService>${Order2State.catcheck==true?"Y":"N"}</CateringService>
+      <CateringAmount>${double.parse(cattot)}</CateringAmount>
+      <VaselSet>${Order2State.vescheck==true?"Y":"N"}</VaselSet>
+      <VaselAmount>${double.parse(vestot)}</VaselAmount>
+      <Vehicle>${Order2State.vehcheck==true?"Y":"N"}</Vehicle>
+      <VechicleAmount>${double.parse(vehtot)}</VechicleAmount>
+      <OrderPrice>${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot) * Order2State.personamt)+Order3State.total))}</OrderPrice>
+      <AdvanceType>$dropdownValue1</AdvanceType>
+      <AdvanceAmount>0</AdvanceAmount>
+      <PaymentType>$dropdownValue2</PaymentType>
+      <OrderStatus>Pending</OrderStatus>
+      <Branch>${LoginPageState.branchid}</Branch>
+      <Remarks></Remarks>
+      <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
+      <ItemDetailXMLID>1</ItemDetailXMLID>
+      <UserID>1</UserID>
+    </IN_MOB_INSERT_ORDER>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_INSERT_ORDER';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      if (parsedXml.text != "[]")
+      {
+
+
+        final decoded = json.decode(parsedXml.text);
+        li6 = SaveResponse.fromJson(decoded[0]);
+        print(li6.sTATUSID);
+        if(li6.sTATUSID==1) {
+          NewOrderState.datefromcontroller.text="";
+          NewOrderState.categoryid=0;
+          Fluttertoast.showToast(
+              msg: "Order Placed Successfully",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.SNACKBAR,
+              timeInSecForIosWeb: 1,
+              backgroundColor: String_Values.primarycolor,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
+        }
+
+
+      } else
+        Fluttertoast.showToast(
+            msg: "Please check your login details,No users found",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: String_Values.primarycolor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+    } else {
+
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code${response.statusCode}, ${response.body} ",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
+
+
   @override
   void initState() {
     itemRequest();
-    if(!Order2State.vehcheck)
-    Order2State.vehcostcontroller.text="0";
-    if(!Order2State.vescheck)
-      Order2State.vescontroller.text="0";
-    if(!Order2State.catcheck)
-      Order2State.cntcontroller.text="0";
+    if(Order2State.vehcheck) {
+      vehtot=Order2State.vehcostcontroller.text;
+    }
+    else
+      {
+        vehtot="0";
+      }
+    if(Order2State.vescheck) {
+
+     vestot= Order2State.vescontroller.text;
+    }
+    else
+      {
+        vestot="0";
+      }
+    if(Order2State.catcheck)
+    {
+      cattot=Order2State.cntcontroller.text ;
+    }
+    else
+      {
+        cattot="0";
+      }
     // TODO: implement initState
   }
 
   @override
   Widget build(BuildContext context) {
-    return loading?Center(child: CircularProgressIndicator()):Scaffold(
-      body: SingleChildScrollView(
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
           child: Column(
         children: [
+          SizedBox(
+            height: height / 50,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Select Advance Type"),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+            padding: const EdgeInsets.only(left:24,right: 24,top: 6,bottom: 6),
+            decoration: new BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                border: new Border.all(color: Colors.black38)),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValue1,
+                onChanged: (String newValue) {
+                  setState(() {
+                    dropdownValue1 = newValue;
+
+
+
+                  });
+                },
+                items: stringlist
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Select Payment Mode"),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+            padding: const EdgeInsets.only(left:24,right: 24,top: 6,bottom: 6),
+            decoration: new BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                border: new Border.all(color: Colors.black38)),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValue2,
+                onChanged: (String newValue) {
+                  setState(() {
+                    dropdownValue2 = newValue;
+
+
+
+                  });
+                },
+                items: stringlist2
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: height / 50,
+          ),
           ExpansionTile(
             title: Text("Order Summary"),
             initiallyExpanded: true,
@@ -340,17 +573,17 @@ class _OrderSummaryState extends State<OrderSummary> {
                   : Container(),
               SizedBox(height: 10,),
               Container(
-                color: String_Values.primarycolor,
+                color: String_Values.primarycolor.withOpacity(1),
                 padding: const EdgeInsets.only(right:16.0),
                 child: Row(
                   children: [
                     Expanded(flex:4,child: ListTile(title: Text("Total",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                    Expanded(flex:1,child: Text("Rs.${(int.parse(Order2State.vehcostcontroller.text)+(int.parse(Order2State.vescontroller.text)+(int.parse(Order2State.cntcontroller.text) * Order2State.personamt)+Order3State.total)).toString()}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                    Expanded(flex:1,child: Text("Rs.${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot) * Order2State.personamt)+Order3State.total)).toString()}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
 
                   ],
                 ),
               ),
-
+              SizedBox(height: height/6,),
             ],
           )
         ],
@@ -359,15 +592,24 @@ class _OrderSummaryState extends State<OrderSummary> {
           title: Text(
         "Order Summary",
       )),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () {
-      //
-      //     Navigator.push(
-      //         context, MaterialPageRoute(builder: (context) => OrderSummary()));
-      //   },
-      //   icon: Icon(Icons.navigate_next),backgroundColor:String_Values.primarycolor,
-      //   label: Text("Proceed"),
-      // ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          if((dropdownValue1!="Advance Type")&&(dropdownValue2!="Payment Mode"))
+          postRequest();
+          else
+            Fluttertoast.showToast(
+                msg: "Please choose Advance Type and Payment Mode",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+
+        },
+        icon: Icon(Icons.navigate_next),backgroundColor:String_Values.primarycolor,
+        label: Text("Place Order"),
+      ),
     );
   }
 }

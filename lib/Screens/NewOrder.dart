@@ -19,12 +19,13 @@ class NewOrder extends StatefulWidget {
 }
 
 class NewOrderState extends State<NewOrder> {
-  bool loading=false;
+  bool loading = false;
 
   CategoryModelList li4;
 
   static int categoryid;
 
+  static String timeupload;
 
 
   Future<http.Response> categoryRequest() async {
@@ -69,10 +70,10 @@ class NewOrderState extends State<NewOrder> {
       setState(() {
         stringlist.clear();
         stringlist.add("Select Category");
-        for(int i=0;i<li4.details.length;i++)
+        for (int i = 0; i < li4.details.length; i++)
           stringlist.add(li4.details[i].categoryName);
       });
-      
+
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
       //       msg:"",
@@ -113,30 +114,36 @@ class NewOrderState extends State<NewOrder> {
 
   int _current = 0;
 
-  TextEditingController datefromcontroller = new TextEditingController();
+  static TextEditingController datefromcontroller = new TextEditingController();
   TextEditingController timecontroller = new TextEditingController();
   var dropdownValue = "Select Category";
   var dropdownValue1 = "Select Category";
-  var stringlist =["Select Category","Coimbatore","Chennai"];
+  var stringlist = ["Select Category", "Coimbatore", "Chennai"];
 
 
   TimeOfDay time;
 
   int hour;
   String amrpm;
+
   @override
   void initState() {
     categoryRequest();
-    time=TimeOfDay.now();
+    time = TimeOfDay.now();
     // TODO: implement initState
     super.initState();
   }
+
   @override
-
   Widget build(BuildContext context) {
-
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     final List<String> imgList = [
       "https://www.shreeanandhaas.com/images/special-menu/2-in-1-Idiyappam.jpg",
@@ -146,201 +153,221 @@ class NewOrderState extends State<NewOrder> {
       "https://www.shreeanandhaas.com/images/special-menu/Diet-Breakfast.jpg",
     ];
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(height: height/30,),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text("Select Date"),
-            ],
-          ),
-        ),
-        Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24),
-            child: TextField(
-              onTap: () async {
-                DateTime date = DateTime(1900);
-                FocusScope.of(context).requestFocus(new FocusNode());
-
-                date = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate:
-                        DateTime.now(),
-                    lastDate: DateTime.now().add(new Duration(days: 365)));
-
-                datefromcontroller.text = date.day.toString() +
-                    '/' +
-                    date.month.toString() +
-                    '/' +
-                    date.year.toString();
-              },
-              enabled: true,
-              controller: datefromcontroller,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.calendar_today_outlined),
-                labelText: 'Date',
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16.0,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+        body: SingleChildScrollView(
+            child: Column(children: [
+              SizedBox(height: height / 30,),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Select Date"),
+                  ],
                 ),
               ),
-            )),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text("Select Time"),
-            ],
-          ),
-        ),
-            Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24),
-                child: TextField(
-                  onTap: () async {
-                    DateTime date = DateTime(1900);
-                    FocusScope.of(context).requestFocus(new FocusNode());
+              Padding(
+                  padding: const EdgeInsets.only(left: 24, right: 24),
+                  child: TextField(
+                    onTap: () async {
+                      DateTime date = DateTime(1900);
+                      FocusScope.of(context).requestFocus(new FocusNode());
 
-                    time = await showCustomTimePicker(context: context, initialTime: TimeOfDay.now(),);
+                      date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate:
+                          DateTime.now(),
+                          lastDate: DateTime.now().add(
+                              new Duration(days: 365)));
 
-                    // context: context;,
-                    // initialDate: DateTime.now(),
-                    // firstDate:
-                    // DateTime.now().subtract(new Duration(days: 23725)),
-                    // lastDate: DateTime.now().add(new Duration(days: 365)));
-
-                    if (time.hour >= 12) {
-                      hour = time.hour - 12;
-                      amrpm = 'PM';
-                      if (time.hour == 12) {
-                        hour = time.hour;
-                      }
-                    } else {
-                      if (time.hour != 0) {
-                        hour = time.hour;
-                        amrpm = 'AM';
-                      } else {
-                        hour = 12;
-                        amrpm = 'AM';
-                      }
-                    }
-
-                    timecontroller.text = hour.toString().padLeft(2, '0') +
-                        ':' +
-                        time.minute.toString().padLeft(2, '0') +
-                        ' ' +
-                        amrpm;
-                  },
-                  enabled: true,
-                  controller: timecontroller,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.calendar_today_outlined),
-                    labelText: 'Time',
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16.0,
+                      datefromcontroller.text =
+                          date.day.toString().padLeft(2, "0") +
+                              '-' +
+                              date.month.toString().padLeft(2, "0") +
+                              '-' +
+                              date.year.toString();
+                    },
+                    enabled: true,
+                    controller: datefromcontroller,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.calendar_today_outlined),
+                      labelText: 'Date',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16.0,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                  ),
-                )),
-            SizedBox(
-              height: height / 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("Select Category"),
-                ],
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Select Time"),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24.0, right: 24.0),
-              padding: const EdgeInsets.only(left:24,right: 24,top: 6,bottom: 6),
-              decoration: new BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                  border: new Border.all(color: Colors.black38)),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: dropdownValue1,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      dropdownValue1 = newValue;
+              Padding(
+                  padding: const EdgeInsets.only(left: 24, right: 24),
+                  child: TextField(
+                    onTap: () async {
+                      DateTime date = DateTime(1900);
+                      FocusScope.of(context).requestFocus(new FocusNode());
 
-                      for(int i=0;i<li4.details.length;i++)
-                        if(li4.details[i].categoryName==newValue)
-                        {
-                          categoryid=li4.details[i].categoryID;
+                      time = await showCustomTimePicker(
+                        context: context, initialTime: TimeOfDay.now(),);
+
+                      // context: context;,
+                      // initialDate: DateTime.now(),
+                      // firstDate:
+                      // DateTime.now().subtract(new Duration(days: 23725)),
+                      // lastDate: DateTime.now().add(new Duration(days: 365)));
+
+                      if (time.hour >= 12) {
+                        hour = time.hour - 12;
+                        amrpm = 'PM';
+                        if (time.hour == 12) {
+                          hour = time.hour;
                         }
-
-                    });
-                  },
-                  items: stringlist
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                      } else {
+                        if (time.hour != 0) {
+                          hour = time.hour;
+                          amrpm = 'AM';
+                        } else {
+                          hour = 12;
+                          amrpm = 'AM';
+                        }
+                      }
+                      timeupload = time.hour.toString().padLeft(2, '0') + ':' +
+                          time.minute.toString().padLeft(2, "0");
+                      timecontroller.text = hour.toString().padLeft(2, '0') +
+                          ':' +
+                          time.minute.toString().padLeft(2, '0') +
+                          ' ' +
+                          amrpm;
+                    },
+                    enabled: true,
+                    controller: timecontroller,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.calendar_today_outlined),
+                      labelText: 'Time',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16.0,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                  )),
+              SizedBox(
+                height: height / 50,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Select Category"),
+                  ],
                 ),
               ),
-            ),
-        // Container(
-        //   margin: const EdgeInsets.only(left: 24.0, right: 24.0),
-        //   padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-        //   decoration: new BoxDecoration(
-        //       borderRadius: BorderRadius.all(Radius.circular(2.0)),
-        //       border: new Border.all(color: Colors.black38)),
-        //   child: DropdownButtonHideUnderline(
-        //     child: DropdownButton<String>(
-        //       isExpanded: true,
-        //       value: dropdownValue,
-        //       onChanged: (String newValue) {
-        //         setState(() {
-        //           dropdownValue = newValue;
-        //           dropdownValue1="Select";
-        //           if(dropdownValue=="Breakfast")
-        //           stringlist=["Select","7 AM","8 AM","9 AM"];
-        //           else if(dropdownValue=="Lunch")
-        //             stringlist=["Select","12 PM","1 PM","2 PM"];
-        //           else if(dropdownValue=="Dinner")
-        //             stringlist=["Select","7 PM","8 PM","9 PM"];
-        //         });
-        //       },
-        //       items: <String>[
-        //         'Select',
-        //         "Breakfast",
-        //         "Lunch",
-        //         "Dinner",
-        //       ].map<DropdownMenuItem<String>>((String value) {
-        //         return DropdownMenuItem<String>(
-        //           value: value,
-        //           child: Text(value),
-        //         );
-        //       }).toList(),
-        //     ),
-        //   ),
-        // ),
+              Container(
+                margin: const EdgeInsets.only(left: 24.0, right: 24.0),
+                padding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 6, bottom: 6),
+                decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    border: new Border.all(color: Colors.black38)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: dropdownValue1,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue1 = newValue;
+
+                        for (int i = 0; i < li4.details.length; i++)
+                          if (li4.details[i].categoryName == newValue) {
+                            categoryid = li4.details[i].categoryID;
+                          }
+                      });
+                    },
+                    items: stringlist
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              // Container(
+              //   margin: const EdgeInsets.only(left: 24.0, right: 24.0),
+              //   padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+              //   decoration: new BoxDecoration(
+              //       borderRadius: BorderRadius.all(Radius.circular(2.0)),
+              //       border: new Border.all(color: Colors.black38)),
+              //   child: DropdownButtonHideUnderline(
+              //     child: DropdownButton<String>(
+              //       isExpanded: true,
+              //       value: dropdownValue,
+              //       onChanged: (String newValue) {
+              //         setState(() {
+              //           dropdownValue = newValue;
+              //           dropdownValue1="Select";
+              //           if(dropdownValue=="Breakfast")
+              //           stringlist=["Select","7 AM","8 AM","9 AM"];
+              //           else if(dropdownValue=="Lunch")
+              //             stringlist=["Select","12 PM","1 PM","2 PM"];
+              //           else if(dropdownValue=="Dinner")
+              //             stringlist=["Select","7 PM","8 PM","9 PM"];
+              //         });
+              //       },
+              //       items: <String>[
+              //         'Select',
+              //         "Breakfast",
+              //         "Lunch",
+              //         "Dinner",
+              //       ].map<DropdownMenuItem<String>>((String value) {
+              //         return DropdownMenuItem<String>(
+              //           value: value,
+              //           child: Text(value),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   ),
+              // ),
 
 
-      ])),
-      appBar: AppBar(
-          title: Text(
-        "Order",
-        style: TextStyle(fontWeight: FontWeight.w700),
-      )),
-      floatingActionButton: FloatingActionButton.extended(onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context) => Order3(id:categoryid))); },icon: Icon(Icons.navigate_next),backgroundColor:String_Values.primarycolor ,label: Text("Next"),),
-    );
+            ])),
+        appBar: AppBar(
+            title: Text(
+              "Order",
+              style: TextStyle(fontWeight: FontWeight.w700),
+            )),
+        floatingActionButton: FloatingActionButton.extended(onPressed: () {
+          if (datefromcontroller.text.length != 0 &&
+              timecontroller.text.length != 0 &&
+              dropdownValue1 != "Select Category")
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => Order3(id: categoryid)));
+          else
+            Fluttertoast.showToast(
+                msg: "Please fill Date, Time and Category",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+        },
+            icon: Icon(Icons.navigate_next),
+            backgroundColor: String_Values.primarycolor,
+            label: Text("Next")));
   }
 }
