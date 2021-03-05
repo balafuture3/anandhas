@@ -41,6 +41,8 @@ class _OrderSummaryState extends State<OrderSummary> {
 
   String bookingitem;
 
+  double advanceamt;
+
   Future<http.Response> itemRequest() async {
     setState(() {
       loading = true;
@@ -123,9 +125,14 @@ class _OrderSummaryState extends State<OrderSummary> {
   Future<http.Response> postRequest() async {
 
     bookingitem = "";
+    if(dropdownValue1=="Half Advance")
+      advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))/2;
+    else
+      advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total));
+
     for (int i = 0; i < li5.details.length; i++)
       if (Order3State.cnt[i] != 0)
-      bookingitem = "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5.details[i].itemCode}</ItemCode><ItemName>${li5.details[i].itemName}</ItemName><Qty>${Order3State.cnt[i]}</Qty><UOM></UOM><Price>${(Order3State.cnt[i] * li5.details[i].price).toString()}</Price></Table1>";
+      bookingitem = "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5.details[i].itemCode}</ItemCode><ItemName>${li5.details[i].itemName}</ItemName><Qty>${Order3State.cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) * (li5.details[i].price)).toString()}</Price></Table1>";
 
     bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
 print(bookingitem);
@@ -145,9 +152,9 @@ print(bookingitem);
       <VaselAmount>${double.parse(vestot)}</VaselAmount>
       <Vehicle>${Order2State.vehcheck==true?"Y":"N"}</Vehicle>
       <VechicleAmount>${double.parse(vehtot)}</VechicleAmount>
-      <OrderPrice>${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot) * Order2State.personamt)+Order3State.total))}</OrderPrice>
+      <OrderPrice>${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))}</OrderPrice>
       <AdvanceType>$dropdownValue1</AdvanceType>
-      <AdvanceAmount>0</AdvanceAmount>
+      <AdvanceAmount>advanceamt</AdvanceAmount>
       <PaymentType>$dropdownValue2</PaymentType>
       <OrderStatus>Pending</OrderStatus>
       <Branch>${LoginPageState.branchid}</Branch>
@@ -192,6 +199,10 @@ print(bookingitem);
         if(li6.sTATUSID==1) {
           NewOrderState.datefromcontroller.text="";
           NewOrderState.categoryid=0;
+          Order2State.cntcontroller.text="";
+          Order2State.vescontroller.text="";
+          Order2State.vehcostcontroller.text="";
+          Order2State.vehkmcontroller.text="";
           Fluttertoast.showToast(
               msg: "Order Placed Successfully",
               toastLength: Toast.LENGTH_LONG,
@@ -254,7 +265,7 @@ print(bookingitem);
       }
     if(Order2State.catcheck)
     {
-      cattot=Order2State.cntcontroller.text ;
+      cattot=(int.parse(Order2State.cntcontroller.text)*Order2State.personamt).toString() ;
     }
     else
       {
@@ -418,6 +429,96 @@ print(bookingitem);
                       ],
                     ),
                   ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 8.0, bottom: 8),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            flex: 1,
+                          child: Container(),
+                          ),
+                        Expanded(
+                            flex: 3,
+                            child: Text(
+                              "Subtotal",
+                              textAlign: TextAlign.start,
+                            )),
+
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Rs.${Order3State.total}",
+                              textAlign: TextAlign.start,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 8.0, bottom: 8),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Container()),
+                        Expanded(
+                            flex: 3,
+                            child: Text(
+                              "GST ( 2.5% CGST + 2.5% SGST )",
+                              textAlign: TextAlign.start,
+                            )),
+
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Rs.${(Order3State.total*5)/100}",
+                              textAlign: TextAlign.start,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 8.0, bottom: 8),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Container()),
+                        Expanded(
+                            flex: 3,
+                            child: Text(
+                              "Item Total",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontWeight: FontWeight.w800),
+                            )),
+
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Rs.${((Order3State.total*5)/100)+Order3State.total}",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontWeight: FontWeight.w800),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               Order2State.catcheck == true
                   ? Column(
                       children: [
@@ -462,7 +563,7 @@ print(bookingitem);
                                       Expanded(
                                           flex: 1,
                                           child: Text(
-                                            "Rs.${(int.parse(Order2State.cntcontroller.text) * Order2State.personamt).toString()}",
+                                            "Rs.${(int.parse(Order2State.cntcontroller.text) * Order2State.personamt)}",
                                             textAlign: TextAlign.start,
                                           )),
                                     ]),
@@ -571,6 +672,8 @@ print(bookingitem);
                       ],
                     )
                   : Container(),
+
+
               SizedBox(height: 10,),
               Container(
                 color: String_Values.primarycolor.withOpacity(1),
@@ -578,7 +681,7 @@ print(bookingitem);
                 child: Row(
                   children: [
                     Expanded(flex:4,child: ListTile(title: Text("Total",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                    Expanded(flex:1,child: Text("Rs.${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot) * Order2State.personamt)+Order3State.total)).toString()}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                    Expanded(flex:1,child: Text("Rs.${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))).toString()}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
 
                   ],
                 ),

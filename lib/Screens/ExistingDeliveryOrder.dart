@@ -7,6 +7,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'OrderList.dart';
+
 class ExistingDeliveryOrder extends StatefulWidget {
   @override
   _ExistingDeliveryOrderState createState() => _ExistingDeliveryOrderState();
@@ -82,6 +84,7 @@ class _ExistingDeliveryOrderState extends State<ExistingDeliveryOrder> {
                       ),
                       InkWell(
                         onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderList()));
                           // showDialog<void>(
                           //     context: context,
                           //     barrierDismissible: true,

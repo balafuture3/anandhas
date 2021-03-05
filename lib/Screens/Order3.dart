@@ -435,9 +435,19 @@ class Order2State extends State<Order2> {
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-
+if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehkmcontroller.text.length!=0)&&(vehcostcontroller.text.length!=0)))))
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => OrderSummary()));
+else {
+  Fluttertoast.showToast(
+      msg: "Please fill all details",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.SNACKBAR,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
         },
         icon: Icon(Icons.navigate_next),backgroundColor:String_Values.primarycolor,
         label: Text("Next"),
