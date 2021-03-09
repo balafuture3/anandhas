@@ -186,7 +186,7 @@ print(bookingitem);
       <AdvanceType>$dropdownValue1</AdvanceType>
       <AdvanceAmount>$advanceamt</AdvanceAmount>
       <PaymentType>$dropdownValue2</PaymentType>
-      <OrderStatus>Pending</OrderStatus>
+      <OrderStatus>P</OrderStatus>
       <Branch>${LoginPageState.branchid}</Branch>
       <Remarks></Remarks>
       <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
@@ -232,12 +232,7 @@ print(bookingitem);
         li6 = SaveResponse.fromJson(decoded[0]);
         print(li6.sTATUSID);
         if(li6.sTATUSID==1) {
-          NewOrderState.datefromcontroller.text="";
-          NewOrderState.categoryid=0;
-          Order2State.cntcontroller.text="";
-          Order2State.vescontroller.text="";
-          Order2State.vehcostcontroller.text="";
-          Order2State.vehkmcontroller.text="";
+
           Fluttertoast.showToast(
               msg: "Order Placed Successfully",
               toastLength: Toast.LENGTH_LONG,
@@ -247,6 +242,30 @@ print(bookingitem);
               textColor: Colors.white,
               fontSize: 16.0);
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
+          NewOrderState.datefromcontroller.text="";
+          NewOrderState.categoryid=0;
+          Order2State.cntcontroller.text="0";
+          Order2State.vescontroller.text="";
+          Order2State.vehcostcontroller.text="";
+          Order2State.vehkmcontroller.text="";
+        }
+        else if(li6.sTATUSID==2) {
+
+          Fluttertoast.showToast(
+              msg: "Order Updated Successfully",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.SNACKBAR,
+              timeInSecForIosWeb: 1,
+              backgroundColor: String_Values.primarycolor,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
+          NewOrderState.datefromcontroller.text="";
+          NewOrderState.categoryid=0;
+          Order2State.cntcontroller.text="0";
+          Order2State.vescontroller.text="";
+          Order2State.vehcostcontroller.text="";
+          Order2State.vehkmcontroller.text="";
         }
 
 
@@ -635,7 +654,7 @@ showDialog(context: context,child: AlertDialog(
                               Expanded(
                                   flex: 1,
                                   child: Text(
-                                    "Rs.${(int.parse(Order2State.vescontroller.text))}",
+                                    "Rs.${Order2State.vescontroller.text}",
                                     textAlign: TextAlign.start,
                                   )),
                             ],
@@ -703,15 +722,14 @@ showDialog(context: context,child: AlertDialog(
                                       Expanded(
                                           flex: 4,
                                           child: Text(
-                                            (int.parse(Order2State
-                                                    .vehkmcontroller.text))
-                                                .toString(),
+                                            Order2State
+                                                    .vehkmcontroller.text,
                                             textAlign: TextAlign.start,
                                           )),
                                       Expanded(
                                           flex: 1,
                                           child: Text(
-                                            "Rs.${(int.parse(Order2State.vehcostcontroller.text)).toString()}",
+                                            "Rs.${Order2State.vehcostcontroller.text}",
                                             textAlign: TextAlign.start,
                                           )),
                                     ]),
