@@ -1,6 +1,4 @@
-
 import 'dart:convert';
-
 import 'package:anandhasapp/Models/Category.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
 import 'package:anandhasapp/Screens/OrderSummary.dart';
@@ -28,8 +26,6 @@ class Order2State extends State<Order2> {
   CategoryModelList li4;
 
   ItemModelList li5;
-
-
 
   Future<http.Response> itemRequest() async {
     setState(() {
@@ -107,20 +103,16 @@ class Order2State extends State<Order2> {
     // print("response: ${response.body}");
     return response;
   }
-
-
-
   int _current = 0;
-
   TextEditingController datefromcontroller = new TextEditingController();
- static TextEditingController vescontroller = new TextEditingController();
+  static TextEditingController vescontroller = new TextEditingController();
   static  TextEditingController vehkmcontroller = new TextEditingController();
   static TextEditingController vehcostcontroller = new TextEditingController();
   static TextEditingController cntcontroller = new TextEditingController();
   var dropdownValue = "Select";
   var dropdownValue1 = "Select";
   var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
-  int cnt=0;
+  static int cnt=0;
   static var catcheck = false;
 
   static var vescheck = false;

@@ -43,6 +43,7 @@ class OrderDetailModel {
   int modifiedBy;
   String modifiedDate;
   int categoryID;
+  int vehicleKM;
 
   OrderDetailModel(
       {this.docNo,
@@ -69,7 +70,8 @@ class OrderDetailModel {
         this.createdDate,
         this.modifiedBy,
         this.modifiedDate,
-        this.categoryID});
+        this.categoryID,
+      this.vehicleKM});
 
   OrderDetailModel.fromJson(Map<String, dynamic> json) {
     docNo = json['DocNo'];
@@ -97,6 +99,7 @@ class OrderDetailModel {
     modifiedBy = json['ModifiedBy'];
     modifiedDate = json['ModifiedDate'];
     categoryID = json['CategoryID'];
+    vehicleKM = json['VehicleKM'];
   }
 
   Map<String, dynamic> toJson() {
@@ -126,6 +129,7 @@ class OrderDetailModel {
     data['ModifiedBy'] = this.modifiedBy;
     data['ModifiedDate'] = this.modifiedDate;
     data['CategoryID'] = this.categoryID;
+    data['VehicleKM'] = this.vehicleKM;
     return data;
   }
 }

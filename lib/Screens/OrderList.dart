@@ -304,8 +304,10 @@ class OrderListState extends State<OrderList> {
                       Order2State.vehcheck=true;
                     else
                       Order2State.vehcheck=false;
-                    Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.toString();
-                    Order2State.vescontroller.text=li8.details[0].vesselSetAmount.toString();
+                    Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                    Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                    Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                    Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
                     Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
                     print(Order2State.cntcontroller.text);
                     for(int i=0;i<li9.details.length;i++)

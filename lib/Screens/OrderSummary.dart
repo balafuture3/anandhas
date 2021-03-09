@@ -167,12 +167,13 @@ print(bookingitem);
       <ItemDetailXMLID>1</ItemDetailXMLID>
       <UserID>1</UserID>
       <CategoryID>${NewOrderState.categoryid}</CategoryID>
-       <VehicleKM>${int.parse(vehkm)}</VehicleKM>
+       <VechicleKM>$vehkm</VechicleKM>
     </IN_MOB_INSERT_ORDER>
   </soap:Body>
 </soap:Envelope>
 ''';
     print(envelope);
+    print(vehkm);
 
     var url =
         'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_INSERT_ORDER';
