@@ -15,6 +15,8 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 
 class OrderSummary extends StatefulWidget {
+  OrderSummary({Key key,this.edit});
+  int edit;
   @override
   _OrderSummaryState createState() => _OrderSummaryState();
 }
@@ -42,6 +44,8 @@ class _OrderSummaryState extends State<OrderSummary> {
   String bookingitem;
 
   double advanceamt;
+
+  String vehkm;
 
   Future<http.Response> itemRequest() async {
     setState(() {
@@ -154,7 +158,7 @@ print(bookingitem);
       <VechicleAmount>${double.parse(vehtot)}</VechicleAmount>
       <OrderPrice>${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))}</OrderPrice>
       <AdvanceType>$dropdownValue1</AdvanceType>
-      <AdvanceAmount>advanceamt</AdvanceAmount>
+      <AdvanceAmount>$advanceamt</AdvanceAmount>
       <PaymentType>$dropdownValue2</PaymentType>
       <OrderStatus>Pending</OrderStatus>
       <Branch>${LoginPageState.branchid}</Branch>
@@ -162,6 +166,8 @@ print(bookingitem);
       <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
       <ItemDetailXMLID>1</ItemDetailXMLID>
       <UserID>1</UserID>
+      <CategoryID>${NewOrderState.categoryid}</CategoryID>
+       <VehicleKM>${int.parse(vehkm)}</VehicleKM>
     </IN_MOB_INSERT_ORDER>
   </soap:Body>
 </soap:Envelope>
@@ -249,10 +255,12 @@ print(bookingitem);
   void initState() {
     itemRequest();
     if(Order2State.vehcheck) {
+      vehkm=Order2State.vehkmcontroller.text;
       vehtot=Order2State.vehcostcontroller.text;
     }
     else
       {
+        vehkm="0";
         vehtot="0";
       }
     if(Order2State.vescheck) {

@@ -15,8 +15,9 @@ import 'package:xml/xml.dart' as xml;
 import 'Order2 .dart';
 
 class Order2 extends StatefulWidget {
-  Order2({Key key, this.id});
+  Order2({Key key, this.id,this.edit});
   int id;
+  int edit;
   @override
   Order2State createState() => Order2State();
 }
@@ -129,10 +130,9 @@ class Order2State extends State<Order2> {
   static int personamt=100;
   @override
   void initState() {
-    catcheck = false;
-    vescheck = false;
-    vehcheck = false;
+
     itemRequest();
+    if(widget.edit==0)
     cntcontroller.text="0";
     // TODO: implement initState
     super.initState();
@@ -437,7 +437,7 @@ class Order2State extends State<Order2> {
         onPressed: () {
 if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehkmcontroller.text.length!=0)&&(vehcostcontroller.text.length!=0)))))
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => OrderSummary()));
+              context, MaterialPageRoute(builder: (context) => OrderSummary(edit: widget.edit,)));
 else {
   Fluttertoast.showToast(
       msg: "Please fill all details",

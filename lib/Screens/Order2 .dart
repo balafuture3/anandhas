@@ -12,8 +12,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
 import 'package:xml/xml.dart' as xml;
 class Order3 extends StatefulWidget {
-  Order3({Key key,this.id});
+  Order3({Key key,this.id,this.edit});
   int id;
+  int edit;
   @override
   Order3State createState() => Order3State();
 }
@@ -70,14 +71,18 @@ class Order3State extends State<Order3> {
       final decoded = json.decode(parsedXml.text);
       li5 = ItemModelList.fromJson(decoded);
       print(li5.details[0].itemName);
-      setState(() {
-        cnt.clear();
-        for(int i=0;i<li5.details.length;i++) {
-          cnt.add(0);
-          _controllers.add(new TextEditingController());
-          _controllers[i].text="0";
-        }
-      });
+      if(widget.edit==0) {
+
+        setState(() {
+          total=0;
+          cnt.clear();
+          for (int i = 0; i < li5.details.length; i++) {
+            cnt.add(0);
+            controllers.add(new TextEditingController());
+            controllers[i].text = "0";
+          }
+        });
+      }
 print(cnt[0]);
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
@@ -120,7 +125,7 @@ print(cnt[0]);
   TextEditingController cnt1controller = new TextEditingController();
   TextEditingController cnt2controller = new TextEditingController();
   TextEditingController cnt3controller = new TextEditingController();
-  final List<TextEditingController> _controllers = List();
+  static List<TextEditingController> controllers = List();
 
   var dropdownValue = "Select";
   var dropdownValue1 = "Select";
@@ -129,7 +134,7 @@ print(cnt[0]);
 
   @override
   void initState() {
-    total=0;
+
     itemRequest();
     cnt1controller.text="0";
     cnt2controller.text="0";
@@ -193,7 +198,7 @@ for(int i=0;i<li5.details.length;i++)
                                         print(cnt[i]);
                                         if(cnt[i]!=0)
                                         cnt[i]--;
-                                        _controllers[i].text=cnt[i].toString();
+                                        controllers[i].text=cnt[i].toString();
                                         print(cnt[i]);
                                         total=0;
                                         for(int j=0;j<li5.details.length;j++)
@@ -217,7 +222,7 @@ for(int i=0;i<li5.details.length;i++)
                                         onSubmitted: (value)
                                         {
                                           setState(() {
-                                            cnt[i]=int.parse(_controllers[i].text);
+                                            cnt[i]=int.parse(controllers[i].text);
                                             total=0;
                                             for(int j=0;j<li5.details.length;j++)
                                               total=total+(cnt[j]*li5.details[j].price);
@@ -226,7 +231,7 @@ for(int i=0;i<li5.details.length;i++)
 
                                         },
                                         enabled:true,
-                                        controller: _controllers[i],
+                                        controller: controllers[i],
                                       ),
                                     ),
                                   ),
@@ -237,7 +242,7 @@ for(int i=0;i<li5.details.length;i++)
                                       setState(() {
                                         print(cnt[i]);
                                         cnt[i]++;
-                                        _controllers[i].text=cnt[i].toString();
+                                        controllers[i].text=cnt[i].toString();
                                         print(cnt[i]);
 
                                         total=0;
@@ -292,7 +297,7 @@ for(int i=0;i<li5.details.length;i++)
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           if(total!=0)
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Order2()));
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Order2(edit: widget.edit,)));
           else
             Fluttertoast.showToast(
                 msg: "Please choose Item",
