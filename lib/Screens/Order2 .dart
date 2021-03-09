@@ -297,7 +297,7 @@ for(int i=0;i<li5.details.length;i++)
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           if(total!=0)
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Order2(edit: widget.edit,)));
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Order2(id:widget.id,edit: widget.edit,)));
           else
             Fluttertoast.showToast(
                 msg: "Please choose Item",

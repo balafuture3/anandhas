@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
 import 'package:xml/xml.dart'as xml;
 
+import 'NewOrder.dart';
 import 'Order2 .dart';
 import 'Order3.dart';
 
@@ -21,7 +22,8 @@ class OrderList extends StatefulWidget {
 
 class OrderListState extends State<OrderList> {
   bool loading= true;
-
+  static var rowid=[0,0,0];
+  static var lineid=[0,0,0];
   OrderListingslList li7;
 
   OrderDetaillListModel li8;
@@ -292,6 +294,8 @@ class OrderListState extends State<OrderList> {
                 {
                   OrderRequest(li7.details[i].orderNum).then((value) => OrderItemRequest(li7.details[i].orderNum)).then((value) {
 
+
+
                     if(li8.details[0].cateringService=="Y")
                       Order2State.catcheck=true;
                     else
@@ -304,24 +308,29 @@ class OrderListState extends State<OrderList> {
                       Order2State.vehcheck=true;
                     else
                       Order2State.vehcheck=false;
+
                     Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
                     Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
                     Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
                     Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
                     Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
                     print(Order2State.cntcontroller.text);
-                    for(int i=0;i<li9.details.length;i++)
-                     {
+                    NewOrderState.categoryid=li8.details[0].categoryID;
                        Order3State.cnt.clear();
                        Order3State.controllers.clear();
                        Order3State.total=0;
+                       rowid.clear();
+                       lineid.clear();
                        for(int i=0;i<li9.details.length;i++) {
+                        rowid.add( li9.details[i].rowID);
+                        lineid.add(li9.details[i].lineID);
+
                          Order3State.total=Order3State.total+li9.details[i].price;
                          Order3State.cnt.add(li9.details[i].qty.round());
                          Order3State.controllers.add(new TextEditingController());
                          Order3State.controllers[i].text=li9.details[i].qty.round().toString();
                        }
-                     }
+
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context) =>
                             Order3(id:int.parse(li8.details[0].categoryID.toString()),

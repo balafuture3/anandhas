@@ -14,6 +14,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 
+import 'OrderList.dart';
+
 class OrderSummary extends StatefulWidget {
   OrderSummary({Key key,this.edit});
   int edit;
@@ -46,6 +48,8 @@ class _OrderSummaryState extends State<OrderSummary> {
   double advanceamt;
 
   String vehkm;
+
+  int doc;
 
   Future<http.Response> itemRequest() async {
     setState(() {
@@ -127,18 +131,40 @@ class _OrderSummaryState extends State<OrderSummary> {
   }
 
   Future<http.Response> postRequest() async {
-
+if(widget.edit==0)
+  doc=0;
+else
+  doc=widget.edit;
     bookingitem = "";
     if(dropdownValue1=="Half Advance")
       advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))/2;
     else
       advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total));
+if(widget.edit==0) {
+  for (int i = 0; i < li5.details.length; i++)
+    if (Order3State.cnt[i] != 0)
+      bookingitem =
+      "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5
+          .details[i].itemCode}</ItemCode><ItemName>${li5.details[i]
+          .itemName}</ItemName><Qty>${Order3State
+          .cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) *
+          (li5.details[i].price)).toString()}</Price></Table1>";
 
+  bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
+}
+else
+  {
     for (int i = 0; i < li5.details.length; i++)
       if (Order3State.cnt[i] != 0)
-      bookingitem = "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5.details[i].itemCode}</ItemCode><ItemName>${li5.details[i].itemName}</ItemName><Qty>${Order3State.cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) * (li5.details[i].price)).toString()}</Price></Table1>";
+        bookingitem =
+        "$bookingitem<Table1><RowID>${OrderListState.rowid[i]}</RowID><LineID>${OrderListState.lineid[i]}</LineID><ItemCode>${li5
+            .details[i].itemCode}</ItemCode><ItemName>${li5.details[i]
+            .itemName}</ItemName><Qty>${Order3State
+            .cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) *
+            (li5.details[i].price)).toString()}</Price></Table1>";
 
     bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
+  }
 print(bookingitem);
     setState(() {
       loading = true;
@@ -147,7 +173,7 @@ print(bookingitem);
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <IN_MOB_INSERT_ORDER xmlns="http://tempuri.org/">
-      <DocNo>0</DocNo>
+      <DocNo>$doc</DocNo>
       <OrderDate>${NewOrderState.datefromcontroller.text}</OrderDate>
       <OrderTime>${NewOrderState.timeupload}</OrderTime>      
       <CateringService>${Order2State.catcheck==true?"Y":"N"}</CateringService>
@@ -173,6 +199,8 @@ print(bookingitem);
 </soap:Envelope>
 ''';
     print(envelope);
+    print(vehkm);
+    print(NewOrderState.categoryid);
     print(vehkm);
 
     var url =
@@ -232,7 +260,9 @@ print(bookingitem);
             textColor: Colors.white,
             fontSize: 16.0);
     } else {
-
+showDialog(context: context,child: AlertDialog(
+  title: Text(response.body),
+));
       Fluttertoast.showToast(
           msg: "Http error!, Response code${response.statusCode}, ${response.body} ",
           toastLength: Toast.LENGTH_LONG,
@@ -254,7 +284,16 @@ print(bookingitem);
 
   @override
   void initState() {
+    if(widget.edit!=0) {
+      NewOrderState.datefromcontroller.text = "09-03-2021";
+      NewOrderState.timeupload="12:21";
+    }
+
+    for(int i=0;i<3;i++)
+    print(Order3State.cnt[i]);
     itemRequest();
+    for(int i=0;i<3;i++)
+      print(Order3State.cnt[i]);
     if(Order2State.vehcheck) {
       vehkm=Order2State.vehkmcontroller.text;
       vehtot=Order2State.vehcostcontroller.text;
