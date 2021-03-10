@@ -20,10 +20,10 @@ class OrderDetails extends StatefulWidget {
   OrderDetails({Key key, this.orderid});
   String orderid;
   @override
-  _OrderDetailsState createState() => _OrderDetailsState();
+  OrderDetailsState createState() => OrderDetailsState();
 }
 
-class _OrderDetailsState extends State<OrderDetails> {
+class OrderDetailsState extends State<OrderDetails> {
   bool loading = false;
 
   ItemModelList li5;
@@ -45,7 +45,7 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   String bookingitem;
 
-  OrderDetaillListModel li8;
+  static OrderDetaillListModel li8;
 
   OrderItemDetailModelList li9;
 

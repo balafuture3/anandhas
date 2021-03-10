@@ -7,6 +7,7 @@ import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/Screens/NewOrder.dart';
 import 'package:anandhasapp/Screens/Order2 .dart';
 import 'package:anandhasapp/Screens/Order3.dart';
+import 'package:anandhasapp/Screens/OrderDetails.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -757,16 +758,106 @@ showDialog(context: context,child: AlertDialog(
                       ],
                     )
                   : Container(),
+              widget.edit != 0
+                  ? Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            flex: 4,
+                            child: ListTile(
+                              title: Text("Total Amount",style: TextStyle(color: String_Values.primarycolor),),
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Rs.${  (int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))}",
+                              textAlign: TextAlign.start,
+                            )),
+                      ],
+                    ),
+                  ),
+                  // Padding(
+                  //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                  //     child: Column(
+                  //       children: [
+                  //         // Row(
+                  //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         //     children: [
+                  //         //       Expanded(flex:4,child: Container()),
+                  //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                  //         //     ]),
+                  //         // SizedBox(height: 10,),
+                  //         Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //
+                  //               Expanded(flex:4,child: Container(),),
+                  //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                  //
+                  //             ]),
+                  //       ],
+                  //     ))
+                ],
+              )
+                  : Container(),
 
 
+              widget.edit != 0
+                  ? Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            flex: 4,
+                            child: ListTile(
+                              title: Text("Amount Paid",style: TextStyle(color: String_Values.primarycolor),),
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Rs.${OrderDetailsState.li8.details[0].advanceAmount}",
+                              textAlign: TextAlign.start,
+                            )),
+                      ],
+                    ),
+                  ),
+                  // Padding(
+                  //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                  //     child: Column(
+                  //       children: [
+                  //         // Row(
+                  //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         //     children: [
+                  //         //       Expanded(flex:4,child: Container()),
+                  //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                  //         //     ]),
+                  //         // SizedBox(height: 10,),
+                  //         Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //
+                  //               Expanded(flex:4,child: Container(),),
+                  //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                  //
+                  //             ]),
+                  //       ],
+                  //     ))
+                ],
+              )
+                  : Container(),
               SizedBox(height: 10,),
               Container(
                 color: String_Values.primarycolor.withOpacity(1),
                 padding: const EdgeInsets.only(right:16.0),
                 child: Row(
                   children: [
-                    Expanded(flex:4,child: ListTile(title: Text("Total",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                    Expanded(flex:1,child: Text("Rs.${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))).toString()}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                    Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-(OrderDetailsState.li8.details[0].advanceAmount)).toString()}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
 
                   ],
                 ),
@@ -782,6 +873,8 @@ showDialog(context: context,child: AlertDialog(
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          if(widget.edit==0)
+            {
           if((dropdownValue1!="Advance Type")&&(dropdownValue2!="Payment Mode")&&(AdvanceController.text.length!=0)&&(double.parse(AdvanceController.text)<=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))))
           postRequest();
           else
@@ -822,7 +915,54 @@ showDialog(context: context,child: AlertDialog(
                   textColor: Colors.white,
                   fontSize: 16.0);
 
-        },
+        }
+
+        else
+          {
+            if((dropdownValue1!="Advance Type")&&(dropdownValue2!="Payment Mode")&&(AdvanceController.text.length!=0)&&(double.parse(AdvanceController.text)<=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-OrderDetailsState.li8.details[0].advanceAmount))
+              postRequest();
+            else
+            if(dropdownValue1=="Advance Type")
+              Fluttertoast.showToast(
+                  msg: "Please choose Advance Type",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            else if(dropdownValue2=="Payment Mode")
+              Fluttertoast.showToast(
+                  msg: "Please choose Payment Mode",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            else if(AdvanceController.text.length==0)
+              Fluttertoast.showToast(
+                  msg: "Please Enter Advance Amount",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            else
+              Fluttertoast.showToast(
+                  msg: "Advance Amount should not greater than Payable Amount",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+
+          }
+          }
+
+          ,
         icon: Icon(Icons.navigate_next),backgroundColor:String_Values.primarycolor,
         label: Text(widget.edit==0?"Place Order":"Update Order"),
       ),
