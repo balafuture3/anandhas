@@ -83,6 +83,30 @@ class Order3State extends State<Order3> {
           }
         });
       }
+      else
+        {
+          setState(() {
+            if(li5.details.length-cnt.length==0);
+            else {
+              print("else");
+              print("length ${li5.details.length - cnt.length}");
+              for (int i = 0; i <= (li5.details.length - cnt.length); i++) {
+                cnt.add(0);
+                controllers.add(new TextEditingController(text: "0"));
+              }
+              print(cnt);
+            }
+            // total=0;
+            // cnt.clear();
+            // for (int i = 0; i < li5.details.length; i++) {
+            //   cnt.add();
+            //   controllers.add(new TextEditingController());
+            //   controllers[i].text = "0";
+            // }
+          });
+
+
+        }
 print(cnt[0]);
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(

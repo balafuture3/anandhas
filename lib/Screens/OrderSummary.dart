@@ -29,7 +29,7 @@ class _OrderSummaryState extends State<OrderSummary> {
   ItemModelList li5;
 
   var dropdownValue1="Advance Type";
-
+  TextEditingController AdvanceController = new TextEditingController();
   var stringlist=["Advance Type","Half Advance","Full Advance"];
 
   var dropdownValue2="Payment Mode";
@@ -136,10 +136,11 @@ if(widget.edit==0)
 else
   doc=widget.edit;
     bookingitem = "";
-    if(dropdownValue1=="Half Advance")
-      advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))/2;
-    else
-      advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total));
+    advanceamt=double.parse(AdvanceController.text);
+    // if(dropdownValue1=="Half Advance")
+    //   advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))/2;
+    // else
+    //   advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total));
 if(widget.edit==0) {
   for (int i = 0; i < li5.details.length; i++)
     if (Order3State.cnt[i] != 0)
@@ -232,7 +233,12 @@ print(bookingitem);
         li6 = SaveResponse.fromJson(decoded[0]);
         print(li6.sTATUSID);
         if(li6.sTATUSID==1) {
-
+          NewOrderState.datefromcontroller.text="";
+          NewOrderState.categoryid=0;
+          Order2State.cntcontroller.text="0";
+          Order2State.vescontroller.text="";
+          Order2State.vehcostcontroller.text="";
+          Order2State.vehkmcontroller.text="";
           Fluttertoast.showToast(
               msg: "Order Placed Successfully",
               toastLength: Toast.LENGTH_LONG,
@@ -242,15 +248,15 @@ print(bookingitem);
               textColor: Colors.white,
               fontSize: 16.0);
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
+
+        }
+        else if(li6.sTATUSID==2) {
           NewOrderState.datefromcontroller.text="";
           NewOrderState.categoryid=0;
           Order2State.cntcontroller.text="0";
           Order2State.vescontroller.text="";
           Order2State.vehcostcontroller.text="";
           Order2State.vehkmcontroller.text="";
-        }
-        else if(li6.sTATUSID==2) {
-
           Fluttertoast.showToast(
               msg: "Order Updated Successfully",
               toastLength: Toast.LENGTH_LONG,
@@ -260,12 +266,7 @@ print(bookingitem);
               textColor: Colors.white,
               fontSize: 16.0);
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
-          NewOrderState.datefromcontroller.text="";
-          NewOrderState.categoryid=0;
-          Order2State.cntcontroller.text="0";
-          Order2State.vescontroller.text="";
-          Order2State.vehcostcontroller.text="";
-          Order2State.vehkmcontroller.text="";
+
         }
 
 
@@ -308,11 +309,11 @@ showDialog(context: context,child: AlertDialog(
       NewOrderState.timeupload="12:21";
     }
 
-    for(int i=0;i<3;i++)
-    print(Order3State.cnt[i]);
+    // for(int i=0;i<3;i++)
+    // print(Order3State.cnt[i]);
     itemRequest();
-    for(int i=0;i<3;i++)
-      print(Order3State.cnt[i]);
+    // for(int i=0;i<3;i++)
+    //   print(Order3State.cnt[i]);
     if(Order2State.vehcheck) {
       vehkm=Order2State.vehkmcontroller.text;
       vehtot=Order2State.vehcostcontroller.text;
@@ -387,6 +388,24 @@ showDialog(context: context,child: AlertDialog(
                   );
                 }).toList(),
               ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(16),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              controller: AdvanceController,
+              decoration: InputDecoration(
+
+                  enabled: true,
+                  prefixIcon: Icon(Icons.money),
+                  labelText: "Enter Advance Amount",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+
+              ),
+
             ),
           ),
           Padding(
@@ -763,21 +782,49 @@ showDialog(context: context,child: AlertDialog(
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          if((dropdownValue1!="Advance Type")&&(dropdownValue2!="Payment Mode"))
+          if((dropdownValue1!="Advance Type")&&(dropdownValue2!="Payment Mode")&&(AdvanceController.text.length!=0)&&(double.parse(AdvanceController.text)<=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))))
           postRequest();
           else
+            if(dropdownValue1=="Advance Type")
             Fluttertoast.showToast(
-                msg: "Please choose Advance Type and Payment Mode",
+                msg: "Please choose Advance Type",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.SNACKBAR,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.white,
                 fontSize: 16.0);
+            else if(dropdownValue2=="Payment Mode")
+              Fluttertoast.showToast(
+                  msg: "Please choose Payment Mode",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            else if(AdvanceController.text.length==0)
+              Fluttertoast.showToast(
+                  msg: "Please Enter Advance Amount",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            else
+              Fluttertoast.showToast(
+                  msg: "Advance Amount should not greater than total amount",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
 
         },
         icon: Icon(Icons.navigate_next),backgroundColor:String_Values.primarycolor,
-        label: Text("Place Order"),
+        label: Text(widget.edit==0?"Place Order":"Update Order"),
       ),
     );
   }
