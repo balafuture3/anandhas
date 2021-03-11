@@ -8,6 +8,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'OrderList.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -109,21 +111,13 @@ class _DashboardState extends State<Dashboard> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             backgroundColor: Colors.white.withOpacity(0),
-                            title: Container(
-                              decoration: BoxDecoration(
-                                color: String_Values.primarycolor,
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(50),
-                                    bottomRight: Radius.circular(50),
-                                    topLeft: Radius.circular(50),
-                                    topRight: Radius.circular(50)),
-                              ),
+                            title: SingleChildScrollView(
                               child: Column(
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Container(
-                                    margin: const EdgeInsets.all(24.0),
+
                                     child: Image.asset(
                                       "logo.png",
                                       color: Colors.white,
@@ -140,10 +134,29 @@ class _DashboardState extends State<Dashboard> {
                                   SizedBox(
                                     height: height / 30,
                                   ),
-
+                                  SizedBox(height: height/50,),
+                                  Container(
+                                      margin: EdgeInsets.only(left:16,right: 16),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50))),
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.push(context,MaterialPageRoute(builder: (context)=>NewOrder()));
+                                        },
+                                        child: Text(
+                                          "New Order",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor),
+                                        ),
+                                      )),
                                   SizedBox(
-                                    height: height / 30,
+                                    height: height / 50,
                                   ),
+
                                   Column(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -158,13 +171,13 @@ class _DashboardState extends State<Dashboard> {
                                           child: FlatButton(
                                             onPressed: () {
                                               Navigator.pop(context);
-                                            Navigator.push(context,MaterialPageRoute(builder: (context)=>ExistingDeliveryOrder()));
+                                            Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderList()));
                                               // Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => Dashboard()));
 
                                             },
                                             child: Text(
 
-                                              "Existing Delivery Order",
+                                              "Existing Order",
                                               style: TextStyle(
 
                                                   color: String_Values.primarycolor),
@@ -181,6 +194,7 @@ class _DashboardState extends State<Dashboard> {
                                           child: FlatButton(
                                             onPressed: () {
                                               Navigator.pop(context);
+                                              Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderList()));
                                             },
                                             child: Text(
                                               "GST Invoice",
@@ -191,7 +205,7 @@ class _DashboardState extends State<Dashboard> {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: height / 30,
+                                    height: height / 50,
                                   ),
                                 ],
                               ),
@@ -383,12 +397,14 @@ class _DashboardState extends State<Dashboard> {
         ],
       )),
       appBar: AppBar(
+
           title: Center(
               child: Text(
         "DashBoard",
         style: TextStyle(fontWeight: FontWeight.w700),
       )),
       actions: [IconButton(icon: Icon(Icons.logout,color: Colors.white,), onPressed:(){ Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context)=>LoginPage()), (route) => false);})],),
+
     );
   }
 }

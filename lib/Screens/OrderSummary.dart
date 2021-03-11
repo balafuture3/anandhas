@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:xml/xml.dart' as xml;
 
 import 'OrderList.dart';
@@ -39,7 +40,9 @@ class _OrderSummaryState extends State<OrderSummary> {
   SaveResponse li6;
 
   String vehtot;
-
+  // int timeInMillis = 1586348737122;
+  // var date = DateTime.fromMillisecondsSinceEpoch(timeInMillis);
+  // var formattedDate = DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(timeInMillis));
   String vestot;
 
   String cattot;
@@ -51,6 +54,8 @@ class _OrderSummaryState extends State<OrderSummary> {
   String vehkm;
 
   int doc;
+
+  String status;
 
   Future<http.Response> itemRequest() async {
     setState(() {
@@ -131,13 +136,17 @@ class _OrderSummaryState extends State<OrderSummary> {
     return response;
   }
 
-  Future<http.Response> postRequest() async {
+Future<http.Response> postRequest() async {
 if(widget.edit==0)
   doc=0;
 else
   doc=widget.edit;
     bookingitem = "";
     advanceamt=double.parse(AdvanceController.text);
+    if(((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))-advanceamt)==0)
+      status="C";
+    else
+      status="P";
     // if(dropdownValue1=="Half Advance")
     //   advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))/2;
     // else
@@ -188,7 +197,7 @@ print(bookingitem);
       <AdvanceType>$dropdownValue1</AdvanceType>
       <AdvanceAmount>$advanceamt</AdvanceAmount>
       <PaymentType>$dropdownValue2</PaymentType>
-      <OrderStatus>P</OrderStatus>
+      <OrderStatus>$status</OrderStatus>
       <Branch>${LoginPageState.branchid}</Branch>
       <Remarks></Remarks>
       <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
@@ -453,6 +462,8 @@ showDialog(context: context,child: AlertDialog(
             title: Text("Order Summary"),
             initiallyExpanded: true,
             children: [
+              widget.edit!=0?
+              ListTile(title: Text("Order Time and Date"),trailing: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+OrderDetailsState.li8.details[0].bookingTime)) },${OrderDetailsState.li8.details[0].bookingDate}"),):ListTile(title: Text("Order Time and Date"),trailing: Text("${NewOrderState.timecontroller.text },${NewOrderState.datefromcontroller.text}")),
               ListTile(
                 title: Text("Item Details",style: TextStyle(color: String_Values.primarycolor),),
               ),
@@ -773,7 +784,7 @@ showDialog(context: context,child: AlertDialog(
                         Expanded(
                             flex: 1,
                             child: Text(
-                              "Rs.${  (int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))}",
+                              "Rs.${  (int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))).toStringAsFixed(2) }",
                               textAlign: TextAlign.start,
                             )),
                       ],
@@ -820,7 +831,7 @@ showDialog(context: context,child: AlertDialog(
                         Expanded(
                             flex: 1,
                             child: Text(
-                              "Rs.${OrderDetailsState.li8.details[0].advanceAmount}",
+                              "Rs.${OrderDetailsState.li8.details[0].advanceAmount.toStringAsFixed(2) }",
                               textAlign: TextAlign.start,
                             )),
                       ],
@@ -851,13 +862,24 @@ showDialog(context: context,child: AlertDialog(
               )
                   : Container(),
               SizedBox(height: 10,),
+              widget.edit==0?     Container(
+                color: String_Values.primarycolor.withOpacity(1),
+                padding: const EdgeInsets.only(right:16.0),
+                child: Row(
+                  children: [
+                    Expanded(flex:4,child: ListTile(title: Text("Total Amount",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+
+                  ],
+                ),
+              ):
               Container(
                 color: String_Values.primarycolor.withOpacity(1),
                 padding: const EdgeInsets.only(right:16.0),
                 child: Row(
                   children: [
                     Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-(OrderDetailsState.li8.details[0].advanceAmount)).toString()}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-(OrderDetailsState.li8.details[0].advanceAmount)).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
 
                   ],
                 ),

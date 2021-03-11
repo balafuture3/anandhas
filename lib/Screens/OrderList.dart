@@ -7,13 +7,12 @@ import 'package:anandhasapp/Screens/OrderDetails.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart'as http;
-import 'package:xml/xml.dart'as xml;
+import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart' as xml;
 
 import 'NewOrder.dart';
 import 'Order2 .dart';
 import 'Order3.dart';
-
 
 class OrderList extends StatefulWidget {
   @override
@@ -21,16 +20,18 @@ class OrderList extends StatefulWidget {
 }
 
 class OrderListState extends State<OrderList> {
-  bool loading= true;
-  static var rowid=[0,0,0];
-  static var lineid=[0,0,0];
+  bool loading = true;
+  static var rowid = [0, 0, 0];
+  static var lineid = [0, 0, 0];
   OrderListingslList li7;
-
+  List<FilterList> li2 = new List();
+  TextEditingController searchController = new TextEditingController();
   OrderDetaillListModel li8;
 
   OrderItemDetailModelList li9;
 
   double total;
+
   Future<http.Response> OrderRequest(id) async {
     setState(() {
       loading = true;
@@ -109,6 +110,7 @@ class OrderListState extends State<OrderList> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> OrderItemRequest(id) async {
     setState(() {
       loading = true;
@@ -150,11 +152,9 @@ class OrderListState extends State<OrderList> {
       li9 = OrderItemDetailModelList.fromJson(decoded);
       // print(li5.details[0].itemName);
       setState(() {
-        total=0;
-        for(int i=0;i<li9.details.length;i++)
-          total=total+ li9.details[i].price;
-
-
+        total = 0;
+        for (int i = 0; i < li9.details.length; i++)
+          total = total + li9.details[i].price;
       });
 
       // if ("li2.name" != null) {
@@ -231,7 +231,12 @@ class OrderListState extends State<OrderList> {
       print(parsedXml.text);
       final decoded = json.decode(parsedXml.text);
       li7 = OrderListingslList.fromJson(decoded);
-      print(li7.details[0].orderNum);
+      li2.clear();
+      setState(() {
+        for (int i = 0; i < li7.details.length; i++)
+          li2.add(FilterList(li7.details[i].orderNum));
+      });
+      print(li2);
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
       //       msg:"",
@@ -275,81 +280,163 @@ class OrderListState extends State<OrderList> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
-        child: Column(
-          children: [
-            for(int i=0;i<li7.details.length;i++)
-              Padding(
-                padding: const EdgeInsets.only(left:8.0,right: 8),
-                child: ListTile
-                  (
-                  subtitle: Text("click to view details"),
-                  onTap:(){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderDetails(orderid:li7.details[i].orderNum)));
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                height: 80,
+                    child: Row(children: [
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                               left: 24.0, right: 24),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.0),
+                            color: Colors.grey,
+                          ),
+                          child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                li2.clear();
+                              });
+                              for (int i = 0; i <= li7.details.length; i++)
+                                if (li7.details[i].orderNum
+                                        .toLowerCase()
+                                        .contains(searchController.text
+                                            .toLowerCase()) ||
+                                    li7.details[i].orderNum
+                                        .toLowerCase()
+                                        .contains(searchController.text
+                                            .toLowerCase())) {
+                                  setState(() {
+                                    li2.add(
+                                        FilterList(li7.details[i].orderNum));
+                                  });
+                                }
+                            },
+                            controller: searchController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Search Order here.....',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                              prefix: Text("    "),
+                              suffix: Text("    "),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ])),
+                Container(
+                  height: height-160,
+                  child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: li2.length,
+                  itemBuilder: (context, i) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                                child: ListTile(
+                                  subtitle: Text("click to view details"),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OrderDetails(orderid: li2[i].orderno)));
+                                  },
 
-                },trailing:IconButton(icon: Icon(Icons.edit_outlined,color: String_Values.primarycolor,), onPressed: ()
-                {
-                  OrderRequest(li7.details[i].orderNum).then((value) => OrderItemRequest(li7.details[i].orderNum)).then((value) {
-
-
-
-                    if(li8.details[0].cateringService=="Y")
-                      Order2State.catcheck=true;
-                    else
-                      Order2State.catcheck=false;
-                    if(li8.details[0].vesselSet=="Y")
-                      Order2State.vescheck=true;
-                    else
-                      Order2State.vescheck=false;
-                    if(li8.details[0].vehicle=="Y")
-                      Order2State.vehcheck=true;
-                    else
-                      Order2State.vehcheck=false;
-
-                    Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
-                    Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
-                    Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
-                    Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
-                    Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
-                    print(Order2State.cntcontroller.text);
-                    NewOrderState.categoryid=li8.details[0].categoryID;
-                       Order3State.cnt.clear();
-                       Order3State.controllers.clear();
-                       Order3State.total=0;
-                       rowid.clear();
-                       lineid.clear();
-                       for(int i=0;i<li9.details.length;i++) {
-                        rowid.add( li9.details[i].rowID);
-                        lineid.add(li9.details[i].lineID);
-
-                         Order3State.total=Order3State.total+li9.details[i].price;
-                         Order3State.cnt.add(li9.details[i].qty.round());
-                         Order3State.controllers.add(new TextEditingController());
-                         Order3State.controllers[i].text=li9.details[i].qty.round().toString();
-                       }
-
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) =>
-                            Order3(id:int.parse(li8.details[0].categoryID.toString()),
-                              edit: int.parse(li7.details[i].orderNum),)));
-                  });
-                  },),leading:CircleAvatar(backgroundImage: AssetImage("oie_6j1FQPSjyTuZ.png",),backgroundColor: Colors.white,),title: Text("ORDRNO${li7.details[i].orderNum.padLeft(3,"0")}",style: TextStyle(color: String_Values.primarycolor,fontWeight: FontWeight.w800),),),
-              )
-
-
-
-          ],
-        ),
-
-
-
-      ),
+                                  //   trailing:IconButton(icon: Icon(Icons.edit_outlined,color: String_Values.primarycolor,), onPressed: ()
+                                  // {
+                                  //   OrderRequest(li7.details[i].orderNum).then((value) => OrderItemRequest(li7.details[i].orderNum)).then((value) {
+                                  //
+                                  //
+                                  //
+                                  //     if(li8.details[0].cateringService=="Y")
+                                  //       Order2State.catcheck=true;
+                                  //     else
+                                  //       Order2State.catcheck=false;
+                                  //     if(li8.details[0].vesselSet=="Y")
+                                  //       Order2State.vescheck=true;
+                                  //     else
+                                  //       Order2State.vescheck=false;
+                                  //     if(li8.details[0].vehicle=="Y")
+                                  //       Order2State.vehcheck=true;
+                                  //     else
+                                  //       Order2State.vehcheck=false;
+                                  //
+                                  //     Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                                  //     Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                                  //     Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                                  //     Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                                  //     Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                                  //     print(Order2State.cntcontroller.text);
+                                  //     NewOrderState.categoryid=li8.details[0].categoryID;
+                                  //        Order3State.cnt.clear();
+                                  //        Order3State.controllers.clear();
+                                  //        Order3State.total=0;
+                                  //        rowid.clear();
+                                  //        lineid.clear();
+                                  //        for(int i=0;i<li9.details.length;i++) {
+                                  //         rowid.add( li9.details[i].rowID);
+                                  //         lineid.add(li9.details[i].lineID);
+                                  //
+                                  //          Order3State.total=Order3State.total+li9.details[i].price;
+                                  //          Order3State.cnt.add(li9.details[i].qty.round());
+                                  //          Order3State.controllers.add(new TextEditingController());
+                                  //          Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                                  //        }
+                                  //
+                                  //     Navigator.push(context, MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             Order3(id:int.parse(li8.details[0].categoryID.toString()),
+                                  //               edit: int.parse(li7.details[i].orderNum),)));
+                                  //   });
+                                  //   },
+                                  //   ),
+                                  leading: CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                      "oie_6j1FQPSjyTuZ.png",
+                                    ),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  title: Text(
+                                    "ORDRNO${li2[i].orderno.padLeft(3, "0")}",
+                                    style: TextStyle(
+                                        color: String_Values.primarycolor,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                ),
+                              );}),
+                )
+              ],
+            ),
+          ),
       appBar: AppBar(
         title: Text("Order History"),
       ),
     );
   }
+}
+
+class FilterList {
+  String orderno;
+  FilterList(this.orderno);
 }

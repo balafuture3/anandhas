@@ -115,7 +115,7 @@ class NewOrderState extends State<NewOrder> {
   int _current = 0;
 
   static TextEditingController datefromcontroller = new TextEditingController();
-  TextEditingController timecontroller = new TextEditingController();
+  static TextEditingController timecontroller = new TextEditingController();
   var dropdownValue = "Select Category";
   var dropdownValue1 = "Select Category";
   var stringlist = ["Select Category", "Coimbatore", "Chennai"];
@@ -128,6 +128,12 @@ class NewOrderState extends State<NewOrder> {
 
   @override
   void initState() {
+    NewOrderState.datefromcontroller.text="";
+    NewOrderState.categoryid=0;
+    Order2State.cntcontroller.text="0";
+    Order2State.vescontroller.text="";
+    Order2State.vehcostcontroller.text="";
+    Order2State.vehkmcontroller.text="";
     categoryRequest();
     time = TimeOfDay.now();
     // TODO: implement initState
