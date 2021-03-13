@@ -44,7 +44,7 @@ class Widgetsfield
   }
   Widget myImageAsset(asset,void action(),context,height,width)
   {
-    return Image.asset(asset,height: height,width: width,);
+    return Image.asset(asset,height: height,width: width,color: Colors.white,);
   }
   Widget myDropDown(dropdownValue,stringlist)
   {

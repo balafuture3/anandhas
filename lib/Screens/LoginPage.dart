@@ -452,16 +452,16 @@ class LoginPageState extends State<LoginPage> {
                 height: height,
                 width: width,
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          String_Values.primarycolor,
-                          Colors.white70,
-                          Colors.white70,
-                          Colors.white70,
-                          String_Values.primarycolor,
-                        ]),
+                    // gradient: LinearGradient(
+                    //     begin: Alignment.topLeft,
+                    //     end: Alignment.bottomRight,
+                    //     colors: [
+                    //       String_Values.primarycolor,
+                    //       Colors.white70,
+                    //       Colors.white70,
+                    //       Colors.white70,
+                    //       String_Values.primarycolor,
+                    //     ]),
                     // borderRadius: BorderRadius.only(
                     //     bottomRight: Radius.circular(width / 3),)
                 ),
@@ -472,7 +472,7 @@ class LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           SizedBox(
-                            height: height / 10,
+                            height: height / 20,
                           ),
                           Container(
                               padding: EdgeInsets.only(
@@ -484,6 +484,11 @@ class LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
+                      decoration: BoxDecoration(color: String_Values.primarycolor,
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(width))),
+                      
+                    ),     SizedBox(
+                      height: height / 50,
                     ),
 
                     Widgetsfield().myTextField(Icon(Icons.person),
