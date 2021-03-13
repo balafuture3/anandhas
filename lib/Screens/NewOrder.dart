@@ -134,6 +134,8 @@ class NewOrderState extends State<NewOrder> {
     Order2State.vescontroller.text="";
     Order2State.vehcostcontroller.text="";
     Order2State.vehkmcontroller.text="";
+    timecontroller.text="";
+    Order2State.cnt=0;
     categoryRequest();
     time = TimeOfDay.now();
     // TODO: implement initState

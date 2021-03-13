@@ -54,6 +54,8 @@ class OrderDetailsState extends State<OrderDetails> {
   OrderItemDetailModelList li9;
 
   double total=0;
+
+
   Future<http.Response> itemRequest(id) async {
     setState(() {
       loading = true;
@@ -251,11 +253,18 @@ class OrderDetailsState extends State<OrderDetails> {
       // print(li5.details[0].itemName);
       setState(() {
         total=0;
-for(int i=0;i<li9.details.length;i++)
-        total=total+ li9.details[i].price;
+for(int i=0;i<li9.details.length;i++) {
+  total = total + li9.details[i].price;
+print("Order Flag ${li9.details[i].orderFlagNo}");
+  print("Order Flag ${li9.details[i].orderFlag}");
+}
+        OrderListState.orderflagno=li9.details[li9.details.length-1].orderFlagNo;
+        print(OrderListState.orderflagno=li9.details[li9.details.length-1].orderFlagNo);
+
 
 
       });
+
 
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
@@ -549,6 +558,7 @@ for(int i=0;i<li9.details.length;i++)
                   ListTile(
                     title: Text("Item Details",style: TextStyle(color: String_Values.primarycolor),),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 24, right: 24, top: 8.0, bottom: 8),
@@ -576,38 +586,98 @@ for(int i=0;i<li9.details.length;i++)
                       ],
                     ),
                   ),
-                  for (int i = 0; i < li9.details.length; i++)
-                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 24, right: 24, top: 8.0, bottom: 8),
-                        child: Column(
+                  Divider(thickness: 2,),
+                  for(int j=0 ;j<=OrderListState.orderflagno;j++)
+                    Column(children: [
+
+                      // if(OrderListState.orderflagno!=0)
+                      //   Divider(thickness: 2,),
+                      if(OrderListState.orderflagno!=0&&j!=0)
+                        Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    flex: 3,
-                                    child: Text(
-                                      li9.details[i].itemName,
-                                      textAlign: TextAlign.start,
-                                    )),
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      li9.details[i].qty.toString(),
-                                      textAlign: TextAlign.start,
-                                    )),
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      "Rs.${( li9.details[i].price).toString()}",
-                                      textAlign: TextAlign.start,
-                                    )),
-                              ],
+                            SizedBox(height: height/50,),
+                            ListTile(leading: Text("Additional Order $j",style: TextStyle(fontWeight: FontWeight.w800)),),
+
+
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 24, right: 24, top: 8.0, bottom: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "Item",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Qty",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Amount",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
                             ),
+                            Divider(thickness: 2,),
                           ],
                         ),
-                      ),
+
+
+                      for (int i = 0; i < li9.details.length; i++)
+                        if(li9.details[i].orderFlagNo==j)
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 24, right: 24, top: 8.0, bottom: 8),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              li9.details[i].itemName,
+                                              textAlign: TextAlign.start,
+                                            )),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              li9.details[i].qty.round().toString(),
+                                              textAlign: TextAlign.start,
+                                            )),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "Rs.${( li9.details[i].price).toString()}",
+                                              textAlign: TextAlign.start,
+                                            )),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+
+                            ],
+                          ),
+
+
+
+                    ],),
+
+
+                  // Divider(thickness: 2,),
+
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 24, right: 24, top: 8.0, bottom: 8),
@@ -1096,42 +1166,42 @@ for(int i=0;i<li9.details.length;i++)
 
                         OrderRequest().then((value) => OrderItemRequest()).then((value) {
 
-
-
-                          if(li8.details[0].cateringService=="Y")
-                            Order2State.catcheck=true;
-                          else
-                            Order2State.catcheck=false;
-                          if(li8.details[0].vesselSet=="Y")
-                            Order2State.vescheck=true;
-                          else
-                            Order2State.vescheck=false;
-                          if(li8.details[0].vehicle=="Y")
-                            Order2State.vehcheck=true;
-                          else
-                            Order2State.vehcheck=false;
-
-                          Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
-                          Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
-                          Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
-                          Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
-                          Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
-                          print(Order2State.cntcontroller.text);
+                          //
+                          //
+                          // if(li8.details[0].cateringService=="Y")
+                          //   Order2State.catcheck=true;
+                          // else
+                          //   Order2State.catcheck=false;
+                          // if(li8.details[0].vesselSet=="Y")
+                          //   Order2State.vescheck=true;
+                          // else
+                          //   Order2State.vescheck=false;
+                          // if(li8.details[0].vehicle=="Y")
+                          //   Order2State.vehcheck=true;
+                          // else
+                          //   Order2State.vehcheck=false;
+                          //
+                          // Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                          // Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                          // Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                          // Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                          // Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                          // print(Order2State.cntcontroller.text);
                           NewOrderState.categoryid=li8.details[0].categoryID;
-                          Order3State.cnt.clear();
-                          Order3State.controllers.clear();
-                          Order3State.total=0;
-                          OrderListState.rowid.clear();
-                          OrderListState.lineid.clear();
-                          for(int i=0;i<li9.details.length;i++) {
-                            OrderListState.rowid.add( li9.details[i].rowID);
-                            OrderListState.lineid.add(li9.details[i].lineID);
-
-                            Order3State.total=Order3State.total+li9.details[i].price;
-                            Order3State.cnt.add(li9.details[i].qty.round());
-                            Order3State.controllers.add(new TextEditingController());
-                            Order3State.controllers[i].text=li9.details[i].qty.round().toString();
-                          }
+                          // Order3State.cnt.clear();
+                          // Order3State.controllers.clear();
+                          // Order3State.total=0;
+                          // OrderListState.rowid.clear();
+                          // OrderListState.lineid.clear();
+                          // for(int i=0;i<li9.details.length;i++) {
+                          //   OrderListState.rowid.add( li9.details[i].rowID);
+                          //   OrderListState.lineid.add(li9.details[i].lineID);
+                          //
+                          //   Order3State.total=Order3State.total+li9.details[i].price;
+                          //   Order3State.cnt.add(li9.details[i].qty.round());
+                          //   Order3State.controllers.add(new TextEditingController());
+                          //   Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                          // }
 
                           Navigator.pushReplacement(context, MaterialPageRoute(
                               builder: (context) =>
@@ -1201,7 +1271,7 @@ for(int i=0;i<li9.details.length;i++)
                           Navigator.pushReplacement(context, MaterialPageRoute(
                               builder: (context) =>
                                   OrderSummary(
-                                    edit: int.parse(widget.orderid),)));});
+                                    edit: int.parse(widget.orderid),payment: 0,id: int.parse(widget.orderid),)));});
                         });
 
 
@@ -1239,3 +1309,5 @@ for(int i=0;i<li9.details.length;i++)
     );
   }
 }
+
+

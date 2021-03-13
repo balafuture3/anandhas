@@ -429,7 +429,7 @@ class Order2State extends State<Order2> {
         onPressed: () {
 if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehkmcontroller.text.length!=0)&&(vehcostcontroller.text.length!=0)))))
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => OrderSummary(edit: widget.edit)));
+              context, MaterialPageRoute(builder: (context) => OrderSummary(edit: widget.edit,payment: 1,id:widget.id)));
 else {
   Fluttertoast.showToast(
       msg: "Please fill all details",

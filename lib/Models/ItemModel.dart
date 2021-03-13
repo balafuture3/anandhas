@@ -30,7 +30,8 @@ class ItemModel {
   double qty;
   int createdBy;
   String createdDate;
-
+  String orderFlag;
+  int orderFlagNo;
   ItemModel(
       {this.docNo,
         this.docDate,
@@ -42,7 +43,7 @@ class ItemModel {
         this.uOM,
         this.qty,
         this.createdBy,
-        this.createdDate});
+        this.createdDate,this.orderFlag,this.orderFlagNo});
 
   ItemModel.fromJson(Map<String, dynamic> json) {
     docNo = json['DocNo'];
@@ -56,6 +57,8 @@ class ItemModel {
     qty = json['Qty'];
     createdBy = json['CreatedBy'];
     createdDate = json['CreatedDate'];
+    orderFlag = json['OrderFlag'];
+    orderFlagNo = json['OrderFlagNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +74,8 @@ class ItemModel {
     data['Qty'] = this.qty;
     data['CreatedBy'] = this.createdBy;
     data['CreatedDate'] = this.createdDate;
+    data['OrderFlag'] = this.orderFlag;
+    data['OrderFlagNo'] = this.orderFlagNo;
     return data;
   }
 }

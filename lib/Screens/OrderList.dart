@@ -21,6 +21,7 @@ class OrderList extends StatefulWidget {
 
 class OrderListState extends State<OrderList> {
   bool loading = true;
+  static int orderflagno;
   static var rowid = [0, 0, 0];
   static var lineid = [0, 0, 0];
   OrderListingslList li7;
@@ -31,6 +32,8 @@ class OrderListState extends State<OrderList> {
   OrderItemDetailModelList li9;
 
   double total;
+
+ static String orderid;
 
   Future<http.Response> OrderRequest(id) async {
     setState(() {
@@ -356,6 +359,8 @@ class OrderListState extends State<OrderList> {
                                 child: ListTile(
                                   subtitle: Text("click to view details"),
                                   onTap: () {
+
+                                    orderid=li2[i].orderno;
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

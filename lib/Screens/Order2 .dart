@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:anandhasapp/Models/Category.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
 import 'package:anandhasapp/Screens/Order3.dart';
+import 'package:anandhasapp/Screens/OrderSummary.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -85,25 +86,35 @@ class Order3State extends State<Order3> {
       }
       else
         {
+
           setState(() {
-            if(li5.details.length-cnt.length==0);
-            else {
-              print("else");
-              print("length ${li5.details.length - cnt.length}");
-              for (int i = 0; i <= (li5.details.length - cnt.length); i++) {
-                cnt.add(0);
-                controllers.add(new TextEditingController(text: "0"));
-              }
-              print(cnt);
+            total=0;
+            cnt.clear();
+            for (int i = 0; i < li5.details.length; i++) {
+              cnt.add(0);
+              controllers.add(new TextEditingController());
+              controllers[i].text = "0";
             }
-            // total=0;
-            // cnt.clear();
-            // for (int i = 0; i < li5.details.length; i++) {
-            //   cnt.add();
-            //   controllers.add(new TextEditingController());
-            //   controllers[i].text = "0";
-            // }
           });
+          // setState(() {
+          //   if(li5.details.length-cnt.length==0);
+          //   else {
+          //     print("else");
+          //     print("length ${li5.details.length - cnt.length}");
+          //     for (int i = 0; i <= (li5.details.length - cnt.length); i++) {
+          //       cnt.add(0);
+          //       controllers.add(new TextEditingController(text: "0"));
+          //     }
+          //     print(cnt);
+          //   }
+          //   // total=0;
+          //   // cnt.clear();
+          //   // for (int i = 0; i < li5.details.length; i++) {
+          //   //   cnt.add();
+          //   //   controllers.add(new TextEditingController());
+          //   //   controllers[i].text = "0";
+          //   // }
+          // });
 
 
         }
@@ -320,8 +331,21 @@ for(int i=0;i<li5.details.length;i++)
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          if(total!=0)
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Order2(id:widget.id,edit: widget.edit,)));
+          if(total!=0) {
+            if(widget.edit==0) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  Order2(id: widget.id, edit: widget.edit,)));
+            }
+            else{
+              Order2State.catcheck=false;
+              Order2State.vehcheck=false;
+              Order2State.vescheck=false;
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  OrderSummary( edit: widget.id,payment:1,id: widget.edit,)));
+            }
+              // Navigator.push(context, MaterialPageRoute(builder: (context) =>
+              //     Order2(id: widget.id, edit: widget.edit,)));
+          }
           else
             Fluttertoast.showToast(
                 msg: "Please choose Item",
