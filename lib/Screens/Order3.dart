@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
 import 'package:xml/xml.dart' as xml;
 import 'Order2 .dart';
+import 'Order4.dart';
 
 class Order2 extends StatefulWidget {
   Order2({Key key, this.id,this.edit});
@@ -429,7 +430,7 @@ class Order2State extends State<Order2> {
         onPressed: () {
 if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehkmcontroller.text.length!=0)&&(vehcostcontroller.text.length!=0)))))
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => OrderSummary(edit: widget.edit,payment: 1,id:widget.id)));
+              context, MaterialPageRoute(builder: (context) => Order4(edit: widget.edit,payment: 1,id:widget.id)));
 else {
   Fluttertoast.showToast(
       msg: "Please fill all details",

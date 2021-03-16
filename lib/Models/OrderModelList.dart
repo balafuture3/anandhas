@@ -21,16 +21,22 @@ class OrderListingslList {
 class OrderListModel {
 
   String orderNum;
+  String Date;
+  String Time;
 
   OrderListModel({this.orderNum});
 
   OrderListModel.fromJson(Map<String, dynamic> json) {
     orderNum = json['OrderNum'];
+    Date = json['BookingDate'];
+    Time = json['BookingTime'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['OrderNum'] = this.orderNum;
+    data['BookingDate'] = this.Date;
+    data['BookingTime'] = this.Time;
     return data;
   }
 }

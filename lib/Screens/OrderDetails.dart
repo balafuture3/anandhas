@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:anandhasapp/Models/AdvanceHistoryModel.dart';
 import 'package:anandhasapp/Models/InsertOrderResponse.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
 import 'package:anandhasapp/Models/OrderDetail.dart';
@@ -55,7 +56,87 @@ class OrderDetailsState extends State<OrderDetails> {
 
   double total=0;
 
+  OrderAdvanceHistoryList li10;
 
+  Future<http.Response> AdvanceHistoryRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
+      <OrderNo>${OrderListState.orderid}</OrderNo>
+       <FormId>3</FormId>
+    </IN_MOB_GET_ORDER_NO>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GET_ORDER_NO';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+
+      li10 = OrderAdvanceHistoryList.fromJson(decoded);
+      // print(li5.details[0].itemName);
+      setState(() {});
+
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
   Future<http.Response> itemRequest(id) async {
     setState(() {
       loading = true;
@@ -422,7 +503,7 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
 
   @override
   void initState() {
-    OrderRequest().then((value) => OrderItemRequest());
+    OrderRequest().then((value) => OrderItemRequest()).then((value) => AdvanceHistoryRequest());
 
     // TODO: implement initState
   }
@@ -520,6 +601,24 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                             Expanded(
                                 flex: 4,
                                 child: ListTile(
+                                  title: Text("Name",style: TextStyle(color: String_Values.primarycolor),),
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  li8.details[0].name,
+                                  textAlign: TextAlign.start,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 16),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 4,
+                                child: ListTile(
                                   title: Text("Order Status",style: TextStyle(color: String_Values.primarycolor),),
                                 )),
                             Expanded(
@@ -554,6 +653,9 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                       //     ))
                     ],
                   ),
+
+                  // ListTile(title: Text("Name"),trailing: Text("${li8.details[0].name}"),),
+
                   ListTile(title: Text("Order Time and Date"),trailing: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+OrderDetailsState.li8.details[0].bookingTime)) },${OrderDetailsState.li8.details[0].bookingDate}"),),
                   ListTile(
                     title: Text("Item Details",style: TextStyle(color: String_Values.primarycolor),),
@@ -771,8 +873,8 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                   li8.details[0].cateringService == "Y"
                       ? Column(
                     children: [
-                      ListTile(
-                        title: Text("Catering Service",style: TextStyle(color: String_Values.primarycolor),),
+                      ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
+                        title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(
@@ -831,7 +933,8 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                             Expanded(
                                 flex: 4,
                                 child: ListTile(
-                                  title: Text("Vessel Set",style: TextStyle(color: String_Values.primarycolor),),
+                                  leading: Icon(Icons.emoji_food_beverage_sharp,color: Colors.deepOrange,),
+                                  title: Text("Vessel Set",style: TextStyle(color: Colors.deepOrange,),),
                                 )),
                             Expanded(
                                 flex: 1,
@@ -876,7 +979,8 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                             Expanded(
                                 flex: 4,
                                 child: ListTile(
-                                  title: Text("Vehicle Drop",style: TextStyle(color: String_Values.primarycolor),),
+                                  leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
+                                  title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
                                 )),
                             Expanded(
                                 flex: 1,
@@ -911,48 +1015,75 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                     ],
                   )
                       : Container(),
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Amount Paid",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(li8.details[0].advanceAmount)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
+
+                  Container(
+                    color: String_Values.primarycolor.withOpacity(0.2),
+                    child: ExpansionTile(
+
+                      title: Text("Advance Details"),
+                      children: [
+
+                        for(int i=0;i<li10.details.length;i++)
+                          Container(
+                            margin: EdgeInsets.only(right: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    flex: 4,
+                                    child: ListTile(
+                                      title: Text("Advance ${i+1} (${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li10.details[i].time.trim()))},${(li10.details[i].date.trim())})"),
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      "Rs.${(li10.details[i].advanceAmount)}",
+                                      textAlign: TextAlign.start,
+                                    )),
+
+                              ],
+                            ),
+                          ),
+                        // Padding(
+                        //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                        //     child: Column(
+                        //       children: [
+                        //         // Row(
+                        //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         //     children: [
+                        //         //       Expanded(flex:4,child: Container()),
+                        //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                        //         //     ]),
+                        //         // SizedBox(height: 10,),
+                        //         Row(
+                        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //
+                        //               Expanded(flex:4,child: Container(),),
+                        //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                        //
+                        //             ]),
+                        //       ],
+                        //     ))
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            flex: 4,
+                            child: ListTile(
+                              title: Text("Amount Paid",style: TextStyle(color: String_Values.primarycolor),),
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Rs.${(li8.details[0].advanceAmount)}",
+                              textAlign: TextAlign.start,
+                            )),
+                      ],
+                    ),
                   ),
                   Column(
                     children: [

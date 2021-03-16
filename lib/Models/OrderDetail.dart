@@ -44,8 +44,13 @@ class OrderDetailModel {
   String modifiedDate;
   int categoryID;
   int vehicleKM;
-  String orderFlag;
-  int orderFlagNo;
+  String email;
+  String name;
+  String mobile;
+  String address;
+  String gSTno;
+  String pincode;
+  String whatsappNumber;
 
   OrderDetailModel(
       {this.docNo,
@@ -73,8 +78,14 @@ class OrderDetailModel {
         this.modifiedBy,
         this.modifiedDate,
         this.categoryID,
-      this.vehicleKM,
-      });
+        this.vehicleKM,
+        this.email,
+        this.name,
+        this.mobile,
+        this.address,
+        this.gSTno,
+        this.pincode,
+        this.whatsappNumber});
 
   OrderDetailModel.fromJson(Map<String, dynamic> json) {
     docNo = json['DocNo'];
@@ -103,7 +114,13 @@ class OrderDetailModel {
     modifiedDate = json['ModifiedDate'];
     categoryID = json['CategoryID'];
     vehicleKM = json['VehicleKM'];
-
+    email = json['Email'];
+    name = json['Name'];
+    mobile = json['Mobile'];
+    address = json['Address'];
+    gSTno = json['GSTno'];
+    pincode = json['Pincode'];
+    whatsappNumber = json['WhatsappNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -134,7 +151,13 @@ class OrderDetailModel {
     data['ModifiedDate'] = this.modifiedDate;
     data['CategoryID'] = this.categoryID;
     data['VehicleKM'] = this.vehicleKM;
-
+    data['Email'] = this.email;
+    data['Name'] = this.name;
+    data['Mobile'] = this.mobile;
+    data['Address'] = this.address;
+    data['GSTno'] = this.gSTno;
+    data['Pincode'] = this.pincode;
+    data['WhatsappNumber'] = this.whatsappNumber;
     return data;
   }
 }

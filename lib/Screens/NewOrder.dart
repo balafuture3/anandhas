@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:anandhasapp/Models/Category.dart';
 import 'package:anandhasapp/Screens/Order2 .dart';
+import 'package:anandhasapp/Screens/Order4.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -134,6 +135,14 @@ class NewOrderState extends State<NewOrder> {
     Order2State.vescontroller.text="";
     Order2State.vehcostcontroller.text="";
     Order2State.vehkmcontroller.text="";
+
+    Order4State.Addresscontroller.text="";
+    Order4State.Mobilecontroller.text="";
+    Order4State.Emailcontroller.text="";
+    Order4State.Whatsappcontroller.text="";
+    Order4State.Pincodecontroller.text="";
+    Order4State.GSTcontroller.text="";
+    // Order4State.Emailcontroller.text="";
     timecontroller.text="";
     Order2State.cnt=0;
     categoryRequest();

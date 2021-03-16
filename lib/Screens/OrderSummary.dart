@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:anandhasapp/Models/AdvanceHistoryModel.dart';
 import 'package:anandhasapp/Models/InsertOrderResponse.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
 import 'package:anandhasapp/Models/OrderDetail.dart';
@@ -18,6 +19,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:xml/xml.dart' as xml;
 
+import 'Order4.dart';
 import 'OrderList.dart';
 
 class OrderSummary extends StatefulWidget {
@@ -70,6 +72,8 @@ class _OrderSummaryState extends State<OrderSummary> {
   OrderItemDetailModelList li9;
 
   double total=0;
+
+  OrderAdvanceHistoryList li10;
 
   Future<http.Response> OrderRequest() async {
     setState(() {
@@ -243,7 +247,84 @@ class _OrderSummaryState extends State<OrderSummary> {
     return response;
   }
 
+  Future<http.Response> AdvanceHistoryRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
+      <OrderNo>${OrderListState.orderid}</OrderNo>
+       <FormId>3</FormId>
+    </IN_MOB_GET_ORDER_NO>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GET_ORDER_NO';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
 
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+      li10 = OrderAdvanceHistoryList.fromJson(decoded);
+      // print(li5.details[0].itemName);
+      setState(() {});
+
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
   Future<http.Response> itemRequest() async {
     setState(() {
       loading = true;
@@ -396,7 +477,13 @@ print(bookingitem);
       <ItemDetailXMLID>${widget.payment}</ItemDetailXMLID>
       <UserID>1</UserID>
       <CategoryID>${NewOrderState.categoryid}</CategoryID>
-       <VechicleKM>$vehkm</VechicleKM>
+      <Name>${Order4State.Namecontroller.text}</Name>
+      <Mobile>${Order4State.Mobilecontroller.text}</Mobile>
+      <Email>${Order4State.Emailcontroller.text}</Email>
+      <Address>${Order4State.Addresscontroller.text}</Address>
+      <GST>${Order4State.GSTcontroller.text}</GST>
+      <WhatsappNumber>${Order4State.Whatsappcontroller.text}</WhatsappNumber>
+      <Pincode>642005</Pincode>
     </IN_MOB_INSERT_ORDER>
   </soap:Body>
 </soap:Envelope>
@@ -441,6 +528,14 @@ print(bookingitem);
           Order2State.vescontroller.text="";
           Order2State.vehcostcontroller.text="";
           Order2State.vehkmcontroller.text="";
+
+          Order4State.Addresscontroller.text="";
+          Order4State.Mobilecontroller.text="";
+          Order4State.Emailcontroller.text="";
+          Order4State.Whatsappcontroller.text="";
+          Order4State.Pincodecontroller.text="";
+          Order4State.GSTcontroller.text="";
+
           Fluttertoast.showToast(
               msg: "Order Placed Successfully",
               toastLength: Toast.LENGTH_LONG,
@@ -506,12 +601,16 @@ showDialog(context: context,child: AlertDialog(
 
   @override
   void initState() {
-    print(widget.edit);
+
     if(widget.edit!=0)
     {
-      NewOrderState.datefromcontroller.text = "09-03-2021";
-      NewOrderState.timeupload="12:21";
-      OrderRequest().then((value) => OrderItemRequest()).then((value) => itemRequest());
+
+      NewOrderState.datefromcontroller.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+      NewOrderState.timeupload=DateFormat("hh:mm").format(DateTime.now());
+
+      OrderRequest().then((value) => OrderItemRequest()).then((value) => itemRequest()).then((value) => AdvanceHistoryRequest());
+
+
     }
     else
 

@@ -8,6 +8,7 @@ import 'package:anandhasapp/String_Values.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:xml/xml.dart' as xml;
 
 import 'NewOrder.dart';
@@ -233,7 +234,11 @@ class OrderListState extends State<OrderList> {
       xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
       print(parsedXml.text);
       final decoded = json.decode(parsedXml.text);
+
+      print(decoded);
       li7 = OrderListingslList.fromJson(decoded);
+
+
       li2.clear();
       setState(() {
         for (int i = 0; i < li7.details.length; i++)
@@ -357,7 +362,7 @@ class OrderListState extends State<OrderList> {
                               return Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
                                 child: ListTile(
-                                  subtitle: Text("click to view details"),
+                                  subtitle: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li7.details[i].Time.trim())) },${li7.details[i].Date.trim()}"),
                                   onTap: () {
 
                                     orderid=li2[i].orderno;
@@ -416,12 +421,7 @@ class OrderListState extends State<OrderList> {
                                   //   });
                                   //   },
                                   //   ),
-                                  leading: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                      "oie_6j1FQPSjyTuZ.png",
-                                    ),
-                                    backgroundColor: Colors.white,
-                                  ),
+                                  leading: Icon(Icons.fastfood,color: String_Values.primarycolor,),
                                   title: Text(
                                     "ORDRNO${li2[i].orderno.padLeft(3, "0")}",
                                     style: TextStyle(
