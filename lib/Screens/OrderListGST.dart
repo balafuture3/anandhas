@@ -14,14 +14,14 @@ import 'NewOrder.dart';
 import 'Order2 .dart';
 import 'Order3.dart';
 
-class OrderList extends StatefulWidget {
-  OrderList({Key key, this.gst});
+class OrderListGST extends StatefulWidget {
+  OrderListGST({Key key, this.gst});
   bool gst;
   @override
-  OrderListState createState() => OrderListState();
+  OrderListGSTState createState() => OrderListGSTState();
 }
 
-class OrderListState extends State<OrderList> {
+class OrderListGSTState extends State<OrderListGST> {
   bool loading = true;
   static int orderflagno;
   static var rowid = [0, 0, 0];
@@ -35,7 +35,7 @@ class OrderListState extends State<OrderList> {
 
   double total;
 
- static String orderid;
+  static String orderid;
 
   Future<http.Response> OrderRequest(id) async {
     setState(() {
@@ -206,7 +206,7 @@ class OrderListState extends State<OrderList> {
     });
     var envelope;
     if(!widget.gst)
-     envelope = '''
+      envelope = '''
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <IN_MOB_OrderList xmlns="http://tempuri.org/">
@@ -255,15 +255,10 @@ class OrderListState extends State<OrderList> {
 
       li2.clear();
       setState(() {
-        if(!widget.gst) {
+
           for (int i = 0; i < li7.details.length; i++)
-            li2.add(FilterList(li7.details[i].orderNum));
-        }
-        else
-        {
-          for (int i = 0; i < li7.details.length; i++)
-            li2.add(FilterList((i+1).toString()));
-        }
+            li2.add(FilterList(li7.details[i].orderNum,i+1));
+
 
       });
       print(li2);
@@ -319,150 +314,146 @@ class OrderListState extends State<OrderList> {
       body: loading
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
+        child: Column(
+          children: [
+            Container(
                 height: 80,
-                    child: Row(children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                               left: 24.0, right: 24),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: Colors.grey,
-                          ),
-                          child: TextField(
-                            onChanged: (value) {
+                child: Row(children: [
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                          left: 24.0, right: 24),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: Colors.grey,
+                      ),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            li2.clear();
+                          });
+                          for (int i = 0; i <= li7.details.length; i++)
+                            if ((i+1).toString()
+                                .toLowerCase()
+                                .contains(searchController.text
+                                .toLowerCase()) ) {
                               setState(() {
-                                li2.clear();
+                                li2.add(
+                                    FilterList(li7.details[i].orderNum,i+1));
                               });
-                              for (int i = 0; i <= li7.details.length; i++)
-                                if (li7.details[i].orderNum
-                                        .toLowerCase()
-                                        .contains(searchController.text
-                                            .toLowerCase()) ||
-                                    li7.details[i].orderNum
-                                        .toLowerCase()
-                                        .contains(searchController.text
-                                            .toLowerCase())) {
-                                  setState(() {
-                                    li2.add(
-                                        FilterList(li7.details[i].orderNum));
-                                  });
-                                }
-                            },
-                            controller: searchController,
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              suffixIcon: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                              ),
-                              hintText: 'Search Order here.....',
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                              ),
-                              prefix: Text("    "),
-                              suffix: Text("    "),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                            ),
+                            }
+                        },
+                        controller: searchController,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          ),
+                          hintText: 'Search Order here.....',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                          prefix: Text("    "),
+                          suffix: Text("    "),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                         ),
                       ),
-                    ])),
-                Container(
-                  height: height-160,
-                  child: ListView.builder(
+                    ),
+                  ),
+                ])),
+            Container(
+              height: height-160,
+              child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: li2.length,
                   itemBuilder: (context, i) {
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                child: ListTile(
-                                  subtitle: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li7.details[i].Time.trim())) },${li7.details[i].Date.trim()}"),
-                                  onTap: () {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8),
+                      child: ListTile(
+                        subtitle: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li7.details[li2[i].iteration-1].Time.trim())) },${li7.details[li2[i].iteration-1].Date.trim()}"),
+                        onTap: () {
 
-                                    orderid=li2[i].orderno;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                OrderDetails(orderid: li2[i].orderno,gst:widget.gst,invoice: li7.details[i].branchId=="1"?"SPM-${(i+1).toString().padLeft(3, "0")}":"SPM-${(i+1).toString().padLeft(3, "0")}")));
-                                  },
+                          orderid=li2[i].orderno;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OrderDetails(orderid: li2[i].orderno,gst:widget.gst,invoice: li7.details[i].branchId=="1"?"SPM-${li2[i].iteration.toString().padLeft(3, "0")}":"SPM-${li2[i].iteration.toString().padLeft(3, "0")}")));
+                        },
 
-                                  //   trailing:IconButton(icon: Icon(Icons.edit_outlined,color: String_Values.primarycolor,), onPressed: ()
-                                  // {
-                                  //   OrderRequest(li7.details[i].orderNum).then((value) => OrderItemRequest(li7.details[i].orderNum)).then((value) {
-                                  //
-                                  //
-                                  //
-                                  //     if(li8.details[0].cateringService=="Y")
-                                  //       Order2State.catcheck=true;
-                                  //     else
-                                  //       Order2State.catcheck=false;
-                                  //     if(li8.details[0].vesselSet=="Y")
-                                  //       Order2State.vescheck=true;
-                                  //     else
-                                  //       Order2State.vescheck=false;
-                                  //     if(li8.details[0].vehicle=="Y")
-                                  //       Order2State.vehcheck=true;
-                                  //     else
-                                  //       Order2State.vehcheck=false;
-                                  //
-                                  //     Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
-                                  //     Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
-                                  //     Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
-                                  //     Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
-                                  //     Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
-                                  //     print(Order2State.cntcontroller.text);
-                                  //     NewOrderState.categoryid=li8.details[0].categoryID;
-                                  //        Order3State.cnt.clear();
-                                  //        Order3State.controllers.clear();
-                                  //        Order3State.total=0;
-                                  //        rowid.clear();
-                                  //        lineid.clear();
-                                  //        for(int i=0;i<li9.details.length;i++) {
-                                  //         rowid.add( li9.details[i].rowID);
-                                  //         lineid.add(li9.details[i].lineID);
-                                  //
-                                  //          Order3State.total=Order3State.total+li9.details[i].price;
-                                  //          Order3State.cnt.add(li9.details[i].qty.round());
-                                  //          Order3State.controllers.add(new TextEditingController());
-                                  //          Order3State.controllers[i].text=li9.details[i].qty.round().toString();
-                                  //        }
-                                  //
-                                  //     Navigator.push(context, MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             Order3(id:int.parse(li8.details[0].categoryID.toString()),
-                                  //               edit: int.parse(li7.details[i].orderNum),)));
-                                  //   });
-                                  //   },
-                                  //   ),
-                                  leading: Icon(Icons.fastfood,color: String_Values.primarycolor,),
-                                  title:!widget.gst? Text(
-                                    "ORDRNO${li2[i].orderno.padLeft(3, "0")}",
-                                    style: TextStyle(
-                                        color: String_Values.primarycolor,
-                                        fontWeight: FontWeight.w800),
-                                  ):Text(
-                                      li7.details[i].branchId=="1"?"SPM-${(i+1).toString().padLeft(3, "0")}":Container(),
-                                    style: TextStyle(
-                                        color: String_Values.primarycolor,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ),
-                              );}),
-                )
-              ],
-            ),
-          ),
+                        //   trailing:IconButton(icon: Icon(Icons.edit_outlined,color: String_Values.primarycolor,), onPressed: ()
+                        // {
+                        //   OrderRequest(li7.details[i].orderNum).then((value) => OrderItemRequest(li7.details[i].orderNum)).then((value) {
+                        //
+                        //
+                        //
+                        //     if(li8.details[0].cateringService=="Y")
+                        //       Order2State.catcheck=true;
+                        //     else
+                        //       Order2State.catcheck=false;
+                        //     if(li8.details[0].vesselSet=="Y")
+                        //       Order2State.vescheck=true;
+                        //     else
+                        //       Order2State.vescheck=false;
+                        //     if(li8.details[0].vehicle=="Y")
+                        //       Order2State.vehcheck=true;
+                        //     else
+                        //       Order2State.vehcheck=false;
+                        //
+                        //     Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                        //     Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                        //     Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                        //     Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                        //     Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                        //     print(Order2State.cntcontroller.text);
+                        //     NewOrderState.categoryid=li8.details[0].categoryID;
+                        //        Order3State.cnt.clear();
+                        //        Order3State.controllers.clear();
+                        //        Order3State.total=0;
+                        //        rowid.clear();
+                        //        lineid.clear();
+                        //        for(int i=0;i<li9.details.length;i++) {
+                        //         rowid.add( li9.details[i].rowID);
+                        //         lineid.add(li9.details[i].lineID);
+                        //
+                        //          Order3State.total=Order3State.total+li9.details[i].price;
+                        //          Order3State.cnt.add(li9.details[i].qty.round());
+                        //          Order3State.controllers.add(new TextEditingController());
+                        //          Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                        //        }
+                        //
+                        //     Navigator.push(context, MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             Order3(id:int.parse(li8.details[0].categoryID.toString()),
+                        //               edit: int.parse(li7.details[i].orderNum),)));
+                        //   });
+                        //   },
+                        //   ),
+                        leading: Icon(Icons.fastfood,color: String_Values.primarycolor,),
+                        title:!widget.gst? Text(
+                          "ORDRNO${li2[i].orderno.padLeft(3, "0")}",
+                          style: TextStyle(
+                              color: String_Values.primarycolor,
+                              fontWeight: FontWeight.w800),
+                        ):Text(
+                          li7.details[i].branchId=="1"?"SPM-${li2[(i)].iteration.toString().padLeft(3, "0")}":Container(),
+                          style: TextStyle(
+                              color: String_Values.primarycolor,
+                              fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                    );}),
+            )
+          ],
+        ),
+      ),
       appBar: AppBar(
-        title: Text("Order History"),
+        title: Text("Invoice List"),
       ),
     );
   }
@@ -470,5 +461,6 @@ class OrderListState extends State<OrderList> {
 
 class FilterList {
   String orderno;
-  FilterList(this.orderno);
+  int iteration;
+  FilterList(this.orderno,this.iteration);
 }

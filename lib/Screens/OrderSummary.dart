@@ -411,10 +411,43 @@ else
   doc=widget.id;
     bookingitem = "";
     advanceamt=double.parse(AdvanceController.text);
-    if(((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))-advanceamt)==0)
-      status="C";
-    else
-      status="P";
+
+
+
+  if(widget.edit!=0) {
+    if (((int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
+        ((Order3State.total * 5) / 100) + Order3State.total) ) -  (OrderDetailsState.li8.details[0].advanceAmount+advanceamt)) == 0) {
+      print("widget  0 Status: ${(int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
+          ((Order3State.total * 5) / 100) + Order3State.total) ) -  (OrderDetailsState.li8.details[0].advanceAmount+advanceamt)}");
+      status = "C";
+    }
+    else {
+      print("widget  0 else Status: ${(int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
+          ((Order3State.total * 5) / 100) + Order3State.total) ) -  (OrderDetailsState.li8.details[0].advanceAmount+advanceamt)}");
+
+      status = "P";
+    }
+  }
+  else
+    {
+      if (((int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
+          ((Order3State.total * 5) / 100) + Order3State.total)) - advanceamt) == 0) {
+        print("Status: ${(int.parse(vehtot) +
+            (int.parse(vestot) + (int.parse(cattot)) +
+                ((Order3State.total * 5) / 100) + Order3State.total)) -
+            advanceamt}");
+        status = "C";
+      }
+      else {
+        print("Status: ${(int.parse(vehtot) +
+            (int.parse(vestot) + (int.parse(cattot)) +
+                ((Order3State.total * 5) / 100) + Order3State.total)) -
+            advanceamt}");
+
+        status = "P";
+      }
+    }
+
     // if(dropdownValue1=="Half Advance")
     //   advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))/2;
     // else

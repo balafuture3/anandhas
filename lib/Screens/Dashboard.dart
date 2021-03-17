@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'OrderList.dart';
+import 'OrderListGST.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -198,12 +199,11 @@ decoration: BoxDecoration(
                                                   child: FlatButton(
                                                     onPressed: () {
                                                       Navigator.pop(context);
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderList()));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderList(gst:false)));
                                                       // Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => Dashboard()));
 
                                                     },
                                                     child: Text(
-
                                                       "Existing Order",
                                                       style: TextStyle(
 
@@ -221,7 +221,7 @@ decoration: BoxDecoration(
                                                   child: FlatButton(
                                                     onPressed: () {
                                                       Navigator.pop(context);
-                                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderList()));
+                                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderListGST(gst: true,)));
                                                     },
                                                     child: Text(
                                                       "GST Invoice",

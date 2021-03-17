@@ -485,7 +485,7 @@ class LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       decoration: BoxDecoration(color: String_Values.primarycolor,
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(width))),
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(width/2))),
                       
                     ),     SizedBox(
                       height: height / 50,

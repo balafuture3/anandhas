@@ -23,6 +23,7 @@ class OrderListModel {
   String orderNum;
   String Date;
   String Time;
+  String branchId;
 
   OrderListModel({this.orderNum});
 
@@ -30,6 +31,7 @@ class OrderListModel {
     orderNum = json['OrderNum'];
     Date = json['BookingDate'];
     Time = json['BookingTime'];
+    branchId = json['BranchID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,6 +39,7 @@ class OrderListModel {
     data['OrderNum'] = this.orderNum;
     data['BookingDate'] = this.Date;
     data['BookingTime'] = this.Time;
+    data['BranchID'] = this.branchId;
     return data;
   }
 }

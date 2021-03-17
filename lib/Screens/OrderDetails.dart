@@ -21,9 +21,12 @@ import 'package:xml/xml.dart' as xml;
 
 import 'OrderList.dart';
 
-class OrderDetails extends StatefulWidget {
-  OrderDetails({Key key, this.orderid});
+class OrderDetails extends StatefulWidget
+{
+  OrderDetails({Key key, this.orderid, this.gst,this.invoice});
   String orderid;
+  bool gst;
+  String invoice;
   @override
   OrderDetailsState createState() => OrderDetailsState();
 }
@@ -67,7 +70,7 @@ class OrderDetailsState extends State<OrderDetails> {
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
-      <OrderNo>${OrderListState.orderid}</OrderNo>
+      <OrderNo>${widget.orderid}</OrderNo>
        <FormId>3</FormId>
     </IN_MOB_GET_ORDER_NO>
   </soap:Body>
@@ -592,8 +595,27 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                 title: Text("Order Summary"),
                 initiallyExpanded: true,
                 children: [
+
                   Column(
                     children: [
+                      widget.gst?Container(
+                        margin: EdgeInsets.only(right: 16),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 4,
+                                child: ListTile(
+                                  title: Text("GST Invoice No",style: TextStyle(color: String_Values.primarycolor),),
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  widget.invoice,
+                                  textAlign: TextAlign.start,
+                                )),
+                          ],
+                        ),
+                      ):Container(),
                       Container(
                         margin: EdgeInsets.only(right: 16),
                         child: Row(
@@ -1067,6 +1089,7 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                       ],
                     ),
                   ),
+                  widget.gst?Container():
                   Container(
                     margin: EdgeInsets.only(right: 16),
                     child: Row(
@@ -1084,6 +1107,50 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                             )),
                       ],
                     ),
+                  ),
+
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 16),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 4,
+                                child: ListTile(
+                                  title: Text("Payment Mode",style: TextStyle(color: String_Values.primarycolor),),
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "${(li8.details[0].paymentType)}",
+                                  textAlign: TextAlign.start,
+                                )),
+                          ],
+                        ),
+                      ),
+                      // Padding(
+                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                      //     child: Column(
+                      //       children: [
+                      //         // Row(
+                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         //     children: [
+                      //         //       Expanded(flex:4,child: Container()),
+                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                      //         //     ]),
+                      //         // SizedBox(height: 10,),
+                      //         Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //
+                      //               Expanded(flex:4,child: Container(),),
+                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                      //
+                      //             ]),
+                      //       ],
+                      //     ))
+                    ],
                   ),
                   Column(
                     children: [
@@ -1128,49 +1195,7 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                       //     ))
                     ],
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Payment Mode",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "${(li8.details[0].paymentType)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
+                  widget.gst?Container():
                   Column(
                     children: [
                       Container(
@@ -1269,155 +1294,160 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                   //   ],
                   // )
                   //     : Container(),
-                  SizedBox(height: 10,),
-                  Container(
-                    color: String_Values.primarycolor.withOpacity(1),
-                    padding: const EdgeInsets.only(right:16.0),
-                    child: Row(
-                      children: [
-                        Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                        Expanded(flex:1,child: Text("Rs.${(li8.details[0].orderPrice-li8.details[0].advanceAmount).toStringAsFixed(2)}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
-
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  widget.gst?Container():
+                  Column(
                     children: [
-                      RaisedButton(
-                        child: Text(
-                          "Update",
-                          style: TextStyle(color: Colors.white),
+                      SizedBox(height: 10,),
+                      Container(
+                        color: String_Values.primarycolor.withOpacity(1),
+                        padding: const EdgeInsets.only(right:16.0),
+                        child: Row(
+                          children: [
+                            Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
+                            Expanded(flex:1,child: Text("Rs.${(li8.details[0].orderPrice-li8.details[0].advanceAmount).toStringAsFixed(2)}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+
+                          ],
                         ),
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ), onPressed: () {
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          RaisedButton(
+                            child: Text(
+                              "Update",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ), onPressed: () {
 
-                        OrderRequest().then((value) => OrderItemRequest()).then((value) {
+                            OrderRequest().then((value) => OrderItemRequest()).then((value) {
 
-                          //
-                          //
-                          // if(li8.details[0].cateringService=="Y")
-                          //   Order2State.catcheck=true;
-                          // else
-                          //   Order2State.catcheck=false;
-                          // if(li8.details[0].vesselSet=="Y")
-                          //   Order2State.vescheck=true;
-                          // else
-                          //   Order2State.vescheck=false;
-                          // if(li8.details[0].vehicle=="Y")
-                          //   Order2State.vehcheck=true;
-                          // else
-                          //   Order2State.vehcheck=false;
-                          //
-                          // Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
-                          // Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
-                          // Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
-                          // Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
-                          // Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
-                          // print(Order2State.cntcontroller.text);
-                          NewOrderState.categoryid=li8.details[0].categoryID;
-                          // Order3State.cnt.clear();
-                          // Order3State.controllers.clear();
-                          // Order3State.total=0;
-                          // OrderListState.rowid.clear();
-                          // OrderListState.lineid.clear();
-                          // for(int i=0;i<li9.details.length;i++) {
-                          //   OrderListState.rowid.add( li9.details[i].rowID);
-                          //   OrderListState.lineid.add(li9.details[i].lineID);
-                          //
-                          //   Order3State.total=Order3State.total+li9.details[i].price;
-                          //   Order3State.cnt.add(li9.details[i].qty.round());
-                          //   Order3State.controllers.add(new TextEditingController());
-                          //   Order3State.controllers[i].text=li9.details[i].qty.round().toString();
-                          // }
+                              //
+                              //
+                              // if(li8.details[0].cateringService=="Y")
+                              //   Order2State.catcheck=true;
+                              // else
+                              //   Order2State.catcheck=false;
+                              // if(li8.details[0].vesselSet=="Y")
+                              //   Order2State.vescheck=true;
+                              // else
+                              //   Order2State.vescheck=false;
+                              // if(li8.details[0].vehicle=="Y")
+                              //   Order2State.vehcheck=true;
+                              // else
+                              //   Order2State.vehcheck=false;
+                              //
+                              // Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                              // Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                              // Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                              // Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                              // Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                              // print(Order2State.cntcontroller.text);
+                              NewOrderState.categoryid=li8.details[0].categoryID;
+                              // Order3State.cnt.clear();
+                              // Order3State.controllers.clear();
+                              // Order3State.total=0;
+                              // OrderListState.rowid.clear();
+                              // OrderListState.lineid.clear();
+                              // for(int i=0;i<li9.details.length;i++) {
+                              //   OrderListState.rowid.add( li9.details[i].rowID);
+                              //   OrderListState.lineid.add(li9.details[i].lineID);
+                              //
+                              //   Order3State.total=Order3State.total+li9.details[i].price;
+                              //   Order3State.cnt.add(li9.details[i].qty.round());
+                              //   Order3State.controllers.add(new TextEditingController());
+                              //   Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                              // }
 
-                          Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) =>
-                                  Order3(id:int.parse(li8.details[0].categoryID.toString()),
-                                    edit: int.parse(widget.orderid),)));
-                        });
+                              Navigator.pushReplacement(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      Order3(id:int.parse(li8.details[0].categoryID.toString()),
+                                        edit: int.parse(widget.orderid),)));
+                            });
 
-                      },
-                      color: String_Values.primarycolor,),
-                      RaisedButton(
-                        child: Text(
-                          "Payment",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ), onPressed: () {
-                        OrderRequest().then((value) => OrderItemRequest()).then((value) {
+                          },
+                          color: String_Values.primarycolor,),
+                          RaisedButton(
+                            child: Text(
+                              "Payment",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ), onPressed: () {
+                            OrderRequest().then((value) => OrderItemRequest()).then((value) {
 
 
-                          if(li8.details[0].cateringService=="Y")
-                            Order2State.catcheck=true;
-                          else
-                            Order2State.catcheck=false;
-                          if(li8.details[0].vesselSet=="Y")
-                            Order2State.vescheck=true;
-                          else
-                            Order2State.vescheck=false;
-                          if(li8.details[0].vehicle=="Y")
-                            Order2State.vehcheck=true;
-                          else
-                            Order2State.vehcheck=false;
+                              if(li8.details[0].cateringService=="Y")
+                                Order2State.catcheck=true;
+                              else
+                                Order2State.catcheck=false;
+                              if(li8.details[0].vesselSet=="Y")
+                                Order2State.vescheck=true;
+                              else
+                                Order2State.vescheck=false;
+                              if(li8.details[0].vehicle=="Y")
+                                Order2State.vehcheck=true;
+                              else
+                                Order2State.vehcheck=false;
 
-                          Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
-                          Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
-                          Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
-                          Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
-                          Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
-                          print(Order2State.cntcontroller.text);
-                          NewOrderState.categoryid=li8.details[0].categoryID;
-                          Order3State.cnt.clear();
-                          Order3State.controllers.clear();
-                          Order3State.total=0;
-                          OrderListState.rowid.clear();
-                          OrderListState.lineid.clear();
-                          for(int i=0;i<li9.details.length;i++) {
-                            OrderListState.rowid.add( li9.details[i].rowID);
-                            OrderListState.lineid.add(li9.details[i].lineID);
+                              Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                              Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                              Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                              Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                              Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                              print(Order2State.cntcontroller.text);
+                              NewOrderState.categoryid=li8.details[0].categoryID;
+                              Order3State.cnt.clear();
+                              Order3State.controllers.clear();
+                              Order3State.total=0;
+                              OrderListState.rowid.clear();
+                              OrderListState.lineid.clear();
+                              for(int i=0;i<li9.details.length;i++) {
+                                OrderListState.rowid.add( li9.details[i].rowID);
+                                OrderListState.lineid.add(li9.details[i].lineID);
 
-                            Order3State.total=Order3State.total+li9.details[i].price;
-                            Order3State.cnt.add(li9.details[i].qty.round());
-                            Order3State.controllers.add(new TextEditingController());
-                            Order3State.controllers[i].text=li9.details[i].qty.round().toString();
-                          }
-                          itemRequest(li8.details[0].categoryID).then((value){
-                            if(li5.details.length-Order3State.cnt.length==0);
-                            else {
-                              print("else");
-                              print("length ${li5.details.length - Order3State.cnt.length}");
-                              for (int i = 0; i <= (li5.details.length - Order3State.cnt.length); i++) {
-                                Order3State.cnt.add(0);
-                                Order3State.controllers.add(new TextEditingController(text: "0"));
+                                Order3State.total=Order3State.total+li9.details[i].price;
+                                Order3State.cnt.add(li9.details[i].qty.round());
+                                Order3State.controllers.add(new TextEditingController());
+                                Order3State.controllers[i].text=li9.details[i].qty.round().toString();
                               }
-                              print(Order3State.cnt);
-                            }
-                          Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) =>
-                                  OrderSummary(
-                                    edit: int.parse(widget.orderid),payment: 0,id: int.parse(widget.orderid),)));});
-                        });
+                              itemRequest(li8.details[0].categoryID).then((value){
+                                if(li5.details.length-Order3State.cnt.length==0);
+                                else {
+                                  print("else");
+                                  print("length ${li5.details.length - Order3State.cnt.length}");
+                                  for (int i = 0; i <= (li5.details.length - Order3State.cnt.length); i++) {
+                                    Order3State.cnt.add(0);
+                                    Order3State.controllers.add(new TextEditingController(text: "0"));
+                                  }
+                                  print(Order3State.cnt);
+                                }
+                              Navigator.pushReplacement(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      OrderSummary(
+                                        edit: int.parse(widget.orderid),payment: 0,id: int.parse(widget.orderid),)));});
+                            });
 
 
-                      },
-                        color: String_Values.primarycolor,),
+                          },
+                            color: String_Values.primarycolor,),
+                        ],
+                      ),
+                      SizedBox(height: height/6,),
                     ],
                   ),
-                  SizedBox(height: height/6,),
                 ],
               )
             ],
           )),
       appBar: AppBar(
           title: Text(
-            "Order Summary",
+            !widget.gst?"Order Summary":"Invoice Detail",
           )),
       // floatingActionButton: FloatingActionButton.extended(
       //   onPressed: () {
