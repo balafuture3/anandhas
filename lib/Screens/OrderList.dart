@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:anandhasapp/Models/OrderDetail.dart';
 import 'package:anandhasapp/Models/OrderIdemDetailModel.dart';
 import 'package:anandhasapp/Models/OrderModelList.dart';
+import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/Screens/OrderDetails.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:flutter/material.dart';
@@ -211,6 +212,7 @@ class OrderListState extends State<OrderList> {
   <soap:Body>
     <IN_MOB_OrderList xmlns="http://tempuri.org/">
       <ScreenID>1</ScreenID>
+      <BranchID>${LoginPageState.branchid}</BranchID>
     </IN_MOB_OrderList>
   </soap:Body>
 </soap:Envelope>
@@ -221,6 +223,7 @@ class OrderListState extends State<OrderList> {
   <soap:Body>
     <IN_MOB_OrderList xmlns="http://tempuri.org/">
       <ScreenID>2</ScreenID>
+      <BranchID>${LoginPageState.branchid}</BranchID>
     </IN_MOB_OrderList>
   </soap:Body>
 </soap:Envelope>

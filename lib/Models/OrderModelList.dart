@@ -24,6 +24,7 @@ class OrderListModel {
   String Date;
   String Time;
   String branchId;
+  String Invoice;
 
   OrderListModel({this.orderNum});
 
@@ -32,6 +33,7 @@ class OrderListModel {
     Date = json['BookingDate'];
     Time = json['BookingTime'];
     branchId = json['BranchID'];
+    Invoice = json['Invoice'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +42,7 @@ class OrderListModel {
     data['BookingDate'] = this.Date;
     data['BookingTime'] = this.Time;
     data['BranchID'] = this.branchId;
+    data['Invoice'] = this.Invoice;
     return data;
   }
 }

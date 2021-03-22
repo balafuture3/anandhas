@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:xml/xml.dart' as xml;
 
+import 'LoginPage.dart';
 import 'NewOrder.dart';
 import 'Order2 .dart';
 import 'Order3.dart';
@@ -211,6 +212,7 @@ class OrderListGSTState extends State<OrderListGST> {
   <soap:Body>
     <IN_MOB_OrderList xmlns="http://tempuri.org/">
       <ScreenID>1</ScreenID>
+      <BranchID>${LoginPageState.branchid}</BranchID>
     </IN_MOB_OrderList>
   </soap:Body>
 </soap:Envelope>
@@ -221,6 +223,7 @@ class OrderListGSTState extends State<OrderListGST> {
   <soap:Body>
     <IN_MOB_OrderList xmlns="http://tempuri.org/">
       <ScreenID>2</ScreenID>
+      <BranchID>${LoginPageState.branchid}</BranchID>
     </IN_MOB_OrderList>
   </soap:Body>
 </soap:Envelope>

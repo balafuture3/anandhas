@@ -71,6 +71,7 @@ class OrderDetailsState extends State<OrderDetails> {
   <soap:Body>
     <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
       <OrderNo>${widget.orderid}</OrderNo>
+      <BranchID>${LoginPageState.branchid}</BranchID>
        <FormId>3</FormId>
     </IN_MOB_GET_ORDER_NO>
   </soap:Body>
@@ -228,6 +229,7 @@ class OrderDetailsState extends State<OrderDetails> {
     <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
       <OrderNo>${widget.orderid}</OrderNo>
        <FormId>1</FormId>
+       <BranchID>${LoginPageState.branchid}</BranchID>
     </IN_MOB_GET_ORDER_NO>
   </soap:Body>
 </soap:Envelope>
@@ -306,6 +308,7 @@ class OrderDetailsState extends State<OrderDetails> {
     <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
       <OrderNo>${widget.orderid}</OrderNo>
        <FormId>2</FormId>
+       <BranchID>${LoginPageState.branchid}</BranchID>
     </IN_MOB_GET_ORDER_NO>
   </soap:Body>
 </soap:Envelope>
