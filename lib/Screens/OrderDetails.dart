@@ -620,23 +620,398 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                         ),
                       ):Container(),
                       Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
+                        color:Colors.yellow.shade200,
+                        child: ExpansionTile(title: Text("Name and Address"),
                           children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Name",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  li8.details[0].name,
-                                  textAlign: TextAlign.start,
-                                )),
+                            Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .only(
+                                        left: 24.0,
+                                        right: 24,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Text(
+                                      "Name:",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight:
+                                          FontWeight
+                                              .w600),
+                                      textAlign:
+                                      TextAlign.center,
+                                    ),
+                                  ),
+                                  Wrap(
+                                      direction: Axis
+                                          .vertical, //default
+                                      alignment:
+                                      WrapAlignment
+                                          .center,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                right:
+                                                24.0),
+                                            child: Text(
+                                              li8.details[0].name
+                                                  .toString(),
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .indigo,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600),
+                                            ))
+                                      ]),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween),
+                            Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .only(
+                                        left: 24.0,
+                                        right: 24,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Text(
+                                      "Mobile:",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight:
+                                          FontWeight
+                                              .w600),
+                                      textAlign:
+                                      TextAlign.center,
+                                    ),
+                                  ),
+                                  Wrap(
+                                      direction: Axis
+                                          .vertical, //default
+                                      alignment:
+                                      WrapAlignment
+                                          .center,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                right:
+                                                24.0),
+                                            child: Text(
+                                              li8.details[0].mobile
+                                                  .toString(),
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .indigo,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600),
+                                            ))
+                                      ]),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween),
+                            li8.details[0].whatsappNumber!=li8.details[0].mobile? Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .only(
+                                        left: 24.0,
+                                        right: 24,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Text(
+                                      "Whatsapp:",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight:
+                                          FontWeight
+                                              .w600),
+                                      textAlign:
+                                      TextAlign.center,
+                                    ),
+                                  ),
+                                  Wrap(
+                                      direction: Axis
+                                          .vertical, //default
+                                      alignment:
+                                      WrapAlignment
+                                          .center,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                right:
+                                                24.0),
+                                            child: Text(
+                                              li8.details[0].whatsappNumber
+                                                  .toString(),
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .indigo,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600),
+                                            ))
+                                      ]),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween):              Container(
+    margin: EdgeInsets.only(left: 10),
+    child: Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+    Checkbox(
+    value: true,
+    onChanged: null
+    ),
+    Text("Whatsapp Same as Mobile")
+    ],
+    ),
+    ),
+                            Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .only(
+                                        left: 24.0,
+                                        right: 24,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Text(
+                                      "Address:",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight:
+                                          FontWeight
+                                              .w600),
+                                      textAlign:
+                                      TextAlign.center,
+                                    ),
+                                  ),
+                                  Wrap(
+                                      direction: Axis
+                                          .vertical, //default
+                                      alignment:
+                                      WrapAlignment
+                                          .center,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                right:
+                                                24.0),
+                                            child: Text(
+                                              li8.details[0].address
+                                                  .toString(),
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .indigo,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600),
+                                            ))
+                                      ]),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween),
+                            Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .only(
+                                        left: 24.0,
+                                        right: 24,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Text(
+                                      "Pincode:",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight:
+                                          FontWeight
+                                              .w600),
+                                      textAlign:
+                                      TextAlign.center,
+                                    ),
+                                  ),
+                                  Wrap(
+                                      direction: Axis
+                                          .vertical, //default
+                                      alignment:
+                                      WrapAlignment
+                                          .center,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                right:
+                                                24.0),
+                                            child: Text(
+                                              li8.details[0].pincode
+                                                  .toString(),
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .indigo,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600),
+                                            ))
+                                      ]),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween),
+                            li8.details[0].email!=""?
+                            Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .only(
+                                        left: 24.0,
+                                        right: 24,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Text(
+                                      "Email:",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight:
+                                          FontWeight
+                                              .w600),
+                                      textAlign:
+                                      TextAlign.center,
+                                    ),
+                                  ),
+                                  Wrap(
+                                      direction: Axis
+                                          .vertical, //default
+                                      alignment:
+                                      WrapAlignment
+                                          .center,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                right:
+                                                24.0),
+                                            child: Text(
+                                              li8.details[0].email
+                                                  .toString(),
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .indigo,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600),
+                                            ))
+                                      ]),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween):Container(),
+                            li8.details[0].gSTno!=""?
+                            Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .only(
+                                        left: 24.0,
+                                        right: 24,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Text(
+                                      "GST No:",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight:
+                                          FontWeight
+                                              .w600),
+                                      textAlign:
+                                      TextAlign.center,
+                                    ),
+                                  ),
+                                  Wrap(
+                                      direction: Axis
+                                          .vertical, //default
+                                      alignment:
+                                      WrapAlignment
+                                          .center,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                right:
+                                                24.0),
+                                            child: Text(
+                                              li8.details[0].gSTno
+                                                  .toString(),
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .indigo,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600),
+                                            ))
+                                      ]),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween):Container(),
                           ],
                         ),
                       ),
+
                       Container(
                         margin: EdgeInsets.only(right: 16),
                         child: Row(
