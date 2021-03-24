@@ -813,9 +813,14 @@ if(newValue=="Full Advance") {
             initiallyExpanded: true,
             children: [
               widget.edit!=0?
+              ListTile(title: Text("Order Time and Date"),trailing: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+OrderDetailsState.li8.details[0].bookingTime)) },${OrderDetailsState.li8.details[0].bookingDate}"),):ListTile(title: Text("Order Time and Date"),trailing: Text("${NewOrderState.timecontroller.text },${NewOrderState.datefromcontroller.text}")),
+
+
+              widget.edit!=0?
               Container(
-                color:Colors.yellow.shade200,
+                color:Colors.yellow.shade50,
                 child: ExpansionTile(title: Text("Name and Address"),
+                  leading: Icon(Icons.group),
                   children: [
                     Row(
                         children: [
@@ -1205,8 +1210,9 @@ if(newValue=="Full Advance") {
                   ],
                 ),
               ):Container(
-                color:Colors.yellow.shade200,
+                color:Colors.yellow.shade50,
                 child: ExpansionTile(title: Text("Name and Address"),
+                  leading: Icon(Icons.group),
                   children: [
                     Row(
                         children: [
@@ -1595,11 +1601,6 @@ if(newValue=="Full Advance") {
                   ],
                 ),
               ),
-              widget.edit!=0?
-              ListTile(title: Text("Order Time and Date"),trailing: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+OrderDetailsState.li8.details[0].bookingTime)) },${OrderDetailsState.li8.details[0].bookingDate}"),):ListTile(title: Text("Order Time and Date"),trailing: Text("${NewOrderState.timecontroller.text },${NewOrderState.datefromcontroller.text}")),
-              ListTile(
-                title: Text("Item Details",style: TextStyle(color: String_Values.primarycolor),),
-              ),
 
               // Padding(
               //   padding: const EdgeInsets.only(
@@ -1631,623 +1632,226 @@ if(newValue=="Full Advance") {
               // ListTile(
               //   title: Text("Item Details",style: TextStyle(color: String_Values.primarycolor),),
               // ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 24, right: 24, top: 8.0, bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Text(
-                          "Item",
-                          textAlign: TextAlign.start,
-                        )),
-                    Expanded(
-                        flex: 1,
-                        child: Text(
-                          "Qty",
-                          textAlign: TextAlign.start,
-                        )),
-                    Expanded(
-                        flex: 1,
-                        child: Text(
-                          "Amount",
-                          textAlign: TextAlign.start,
-                        )),
-                  ],
-                ),
-              ),
-              Divider(thickness: 2),
-              if(widget.edit!=0)
-              Column(
+
+              Container(
+    color:Colors.purple.shade50,
+                child: ExpansionTile(title: Text("Item Details"),
+                leading: Icon(Icons.fastfood),
+                backgroundColor: Colors.white,
                 children: [
-                  for(int j=0 ;j<=OrderListState.orderflagno;j++)
 
-                    Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 24, right: 24, top: 8.0, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            flex: 3,
+                            child: Text(
+                              "Item",
+                              textAlign: TextAlign.start,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Qty",
+                              textAlign: TextAlign.start,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Amount",
+                              textAlign: TextAlign.start,
+                            )),
+                      ],
+                    ),
+                  ),
+                  Divider(thickness: 2),
+                  if(widget.edit!=0)
+                    Column(
+                      children: [
+                        for(int j=0 ;j<=OrderListState.orderflagno;j++)
 
-                      // if(OrderListState.orderflagno!=0)
-                      //   Divider(thickness: 2,),
-                      if(OrderListState.orderflagno!=0&&j!=0)
-                        Column(
-                          children: [
-                            SizedBox(height: height/50,),
-                            ListTile(leading: Text("Additional Order $j",style: TextStyle(fontWeight: FontWeight.w800)),),
+                          Column(children: [
 
-                            // SizedBox(height: height/50,),
-
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 24, right: 24, top: 8.0, bottom: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // if(OrderListState.orderflagno!=0)
+                            //   Divider(thickness: 2,),
+                            if(OrderListState.orderflagno!=0&&j!=0)
+                              Column(
                                 children: [
-                                  Expanded(
-                                      flex: 3,
-                                      child: Text(
-                                        "Item",
-                                        textAlign: TextAlign.start,
-                                      )),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        "Qty",
-                                        textAlign: TextAlign.start,
-                                      )),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        "Amount",
-                                        textAlign: TextAlign.start,
-                                      )),
-                                ],
-                              ),
-                            ),
-                            Divider(thickness: 2,),
-                          ],
-                        ),
-                      // SizedBox(height: height/50,),
-                      for (int i = 0; i < li9.details.length; i++)
-                        if(li9.details[i].orderFlagNo==j)
-                          Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 24, right: 24, top: 8.0, bottom: 8),
-                                child: Column(
-                                  children: [
-                                    Row(
+                                  SizedBox(height: height/50,),
+                                  ListTile(leading: Text("Additional Order $j",style: TextStyle(fontWeight: FontWeight.w800)),),
+
+                                  // SizedBox(height: height/50,),
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, top: 8.0, bottom: 8),
+                                    child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                             flex: 3,
                                             child: Text(
-                                              li9.details[i].itemName,
+                                              "Item",
                                               textAlign: TextAlign.start,
                                             )),
                                         Expanded(
                                             flex: 1,
                                             child: Text(
-                                              li9.details[i].qty.round().toString(),
+                                              "Qty",
                                               textAlign: TextAlign.start,
                                             )),
                                         Expanded(
                                             flex: 1,
                                             child: Text(
-                                              "Rs.${( li9.details[i].price).toString()}",
+                                              "Amount",
                                               textAlign: TextAlign.start,
                                             )),
                                       ],
                                     ),
+                                  ),
+                                  Divider(thickness: 2,),
+                                ],
+                              ),
+                            // SizedBox(height: height/50,),
+                            for (int i = 0; i < li9.details.length; i++)
+                              if(li9.details[i].orderFlagNo==j)
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 24, right: 24, top: 8.0, bottom: 8),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: Text(
+                                                    li9.details[i].itemName,
+                                                    textAlign: TextAlign.start,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    li9.details[i].qty.round().toString(),
+                                                    textAlign: TextAlign.start,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "Rs.${( li9.details[i].price).toString()}",
+                                                    textAlign: TextAlign.start,
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+
                                   ],
                                 ),
-                              ),
-
-
-                            ],
-                          ),
 
 
 
-                    ],),
-                  // Divider(thickness: 2,),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(),
-                            ),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Subtotal",
-                                  textAlign: TextAlign.start,
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${total}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "GST ( 2.5% CGST + 2.5% SGST )",
-                                  textAlign: TextAlign.start,
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(total*5)/100}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Item Total",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(fontWeight: FontWeight.w800),
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${((total*5)/100)+total}",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(fontWeight: FontWeight.w800),
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  li8.details[0].cateringService == "Y"
-                      ? Column(
-                    children: [
-                      ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
-                        title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
-                      ),
-                      Padding(
+                          ],),
+                        // Divider(thickness: 2,),
+                        Padding(
                           padding: const EdgeInsets.only(
                               left: 24, right: 24, top: 8.0, bottom: 8),
                           child: Column(
                             children: [
                               Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          "Persons",
-                                          textAlign: TextAlign.start,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          "Amount".toString(),
-                                          textAlign: TextAlign.start,
-                                        )),
-                                  ]),
-                              SizedBox(
-                                height: 10,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "Subtotal",
+                                        textAlign: TextAlign.start,
+                                      )),
+
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${total}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
                               ),
-                              Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          "${li8.details[0].cateringAmount/100}",
-                                          textAlign: TextAlign.start,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          "Rs.${li8.details[0].cateringAmount}",
-                                          textAlign: TextAlign.start,
-                                        )),
-                                  ]),
                             ],
-                          ))
-                    ],
-                  )
-                      : Container(),
-                  li8.details[0].vesselSet == "Y"
-                      ? Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  leading: Icon(Icons.emoji_food_beverage_sharp,color: Colors.deepOrange,),
-                                  title: Text("Vessel Set",style: TextStyle(color: Colors.deepOrange,),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(li8.details[0].vesselSetAmount)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
+                          ),
                         ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  )
-                      : Container(),
-                  li8.details[0].vehicle == "Y"
-                      ? Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
-                                  title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(li8.details[0].vehicleAmount)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  )
-                      : Container(),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container()),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "GST ( 2.5% CGST + 2.5% SGST )",
+                                        textAlign: TextAlign.start,
+                                      )),
 
-                  // Column(
-                  //   children: [
-                  //     Container(
-                  //       margin: EdgeInsets.only(right: 16),
-                  //       child: Row(
-                  //         children: [
-                  //           Expanded(
-                  //               flex: 4,
-                  //               child: ListTile(
-                  //                 title: Text("Amount Paid",style: TextStyle(color: String_Values.primarycolor),),
-                  //               )),
-                  //           Expanded(
-                  //               flex: 1,
-                  //               child: Text(
-                  //                 "Rs.${(li8.details[0].advanceAmount)}",
-                  //                 textAlign: TextAlign.start,
-                  //               )),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     // Padding(
-                  //     //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                  //     //     child: Column(
-                  //     //       children: [
-                  //     //         // Row(
-                  //     //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     //         //     children: [
-                  //     //         //       Expanded(flex:4,child: Container()),
-                  //     //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                  //     //         //     ]),
-                  //     //         // SizedBox(height: 10,),
-                  //     //         Row(
-                  //     //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     //             children: [
-                  //     //
-                  //     //               Expanded(flex:4,child: Container(),),
-                  //     //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                  //     //
-                  //     //             ]),
-                  //     //       ],
-                  //     //     ))
-                  //   ],
-                  // ),
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Total Amount",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(li8.details[0].orderPrice)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
-
-
-                  Divider(thickness: 2,),
-                ],
-              ),
-
-widget.payment!=0?Column(
-  children: [
-    if(widget.edit!=0)
-    ListTile(leading: Text("New Additional Order",style: TextStyle(fontWeight: FontWeight.w800)),),
-    if(widget.edit!=0)
-    SizedBox(height: height/50,),
-    if(widget.edit!=0)
-    Padding(
-      padding: const EdgeInsets.only(
-          left: 24, right: 24, top: 8.0, bottom: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-              flex: 3,
-              child: Text(
-                "Item",
-                textAlign: TextAlign.start,
-              )),
-          Expanded(
-              flex: 1,
-              child: Text(
-                "Qty",
-                textAlign: TextAlign.start,
-              )),
-          Expanded(
-              flex: 1,
-              child: Text(
-                "Amount",
-                textAlign: TextAlign.start,
-              )),
-        ],
-      ),
-    ),
-    if(widget.edit!=0)
-      Divider(thickness: 2,),
-    for (int i = 0; i < li5.details.length; i++)
-      if (Order3State.cnt[i] != 0)
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 24, right: 24, top: 8.0, bottom: 8),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      flex: 3,
-                      child: Text(
-                        li5.details[i].itemName,
-                        textAlign: TextAlign.start,
-                      )),
-                  Expanded(
-                      flex: 1,
-                      child: Text(
-                        Order3State.cnt[i].toString(),
-                        textAlign: TextAlign.start,
-                      )),
-                  Expanded(
-                      flex: 1,
-                      child: Text(
-                        "Rs.${(Order3State.cnt[i] * li5.details[i].price).toString()}",
-                        textAlign: TextAlign.start,
-                      )),
-                ],
-              ),
-            ],
-          ),
-        ),
-
-
-  ],
-):Container(),
-
-              if(widget.payment!=0)
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                              child: Container(),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${(total*5)/100}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
                               ),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Subtotal",
-                                  textAlign: TextAlign.start,
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${Order3State.total}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "GST ( 2.5% CGST + 2.5% SGST )",
-                                  textAlign: TextAlign.start,
-                                )),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container()),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "Item Total",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(fontWeight: FontWeight.w800),
+                                      )),
 
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(Order3State.total*5)/100}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${((total*5)/100)+total}",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(fontWeight: FontWeight.w800),
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Item Total",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(fontWeight: FontWeight.w800),
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${((Order3State.total*5)/100)+Order3State.total}",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(fontWeight: FontWeight.w800),
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Order2State.catcheck == true
-                      ? Column(
+                        li8.details[0].cateringService == "Y"
+                            ? Column(
                           children: [
                             ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
                               title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
@@ -2259,7 +1863,7 @@ widget.payment!=0?Column(
                                   children: [
                                     Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                               flex: 4,
@@ -2279,7 +1883,412 @@ widget.payment!=0?Column(
                                     ),
                                     Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                              flex: 4,
+                                              child: Text(
+                                                "${li8.details[0].cateringAmount/100}",
+                                                textAlign: TextAlign.start,
+                                              )),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                "Rs.${li8.details[0].cateringAmount}",
+                                                textAlign: TextAlign.start,
+                                              )),
+                                        ]),
+                                  ],
+                                ))
+                          ],
+                        )
+                            : Container(),
+                        li8.details[0].vesselSet == "Y"
+                            ? Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 4,
+                                      child: ListTile(
+                                        leading: Icon(Icons.emoji_food_beverage_sharp,color: Colors.deepOrange,),
+                                        title: Text("Vessel Set",style: TextStyle(color: Colors.deepOrange,),),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${(li8.details[0].vesselSetAmount)}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            // Padding(
+                            //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                            //     child: Column(
+                            //       children: [
+                            //         // Row(
+                            //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         //     children: [
+                            //         //       Expanded(flex:4,child: Container()),
+                            //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                            //         //     ]),
+                            //         // SizedBox(height: 10,),
+                            //         Row(
+                            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //             children: [
+                            //
+                            //               Expanded(flex:4,child: Container(),),
+                            //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                            //
+                            //             ]),
+                            //       ],
+                            //     ))
+                          ],
+                        )
+                            : Container(),
+                        li8.details[0].vehicle == "Y"
+                            ? Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 4,
+                                      child: ListTile(
+                                        leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
+                                        title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${(li8.details[0].vehicleAmount)}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            // Padding(
+                            //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                            //     child: Column(
+                            //       children: [
+                            //         // Row(
+                            //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         //     children: [
+                            //         //       Expanded(flex:4,child: Container()),
+                            //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                            //         //     ]),
+                            //         // SizedBox(height: 10,),
+                            //         Row(
+                            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //             children: [
+                            //
+                            //               Expanded(flex:4,child: Container(),),
+                            //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                            //
+                            //             ]),
+                            //       ],
+                            //     ))
+                          ],
+                        )
+                            : Container(),
+
+                        // Column(
+                        //   children: [
+                        //     Container(
+                        //       margin: EdgeInsets.only(right: 16),
+                        //       child: Row(
+                        //         children: [
+                        //           Expanded(
+                        //               flex: 4,
+                        //               child: ListTile(
+                        //                 title: Text("Amount Paid",style: TextStyle(color: String_Values.primarycolor),),
+                        //               )),
+                        //           Expanded(
+                        //               flex: 1,
+                        //               child: Text(
+                        //                 "Rs.${(li8.details[0].advanceAmount)}",
+                        //                 textAlign: TextAlign.start,
+                        //               )),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //     // Padding(
+                        //     //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                        //     //     child: Column(
+                        //     //       children: [
+                        //     //         // Row(
+                        //     //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     //         //     children: [
+                        //     //         //       Expanded(flex:4,child: Container()),
+                        //     //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                        //     //         //     ]),
+                        //     //         // SizedBox(height: 10,),
+                        //     //         Row(
+                        //     //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     //             children: [
+                        //     //
+                        //     //               Expanded(flex:4,child: Container(),),
+                        //     //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                        //     //
+                        //     //             ]),
+                        //     //       ],
+                        //     //     ))
+                        //   ],
+                        // ),
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 4,
+                                      child: ListTile(
+                                        title: Text("Total Amount",style: TextStyle(color: String_Values.primarycolor),),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${(li8.details[0].orderPrice)}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            // Padding(
+                            //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                            //     child: Column(
+                            //       children: [
+                            //         // Row(
+                            //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         //     children: [
+                            //         //       Expanded(flex:4,child: Container()),
+                            //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                            //         //     ]),
+                            //         // SizedBox(height: 10,),
+                            //         Row(
+                            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //             children: [
+                            //
+                            //               Expanded(flex:4,child: Container(),),
+                            //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                            //
+                            //             ]),
+                            //       ],
+                            //     ))
+                          ],
+                        ),
+
+
+                        Divider(thickness: 2,),
+                      ],
+                    ),
+
+                  widget.payment!=0?Column(
+                    children: [
+                      if(widget.edit!=0)
+                        ListTile(leading: Text("New Additional Order",style: TextStyle(fontWeight: FontWeight.w800)),),
+                      if(widget.edit!=0)
+                        SizedBox(height: height/50,),
+                      if(widget.edit!=0)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    "Item",
+                                    textAlign: TextAlign.start,
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "Qty",
+                                    textAlign: TextAlign.start,
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "Amount",
+                                    textAlign: TextAlign.start,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      if(widget.edit!=0)
+                        Divider(thickness: 2,),
+                      for (int i = 0; i < li5.details.length; i++)
+                        if (Order3State.cnt[i] != 0)
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 8.0, bottom: 8),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                          li5.details[i].itemName,
+                                          textAlign: TextAlign.start,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          Order3State.cnt[i].toString(),
+                                          textAlign: TextAlign.start,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          "Rs.${(Order3State.cnt[i] * li5.details[i].price).toString()}",
+                                          textAlign: TextAlign.start,
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+
+
+                    ],
+                  ):Container(),
+
+                  if(widget.payment!=0)
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "Subtotal",
+                                        textAlign: TextAlign.start,
+                                      )),
+
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${Order3State.total}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container()),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "GST ( 2.5% CGST + 2.5% SGST )",
+                                        textAlign: TextAlign.start,
+                                      )),
+
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${(Order3State.total*5)/100}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container()),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "Item Total",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(fontWeight: FontWeight.w800),
+                                      )),
+
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${((Order3State.total*5)/100)+Order3State.total}",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(fontWeight: FontWeight.w800),
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Order2State.catcheck == true
+                            ? Column(
+                          children: [
+                            ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
+                              title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 24, right: 24, top: 8.0, bottom: 8),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                              flex: 4,
+                                              child: Text(
+                                                "Persons",
+                                                textAlign: TextAlign.start,
+                                              )),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                "Amount".toString(),
+                                                textAlign: TextAlign.start,
+                                              )),
+                                        ]),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                               flex: 4,
@@ -2298,9 +2307,9 @@ widget.payment!=0?Column(
                                 ))
                           ],
                         )
-                      : Container(),
-                  Order2State.vescheck == true
-                      ? Column(
+                            : Container(),
+                        Order2State.vescheck == true
+                            ? Column(
                           children: [
                             Container(
                               margin: EdgeInsets.only(right: 16),
@@ -2344,9 +2353,9 @@ widget.payment!=0?Column(
                             //     ))
                           ],
                         )
-                      : Container(),
-                  Order2State.vehcheck == true
-                      ? Column(
+                            : Container(),
+                        Order2State.vehcheck == true
+                            ? Column(
                           children: [
                             ListTile(
                               leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
@@ -2359,7 +2368,7 @@ widget.payment!=0?Column(
                                   children: [
                                     Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                               flex: 4,
@@ -2379,13 +2388,13 @@ widget.payment!=0?Column(
                                     ),
                                     Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                               flex: 4,
                                               child: Text(
                                                 Order2State
-                                                        .vehkmcontroller.text,
+                                                    .vehkmcontroller.text,
                                                 textAlign: TextAlign.start,
                                               )),
                                           Expanded(
@@ -2399,9 +2408,13 @@ widget.payment!=0?Column(
                                 ))
                           ],
                         )
-                      : Container(),
+                            : Container(),
+                      ],
+                    ),
                 ],
+                ),
               ),
+
 
               // widget.edit != 0
               //     ? Column(
@@ -2509,33 +2522,33 @@ widget.payment!=0?Column(
               ),
               SizedBox(height: 10,),
               widget.edit==0?     Container(
-                color: String_Values.primarycolor.withOpacity(1),
+
                 padding: const EdgeInsets.only(right:16.0),
                 child: Row(
                   children: [
-                    Expanded(flex:4,child: ListTile(title: Text("Total Amount",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                    Expanded(flex:4,child: ListTile(title: Text("Total Amount",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
 
                   ],
                 ),
               ):
               widget.payment!=0?Container(
-                color: String_Values.primarycolor.withOpacity(1),
+
                 padding: const EdgeInsets.only(right:16.0),
                 child: Row(
                   children: [
-                    Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)-(OrderDetailsState.li8.details[0].advanceAmount)).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                    Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)-(OrderDetailsState.li8.details[0].advanceAmount)).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
 
                   ],
                 ),
               ):Container(
-                color: String_Values.primarycolor.withOpacity(1),
+
                 padding: const EdgeInsets.only(right:16.0),
                 child: Row(
                   children: [
-                    Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-(OrderDetailsState.li8.details[0].advanceAmount)).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                    Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-(OrderDetailsState.li8.details[0].advanceAmount)).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
 
                   ],
                 ),

@@ -594,855 +594,61 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
               SizedBox(
                 height: height / 50,
               ),
-              ExpansionTile(
-                title: Text("Order Summary"),
-                initiallyExpanded: true,
-                children: [
 
-                  Column(
-                    children: [
-                      widget.gst?Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("GST Invoice No",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  widget.invoice,
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ):Container(),
-                      Container(
-                        color:Colors.yellow.shade200,
-                        child: ExpansionTile(title: Text("Name and Address"),
-                          children: [
-                            Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .only(
-                                        left: 24.0,
-                                        right: 24,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      "Name:",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight:
-                                          FontWeight
-                                              .w600),
-                                      textAlign:
-                                      TextAlign.center,
-                                    ),
-                                  ),
-                                  Wrap(
-                                      direction: Axis
-                                          .vertical, //default
-                                      alignment:
-                                      WrapAlignment
-                                          .center,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                right:
-                                                24.0),
-                                            child: Text(
-                                              li8.details[0].name
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign
-                                                  .center,
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .indigo,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600),
-                                            ))
-                                      ]),
-                                ],
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween),
-                            Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .only(
-                                        left: 24.0,
-                                        right: 24,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      "Mobile:",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight:
-                                          FontWeight
-                                              .w600),
-                                      textAlign:
-                                      TextAlign.center,
-                                    ),
-                                  ),
-                                  Wrap(
-                                      direction: Axis
-                                          .vertical, //default
-                                      alignment:
-                                      WrapAlignment
-                                          .center,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                right:
-                                                24.0),
-                                            child: Text(
-                                              li8.details[0].mobile
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign
-                                                  .center,
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .indigo,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600),
-                                            ))
-                                      ]),
-                                ],
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween),
-                            li8.details[0].whatsappNumber!=li8.details[0].mobile? Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .only(
-                                        left: 24.0,
-                                        right: 24,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      "Whatsapp:",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight:
-                                          FontWeight
-                                              .w600),
-                                      textAlign:
-                                      TextAlign.center,
-                                    ),
-                                  ),
-                                  Wrap(
-                                      direction: Axis
-                                          .vertical, //default
-                                      alignment:
-                                      WrapAlignment
-                                          .center,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                right:
-                                                24.0),
-                                            child: Text(
-                                              li8.details[0].whatsappNumber
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign
-                                                  .center,
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .indigo,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600),
-                                            ))
-                                      ]),
-                                ],
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween):              Container(
-    margin: EdgeInsets.only(left: 10),
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-    Checkbox(
-    value: true,
-    onChanged: null
-    ),
-    Text("Whatsapp Same as Mobile")
-    ],
-    ),
-    ),
-                            Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .only(
-                                        left: 24.0,
-                                        right: 24,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      "Address:",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight:
-                                          FontWeight
-                                              .w600),
-                                      textAlign:
-                                      TextAlign.center,
-                                    ),
-                                  ),
-                                  Wrap(
-                                      direction: Axis
-                                          .vertical, //default
-                                      alignment:
-                                      WrapAlignment
-                                          .center,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                right:
-                                                24.0),
-                                            child: Text(
-                                              li8.details[0].address
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign
-                                                  .center,
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .indigo,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600),
-                                            ))
-                                      ]),
-                                ],
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween),
-                            Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .only(
-                                        left: 24.0,
-                                        right: 24,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      "Pincode:",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight:
-                                          FontWeight
-                                              .w600),
-                                      textAlign:
-                                      TextAlign.center,
-                                    ),
-                                  ),
-                                  Wrap(
-                                      direction: Axis
-                                          .vertical, //default
-                                      alignment:
-                                      WrapAlignment
-                                          .center,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                right:
-                                                24.0),
-                                            child: Text(
-                                              li8.details[0].pincode
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign
-                                                  .center,
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .indigo,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600),
-                                            ))
-                                      ]),
-                                ],
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween),
-                            li8.details[0].email!=""?
-                            Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .only(
-                                        left: 24.0,
-                                        right: 24,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      "Email:",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight:
-                                          FontWeight
-                                              .w600),
-                                      textAlign:
-                                      TextAlign.center,
-                                    ),
-                                  ),
-                                  Wrap(
-                                      direction: Axis
-                                          .vertical, //default
-                                      alignment:
-                                      WrapAlignment
-                                          .center,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                right:
-                                                24.0),
-                                            child: Text(
-                                              li8.details[0].email
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign
-                                                  .center,
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .indigo,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600),
-                                            ))
-                                      ]),
-                                ],
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween):Container(),
-                            li8.details[0].gSTno!=""?
-                            Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .only(
-                                        left: 24.0,
-                                        right: 24,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      "GST No:",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight:
-                                          FontWeight
-                                              .w600),
-                                      textAlign:
-                                      TextAlign.center,
-                                    ),
-                                  ),
-                                  Wrap(
-                                      direction: Axis
-                                          .vertical, //default
-                                      alignment:
-                                      WrapAlignment
-                                          .center,
-                                      children: [
-                                        Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                right:
-                                                24.0),
-                                            child: Text(
-                                              li8.details[0].gSTno
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign
-                                                  .center,
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .indigo,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600),
-                                            ))
-                                      ]),
-                                ],
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween):Container(),
-                          ],
-                        ),
-                      ),
+              SizedBox(
+                height: height / 50,
+              ),
+              Container(
+color: Colors.blue
+                .shade50,
+                child: ExpansionTile(
+                  backgroundColor: Colors.white,
+                  title: Text("Order Summary"),
+                  initiallyExpanded: true,
+                  children: [
 
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Order Status",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  li8.details[0].orderStatus=="P"?"Pending":"Complete",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
-
-                  // ListTile(title: Text("Name"),trailing: Text("${li8.details[0].name}"),),
-
-                  ListTile(title: Text("Order Time and Date"),trailing: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+OrderDetailsState.li8.details[0].bookingTime)) },${OrderDetailsState.li8.details[0].bookingDate}"),),
-                  ListTile(
-                    title: Text("Item Details",style: TextStyle(color: String_Values.primarycolor),),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
                       children: [
-                        Expanded(
-                            flex: 3,
-                            child: Text(
-                              "Item",
-                              textAlign: TextAlign.start,
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              "Qty",
-                              textAlign: TextAlign.start,
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              "Amount",
-                              textAlign: TextAlign.start,
-                            )),
-                      ],
-                    ),
-                  ),
-                  Divider(thickness: 2,),
-                  for(int j=0 ;j<=OrderListState.orderflagno;j++)
-                    Column(children: [
-
-                      // if(OrderListState.orderflagno!=0)
-                      //   Divider(thickness: 2,),
-                      if(OrderListState.orderflagno!=0&&j!=0)
-                        Column(
-                          children: [
-                            SizedBox(height: height/50,),
-                            ListTile(leading: Text("Additional Order $j",style: TextStyle(fontWeight: FontWeight.w800)),),
-
-
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 24, right: 24, top: 8.0, bottom: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                      flex: 3,
-                                      child: Text(
-                                        "Item",
-                                        textAlign: TextAlign.start,
-                                      )),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        "Qty",
-                                        textAlign: TextAlign.start,
-                                      )),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        "Amount",
-                                        textAlign: TextAlign.start,
-                                      )),
-                                ],
-                              ),
-                            ),
-                            Divider(thickness: 2,),
-                          ],
-                        ),
-
-
-                      for (int i = 0; i < li9.details.length; i++)
-                        if(li9.details[i].orderFlagNo==j)
-                          Column(
+                        widget.gst?Container(
+                          margin: EdgeInsets.only(right: 16),
+                          child: Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 24, right: 24, top: 8.0, bottom: 8),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                            flex: 3,
-                                            child: Text(
-                                              li9.details[i].itemName,
-                                              textAlign: TextAlign.start,
-                                            )),
-                                        Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              li9.details[i].qty.round().toString(),
-                                              textAlign: TextAlign.start,
-                                            )),
-                                        Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              "Rs.${( li9.details[i].price).toString()}",
-                                              textAlign: TextAlign.start,
-                                            )),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-
+                              Expanded(
+                                  flex: 4,
+                                  child: ListTile(
+                                    title: Text("GST Invoice No"),
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    widget.invoice,
+                                    textAlign: TextAlign.start,
+                                  )),
                             ],
                           ),
+                        ):Container(),
 
 
-
-                    ],),
-
-
-                  // Divider(thickness: 2,),
-
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(),
-                            ),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Subtotal",
-                                  textAlign: TextAlign.start,
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${total}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "GST ( 2.5% CGST + 2.5% SGST )",
-                                  textAlign: TextAlign.start,
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(total*5)/100}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 8.0, bottom: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Item Total",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(fontWeight: FontWeight.w800),
-                                )),
-
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${((total*5)/100)+total}",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(fontWeight: FontWeight.w800),
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  li8.details[0].cateringService == "Y"
-                      ? Column(
-                    children: [
-                      ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
-                        title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(
-                              left: 24, right: 24, top: 8.0, bottom: 8),
-                          child: Column(
+                        Container(
+                          margin: EdgeInsets.only(right: 16),
+                          child: Row(
                             children: [
-                              Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          "Persons",
-                                          textAlign: TextAlign.start,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          "Amount".toString(),
-                                          textAlign: TextAlign.start,
-                                        )),
-                                  ]),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          "${li8.details[0].cateringAmount/100}",
-                                          textAlign: TextAlign.start,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          "Rs.${li8.details[0].cateringAmount}",
-                                          textAlign: TextAlign.start,
-                                        )),
-                                  ]),
+                              Expanded(
+                                  flex: 4,
+                                  child: ListTile(
+                                    title: Text("Order Status"),
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    li8.details[0].orderStatus=="P"?"Pending":"Complete",
+                                    textAlign: TextAlign.start,
+                                  )),
                             ],
-                          ))
-                    ],
-                  )
-                      : Container(),
-                    li8.details[0].vesselSet == "Y"
-                      ? Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  leading: Icon(Icons.emoji_food_beverage_sharp,color: Colors.deepOrange,),
-                                  title: Text("Vessel Set",style: TextStyle(color: Colors.deepOrange,),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(li8.details[0].vesselSetAmount)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  )
-                      : Container(),
-                  li8.details[0].vehicle == "Y"
-                      ? Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
-                                  title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(li8.details[0].vehicleAmount)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  )
-                      : Container(),
-
-                  Container(
-                    color: String_Values.primarycolor.withOpacity(0.2),
-                    child: ExpansionTile(
-
-                      title: Text("Advance Details"),
-                      children: [
-
-                        for(int i=0;i<li10.details.length;i++)
-                          Container(
-                            margin: EdgeInsets.only(right: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    flex: 4,
-                                    child: ListTile(
-                                      title: Text("Advance ${i+1} (${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li10.details[i].time.trim()))},${(li10.details[i].date.trim())})"),
-                                    )),
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      "Rs.${(li10.details[i].advanceAmount)}",
-                                      textAlign: TextAlign.start,
-                                    )),
-
-                              ],
-                            ),
                           ),
+                        ),
+                        ListTile(title: Text("Order Time and Date"),trailing: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+OrderDetailsState.li8.details[0].bookingTime)) },${OrderDetailsState.li8.details[0].bookingDate}"),),
+
                         // Padding(
                         //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
                         //     child: Column(
@@ -1466,360 +672,1314 @@ print("Order Flag ${li9.details[i].orderFlagNo}");
                         //     ))
                       ],
                     ),
-                  ),
-                  widget.gst?Container():
-                  Container(
-                    margin: EdgeInsets.only(right: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            flex: 4,
-                            child: ListTile(
-                              title: Text("Amount Paid",style: TextStyle(color: String_Values.primarycolor),),
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              "Rs.${(li8.details[0].advanceAmount)}",
-                              textAlign: TextAlign.start,
-                            )),
-                      ],
-                    ),
-                  ),
+                    Container(
+                     decoration: BoxDecoration(
+                       color:Colors.yellow.shade50,
 
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Payment Mode",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "${(li8.details[0].paymentType)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Total Amount",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Rs.${(li8.details[0].orderPrice)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
-                  widget.gst?Container():
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: ListTile(
-                                  title: Text("Advance Type",style: TextStyle(color: String_Values.primarycolor),),
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "${(li8.details[0].advanceType)}",
-                                  textAlign: TextAlign.start,
-                                )),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
-                  // li8.details[0].vehicle == "Y"
-                  //     ? Column(
-                  //   children: [
-                  //     ListTile(
-                  //       title: Text("Vehicle Drop",style: TextStyle(color: String_Values.primarycolor),),
-                  //     ),
-                  //     Padding(
-                  //         padding: const EdgeInsets.only(
-                  //             left: 24, right: 24, top: 8.0, bottom: 8),
-                  //         child: Column(
-                  //           children: [
-                  //             Row(
-                  //                 mainAxisAlignment:
-                  //                 MainAxisAlignment.spaceBetween,
-                  //                 children: [
-                  //                   Expanded(
-                  //                       flex: 4,
-                  //                       child: Text(
-                  //                         "Distance in Kms".toString(),
-                  //                         textAlign: TextAlign.start,
-                  //                       )),
-                  //                   Expanded(
-                  //                       flex: 1,
-                  //                       child: Text(
-                  //                         "Amount".toString(),
-                  //                         textAlign: TextAlign.start,
-                  //                       )),
-                  //                 ]),
-                  //             SizedBox(
-                  //               height: 10,
-                  //             ),
-                  //             Row(
-                  //                 mainAxisAlignment:
-                  //                 MainAxisAlignment.spaceBetween,
-                  //                 children: [
-                  //                   Expanded(
-                  //                       flex: 4,
-                  //                       child: Text(
-                  //                         (int.parse(Order2State
-                  //                             .vehkmcontroller.text))
-                  //                             .toString(),
-                  //                         textAlign: TextAlign.start,
-                  //                       )),
-                  //                   Expanded(
-                  //                       flex: 1,
-                  //                       child: Text(
-                  //                         "Rs.${(li8.details[0].vehicleAmount).toString()}",
-                  //                         textAlign: TextAlign.start,
-                  //                       )),
-                  //                 ]),
-                  //           ],
-                  //         ))
-                  //   ],
-                  // )
-                  //     : Container(),
-                  widget.gst?Container():
-                  Column(
-                    children: [
-                      SizedBox(height: 10,),
-                      Container(
-                        color: String_Values.primarycolor.withOpacity(1),
-                        padding: const EdgeInsets.only(right:16.0),
-                        child: Row(
-                          children: [
-                            Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),))),
-                            Expanded(flex:1,child: Text("Rs.${(li8.details[0].orderPrice-li8.details[0].advanceAmount).toStringAsFixed(2)}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.white),)),
+                       
+                     ),
+                      child: ExpansionTile(title: Text("Name and Address"),
+                        leading: Icon(Icons.group),
 
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          RaisedButton(
-                            child: Text(
-                              "Update",
-                              style: TextStyle(color: Colors.white),
+                          Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .only(
+                                      left: 24.0,
+                                      right: 24,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    "Name:",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .w600),
+                                    textAlign:
+                                    TextAlign.center,
+                                  ),
+                                ),
+                                Wrap(
+                                    direction: Axis
+                                        .vertical, //default
+                                    alignment:
+                                    WrapAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .only(
+                                              right:
+                                              24.0),
+                                          child: Text(
+                                            li8.details[0].name
+                                                .toString(),
+                                            textAlign:
+                                            TextAlign
+                                                .center,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .indigo,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w600),
+                                          ))
+                                    ]),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween),
+                          Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .only(
+                                      left: 24.0,
+                                      right: 24,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    "Mobile:",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .w600),
+                                    textAlign:
+                                    TextAlign.center,
+                                  ),
+                                ),
+                                Wrap(
+                                    direction: Axis
+                                        .vertical, //default
+                                    alignment:
+                                    WrapAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .only(
+                                              right:
+                                              24.0),
+                                          child: Text(
+                                            li8.details[0].mobile
+                                                .toString(),
+                                            textAlign:
+                                            TextAlign
+                                                .center,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .indigo,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w600),
+                                          ))
+                                    ]),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween),
+                          li8.details[0].whatsappNumber!=li8.details[0].mobile? Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .only(
+                                      left: 24.0,
+                                      right: 24,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    "Whatsapp:",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .w600),
+                                    textAlign:
+                                    TextAlign.center,
+                                  ),
+                                ),
+                                Wrap(
+                                    direction: Axis
+                                        .vertical, //default
+                                    alignment:
+                                    WrapAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .only(
+                                              right:
+                                              24.0),
+                                          child: Text(
+                                            li8.details[0].whatsappNumber
+                                                .toString(),
+                                            textAlign:
+                                            TextAlign
+                                                .center,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .indigo,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w600),
+                                          ))
+                                    ]),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween):              Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Checkbox(
+                                    value: true,
+                                    onChanged: null
+                                ),
+                                Text("Whatsapp Same as Mobile")
+                              ],
                             ),
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ), onPressed: () {
-
-                            OrderRequest().then((value) => OrderItemRequest()).then((value) {
-
-                              //
-                              //
-                              // if(li8.details[0].cateringService=="Y")
-                              //   Order2State.catcheck=true;
-                              // else
-                              //   Order2State.catcheck=false;
-                              // if(li8.details[0].vesselSet=="Y")
-                              //   Order2State.vescheck=true;
-                              // else
-                              //   Order2State.vescheck=false;
-                              // if(li8.details[0].vehicle=="Y")
-                              //   Order2State.vehcheck=true;
-                              // else
-                              //   Order2State.vehcheck=false;
-                              //
-                              // Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
-                              // Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
-                              // Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
-                              // Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
-                              // Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
-                              // print(Order2State.cntcontroller.text);
-                              NewOrderState.categoryid=li8.details[0].categoryID;
-                              // Order3State.cnt.clear();
-                              // Order3State.controllers.clear();
-                              // Order3State.total=0;
-                              // OrderListState.rowid.clear();
-                              // OrderListState.lineid.clear();
-                              // for(int i=0;i<li9.details.length;i++) {
-                              //   OrderListState.rowid.add( li9.details[i].rowID);
-                              //   OrderListState.lineid.add(li9.details[i].lineID);
-                              //
-                              //   Order3State.total=Order3State.total+li9.details[i].price;
-                              //   Order3State.cnt.add(li9.details[i].qty.round());
-                              //   Order3State.controllers.add(new TextEditingController());
-                              //   Order3State.controllers[i].text=li9.details[i].qty.round().toString();
-                              // }
-
-                              Navigator.pushReplacement(context, MaterialPageRoute(
-                                  builder: (context) =>
-                                      Order3(id:int.parse(li8.details[0].categoryID.toString()),
-                                        edit: int.parse(widget.orderid),)));
-                            });
-
-                          },
-                          color: String_Values.primarycolor,),
-                          RaisedButton(
-                            child: Text(
-                              "Payment",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ), onPressed: () {
-                            OrderRequest().then((value) => OrderItemRequest()).then((value) {
-
-
-                              if(li8.details[0].cateringService=="Y")
-                                Order2State.catcheck=true;
-                              else
-                                Order2State.catcheck=false;
-                              if(li8.details[0].vesselSet=="Y")
-                                Order2State.vescheck=true;
-                              else
-                                Order2State.vescheck=false;
-                              if(li8.details[0].vehicle=="Y")
-                                Order2State.vehcheck=true;
-                              else
-                                Order2State.vehcheck=false;
-
-                              Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
-                              Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
-                              Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
-                              Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
-                              Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
-                              print(Order2State.cntcontroller.text);
-                              NewOrderState.categoryid=li8.details[0].categoryID;
-                              Order3State.cnt.clear();
-                              Order3State.controllers.clear();
-                              Order3State.total=0;
-                              OrderListState.rowid.clear();
-                              OrderListState.lineid.clear();
-                              for(int i=0;i<li9.details.length;i++) {
-                                OrderListState.rowid.add( li9.details[i].rowID);
-                                OrderListState.lineid.add(li9.details[i].lineID);
-
-                                Order3State.total=Order3State.total+li9.details[i].price;
-                                Order3State.cnt.add(li9.details[i].qty.round());
-                                Order3State.controllers.add(new TextEditingController());
-                                Order3State.controllers[i].text=li9.details[i].qty.round().toString();
-                              }
-                              itemRequest(li8.details[0].categoryID).then((value){
-                                if(li5.details.length-Order3State.cnt.length==0);
-                                else {
-                                  print("else");
-                                  print("length ${li5.details.length - Order3State.cnt.length}");
-                                  for (int i = 0; i <= (li5.details.length - Order3State.cnt.length); i++) {
-                                    Order3State.cnt.add(0);
-                                    Order3State.controllers.add(new TextEditingController(text: "0"));
-                                  }
-                                  print(Order3State.cnt);
-                                }
-                              Navigator.pushReplacement(context, MaterialPageRoute(
-                                  builder: (context) =>
-                                      OrderSummary(
-                                        edit: int.parse(widget.orderid),payment: 0,id: int.parse(widget.orderid),)));});
-                            });
-
-
-                          },
-                            color: String_Values.primarycolor,),
+                          ),
+                          Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .only(
+                                      left: 24.0,
+                                      right: 24,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    "Address:",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .w600),
+                                    textAlign:
+                                    TextAlign.center,
+                                  ),
+                                ),
+                                Wrap(
+                                    direction: Axis
+                                        .vertical, //default
+                                    alignment:
+                                    WrapAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .only(
+                                              right:
+                                              24.0),
+                                          child: Text(
+                                            li8.details[0].address
+                                                .toString(),
+                                            textAlign:
+                                            TextAlign
+                                                .center,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .indigo,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w600),
+                                          ))
+                                    ]),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween),
+                          Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .only(
+                                      left: 24.0,
+                                      right: 24,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    "Pincode:",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .w600),
+                                    textAlign:
+                                    TextAlign.center,
+                                  ),
+                                ),
+                                Wrap(
+                                    direction: Axis
+                                        .vertical, //default
+                                    alignment:
+                                    WrapAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .only(
+                                              right:
+                                              24.0),
+                                          child: Text(
+                                            li8.details[0].pincode
+                                                .toString(),
+                                            textAlign:
+                                            TextAlign
+                                                .center,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .indigo,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w600),
+                                          ))
+                                    ]),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween),
+                          li8.details[0].email!=""?
+                          Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .only(
+                                      left: 24.0,
+                                      right: 24,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    "Email:",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .w600),
+                                    textAlign:
+                                    TextAlign.center,
+                                  ),
+                                ),
+                                Wrap(
+                                    direction: Axis
+                                        .vertical, //default
+                                    alignment:
+                                    WrapAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .only(
+                                              right:
+                                              24.0),
+                                          child: Text(
+                                            li8.details[0].email
+                                                .toString(),
+                                            textAlign:
+                                            TextAlign
+                                                .center,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .indigo,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w600),
+                                          ))
+                                    ]),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween):Container(),
+                          li8.details[0].gSTno!=""?
+                          Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .only(
+                                      left: 24.0,
+                                      right: 24,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    "GST No:",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .w600),
+                                    textAlign:
+                                    TextAlign.center,
+                                  ),
+                                ),
+                                Wrap(
+                                    direction: Axis
+                                        .vertical, //default
+                                    alignment:
+                                    WrapAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .only(
+                                              right:
+                                              24.0),
+                                          child: Text(
+                                            li8.details[0].gSTno
+                                                .toString(),
+                                            textAlign:
+                                            TextAlign
+                                                .center,
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .indigo,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w600),
+                                          ))
+                                    ]),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween):Container(),
                         ],
                       ),
-                      SizedBox(height: height/6,),
-                    ],
-                  ),
-                ],
+                    ),
+                    // ListTile(title: Text("Name"),trailing: Text("${li8.details[0].name}"),),
+
+
+                    Container(
+                      color: Colors.purple.shade50,
+                      child: ExpansionTile(title: Text("Item Details"),
+                        leading: Icon(Icons.fastfood),
+                        initiallyExpanded: true,
+                        backgroundColor: Colors.white,
+                        children: [
+                        Padding(
+                        padding: const EdgeInsets.only(
+                            left: 24, right: 24, top: 8.0, bottom: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "Item",
+                                  textAlign: TextAlign.start,
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Qty",
+                                  textAlign: TextAlign.start,
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Amount",
+                                  textAlign: TextAlign.start,
+                                )),
+                          ],
+                        ),
+                      ),
+                        Divider(thickness: 2,),
+                        for(int j=0 ;j<=OrderListState.orderflagno;j++)
+                          Column(children: [
+
+                            // if(OrderListState.orderflagno!=0)
+                            //   Divider(thickness: 2,),
+                            if(OrderListState.orderflagno!=0&&j!=0)
+                              Column(
+                                children: [
+                                  SizedBox(height: height/50,),
+                                  ListTile(leading: Text("Additional Order $j",style: TextStyle(fontWeight: FontWeight.w800)),),
+
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, top: 8.0, bottom: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "Item",
+                                              textAlign: TextAlign.start,
+                                            )),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "Qty",
+                                              textAlign: TextAlign.start,
+                                            )),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "Amount",
+                                              textAlign: TextAlign.start,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  Divider(thickness: 2,),
+                                ],
+                              ),
+
+
+                            for (int i = 0; i < li9.details.length; i++)
+                              if(li9.details[i].orderFlagNo==j)
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 24, right: 24, top: 8.0, bottom: 8),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: Text(
+                                                    li9.details[i].itemName,
+                                                    textAlign: TextAlign.start,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    li9.details[i].qty.round().toString(),
+                                                    textAlign: TextAlign.start,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "Rs.${( li9.details[i].price).toString()}",
+                                                    textAlign: TextAlign.start,
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+
+                                  ],
+                                ),
+
+
+
+                          ],),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "Subtotal",
+                                        textAlign: TextAlign.start,
+                                      )),
+
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${total}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container()),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "GST ( 2.5% CGST + 2.5% SGST )",
+                                        textAlign: TextAlign.start,
+                                      )),
+
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${(total*5)/100}",
+                                        textAlign: TextAlign.start,
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, top: 8.0, bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container()),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        "Item Total",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(fontWeight: FontWeight.w800),
+                                      )),
+
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${((total*5)/100)+total}",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(fontWeight: FontWeight.w800),
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                          li8.details[0].cateringService == "Y"
+                              ? Column(
+                            children: [
+                              ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
+                                title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24, top: 8.0, bottom: 8),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                                flex: 4,
+                                                child: Text(
+                                                  "Persons",
+                                                  textAlign: TextAlign.start,
+                                                )),
+                                            Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  "Amount".toString(),
+                                                  textAlign: TextAlign.start,
+                                                )),
+                                          ]),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                                flex: 4,
+                                                child: Text(
+                                                  "${li8.details[0].cateringAmount/100}",
+                                                  textAlign: TextAlign.start,
+                                                )),
+                                            Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  "Rs.${li8.details[0].cateringAmount}",
+                                                  textAlign: TextAlign.start,
+                                                )),
+                                          ]),
+                                    ],
+                                  ))
+                            ],
+                          )
+                              : Container(),
+                          li8.details[0].vesselSet == "Y"
+                              ? Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 16),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 4,
+                                        child: ListTile(
+                                          leading: Icon(Icons.emoji_food_beverage_sharp,color: Colors.deepOrange,),
+                                          title: Text("Vessel Set",style: TextStyle(color: Colors.deepOrange,),),
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          "Rs.${(li8.details[0].vesselSetAmount)}",
+                                          textAlign: TextAlign.start,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              // Padding(
+                              //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                              //     child: Column(
+                              //       children: [
+                              //         // Row(
+                              //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //         //     children: [
+                              //         //       Expanded(flex:4,child: Container()),
+                              //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                              //         //     ]),
+                              //         // SizedBox(height: 10,),
+                              //         Row(
+                              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //             children: [
+                              //
+                              //               Expanded(flex:4,child: Container(),),
+                              //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                              //
+                              //             ]),
+                              //       ],
+                              //     ))
+                            ],
+                          )
+                              : Container(),
+                          li8.details[0].vehicle == "Y"
+                              ? Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 16),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 4,
+                                        child: ListTile(
+                                          leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
+                                          title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          "Rs.${(li8.details[0].vehicleAmount)}",
+                                          textAlign: TextAlign.start,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              // Padding(
+                              //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                              //     child: Column(
+                              //       children: [
+                              //         // Row(
+                              //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //         //     children: [
+                              //         //       Expanded(flex:4,child: Container()),
+                              //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                              //         //     ]),
+                              //         // SizedBox(height: 10,),
+                              //         Row(
+                              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //             children: [
+                              //
+                              //               Expanded(flex:4,child: Container(),),
+                              //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                              //
+                              //             ]),
+                              //       ],
+                              //     ))
+                            ],
+                          )
+                              : Container(),
+                      ],),
+                    ),
+
+
+
+
+                    // Divider(thickness: 2,),
+
+
+
+
+                    Container(
+                      color: Colors.red.withOpacity(0.2),
+                      child: ExpansionTile(
+                      backgroundColor: Colors.white,
+                        leading: Icon(Icons.money),
+                        title: Text("Advance Details"),
+                        children: [
+
+                          for(int i=0;i<li10.details.length;i++)
+                            Container(
+                              margin: EdgeInsets.only(right: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 4,
+                                      child: ListTile(
+                                        title: Text("Advance ${i+1} (${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li10.details[i].time.trim()))},${(li10.details[i].date.trim())})"),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Rs.${(li10.details[i].advanceAmount)}",
+                                        textAlign: TextAlign.start,
+                                      )),
+
+                                ],
+                              ),
+                            ),
+                          // Padding(
+                          //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                          //     child: Column(
+                          //       children: [
+                          //         // Row(
+                          //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //         //     children: [
+                          //         //       Expanded(flex:4,child: Container()),
+                          //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                          //         //     ]),
+                          //         // SizedBox(height: 10,),
+                          //         Row(
+                          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //             children: [
+                          //
+                          //               Expanded(flex:4,child: Container(),),
+                          //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                          //
+                          //             ]),
+                          //       ],
+                          //     ))
+                        ],
+                      ),
+                    ),
+                    widget.gst?Container():
+                    Container(
+                      margin: EdgeInsets.only(right: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 4,
+                              child: ListTile(
+                                title: Text("Amount Paid",style: TextStyle(color: String_Values.primarycolor),),
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                "Rs.${(li8.details[0].advanceAmount)}",
+                                textAlign: TextAlign.start,
+                              )),
+                        ],
+                      ),
+                    ),
+
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 4,
+                                  child: ListTile(
+                                    title: Text("Payment Mode",style: TextStyle(color: String_Values.primarycolor),),
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "${(li8.details[0].paymentType)}",
+                                    textAlign: TextAlign.start,
+                                  )),
+                            ],
+                          ),
+                        ),
+                        // Padding(
+                        //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                        //     child: Column(
+                        //       children: [
+                        //         // Row(
+                        //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         //     children: [
+                        //         //       Expanded(flex:4,child: Container()),
+                        //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                        //         //     ]),
+                        //         // SizedBox(height: 10,),
+                        //         Row(
+                        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //
+                        //               Expanded(flex:4,child: Container(),),
+                        //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                        //
+                        //             ]),
+                        //       ],
+                        //     ))
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 4,
+                                  child: ListTile(
+                                    title: Text("Total Amount",style: TextStyle(color: String_Values.primarycolor),),
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "Rs.${(li8.details[0].orderPrice)}",
+                                    textAlign: TextAlign.start,
+                                  )),
+                            ],
+                          ),
+                        ),
+                        // Padding(
+                        //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                        //     child: Column(
+                        //       children: [
+                        //         // Row(
+                        //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         //     children: [
+                        //         //       Expanded(flex:4,child: Container()),
+                        //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                        //         //     ]),
+                        //         // SizedBox(height: 10,),
+                        //         Row(
+                        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //
+                        //               Expanded(flex:4,child: Container(),),
+                        //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                        //
+                        //             ]),
+                        //       ],
+                        //     ))
+                      ],
+                    ),
+                    widget.gst?Column(
+                      children: [
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            RaisedButton(
+                              child: Text(
+                                "Generate DC",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ), onPressed: () {
+
+                              OrderRequest().then((value) => OrderItemRequest()).then((value) {
+
+                                //
+                                //
+                                // if(li8.details[0].cateringService=="Y")
+                                //   Order2State.catcheck=true;
+                                // else
+                                //   Order2State.catcheck=false;
+                                // if(li8.details[0].vesselSet=="Y")
+                                //   Order2State.vescheck=true;
+                                // else
+                                //   Order2State.vescheck=false;
+                                // if(li8.details[0].vehicle=="Y")
+                                //   Order2State.vehcheck=true;
+                                // else
+                                //   Order2State.vehcheck=false;
+                                //
+                                // Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                                // Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                                // Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                                // Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                                // Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                                // print(Order2State.cntcontroller.text);
+                                NewOrderState.categoryid=li8.details[0].categoryID;
+                                // Order3State.cnt.clear();
+                                // Order3State.controllers.clear();
+                                // Order3State.total=0;
+                                // OrderListState.rowid.clear();
+                                // OrderListState.lineid.clear();
+                                // for(int i=0;i<li9.details.length;i++) {
+                                //   OrderListState.rowid.add( li9.details[i].rowID);
+                                //   OrderListState.lineid.add(li9.details[i].lineID);
+                                //
+                                //   Order3State.total=Order3State.total+li9.details[i].price;
+                                //   Order3State.cnt.add(li9.details[i].qty.round());
+                                //   Order3State.controllers.add(new TextEditingController());
+                                //   Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                                // }
+
+                                Navigator.pushReplacement(context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        Order3(id:int.parse(li8.details[0].categoryID.toString()),
+                                          edit: int.parse(widget.orderid),)));
+                              });
+
+                            },
+                              color: String_Values.primarycolor,),
+                            RaisedButton(
+                              child: Text(
+                                "Generate Invoice",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ), onPressed: () {
+                              OrderRequest().then((value) => OrderItemRequest()).then((value) {
+
+
+                                if(li8.details[0].cateringService=="Y")
+                                  Order2State.catcheck=true;
+                                else
+                                  Order2State.catcheck=false;
+                                if(li8.details[0].vesselSet=="Y")
+                                  Order2State.vescheck=true;
+                                else
+                                  Order2State.vescheck=false;
+                                if(li8.details[0].vehicle=="Y")
+                                  Order2State.vehcheck=true;
+                                else
+                                  Order2State.vehcheck=false;
+
+                                Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                                Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                                Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                                Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                                Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                                print(Order2State.cntcontroller.text);
+                                NewOrderState.categoryid=li8.details[0].categoryID;
+                                Order3State.cnt.clear();
+                                Order3State.controllers.clear();
+                                Order3State.total=0;
+                                OrderListState.rowid.clear();
+                                OrderListState.lineid.clear();
+                                for(int i=0;i<li9.details.length;i++) {
+                                  OrderListState.rowid.add( li9.details[i].rowID);
+                                  OrderListState.lineid.add(li9.details[i].lineID);
+
+                                  Order3State.total=Order3State.total+li9.details[i].price;
+                                  Order3State.cnt.add(li9.details[i].qty.round());
+                                  Order3State.controllers.add(new TextEditingController());
+                                  Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                                }
+                                itemRequest(li8.details[0].categoryID).then((value){
+                                  if(li5.details.length-Order3State.cnt.length==0);
+                                  else {
+                                    print("else");
+                                    print("length ${li5.details.length - Order3State.cnt.length}");
+                                    for (int i = 0; i <= (li5.details.length - Order3State.cnt.length); i++) {
+                                      Order3State.cnt.add(0);
+                                      Order3State.controllers.add(new TextEditingController(text: "0"));
+                                    }
+                                    print(Order3State.cnt);
+                                  }
+                                  Navigator.pushReplacement(context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          OrderSummary(
+                                            edit: int.parse(widget.orderid),payment: 0,id: int.parse(widget.orderid),)));});
+                              });
+
+
+                            },
+                              color: String_Values.primarycolor,),
+                          ],
+                        ),
+                        SizedBox(height: height/6,),
+                      ],
+                    ):
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 4,
+                                  child: ListTile(
+                                    title: Text("Advance Type",style: TextStyle(color: String_Values.primarycolor),),
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "${(li8.details[0].advanceType)}",
+                                    textAlign: TextAlign.start,
+                                  )),
+                            ],
+                          ),
+                        ),
+                        // Padding(
+                        //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                        //     child: Column(
+                        //       children: [
+                        //         // Row(
+                        //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         //     children: [
+                        //         //       Expanded(flex:4,child: Container()),
+                        //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                        //         //     ]),
+                        //         // SizedBox(height: 10,),
+                        //         Row(
+                        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //
+                        //               Expanded(flex:4,child: Container(),),
+                        //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                        //
+                        //             ]),
+                        //       ],
+                        //     ))
+                      ],
+                    ),
+                    // li8.details[0].vehicle == "Y"
+                    //     ? Column(
+                    //   children: [
+                    //     ListTile(
+                    //       title: Text("Vehicle Drop",style: TextStyle(color: String_Values.primarycolor),),
+                    //     ),
+                    //     Padding(
+                    //         padding: const EdgeInsets.only(
+                    //             left: 24, right: 24, top: 8.0, bottom: 8),
+                    //         child: Column(
+                    //           children: [
+                    //             Row(
+                    //                 mainAxisAlignment:
+                    //                 MainAxisAlignment.spaceBetween,
+                    //                 children: [
+                    //                   Expanded(
+                    //                       flex: 4,
+                    //                       child: Text(
+                    //                         "Distance in Kms".toString(),
+                    //                         textAlign: TextAlign.start,
+                    //                       )),
+                    //                   Expanded(
+                    //                       flex: 1,
+                    //                       child: Text(
+                    //                         "Amount".toString(),
+                    //                         textAlign: TextAlign.start,
+                    //                       )),
+                    //                 ]),
+                    //             SizedBox(
+                    //               height: 10,
+                    //             ),
+                    //             Row(
+                    //                 mainAxisAlignment:
+                    //                 MainAxisAlignment.spaceBetween,
+                    //                 children: [
+                    //                   Expanded(
+                    //                       flex: 4,
+                    //                       child: Text(
+                    //                         (int.parse(Order2State
+                    //                             .vehkmcontroller.text))
+                    //                             .toString(),
+                    //                         textAlign: TextAlign.start,
+                    //                       )),
+                    //                   Expanded(
+                    //                       flex: 1,
+                    //                       child: Text(
+                    //                         "Rs.${(li8.details[0].vehicleAmount).toString()}",
+                    //                         textAlign: TextAlign.start,
+                    //                       )),
+                    //                 ]),
+                    //           ],
+                    //         ))
+                    //   ],
+                    // )
+                    //     : Container(),
+                    widget.gst?Container():
+                    Column(
+                      children: [
+                        SizedBox(height: 10,),
+                        Container(
+
+                          padding: const EdgeInsets.only(right:16.0),
+                          child: Row(
+                            children: [
+                              Expanded(flex:4,child: ListTile(title: Text("Amount Payable",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
+                              Expanded(flex:1,child: Text("Rs.${(li8.details[0].orderPrice-li8.details[0].advanceAmount).toStringAsFixed(2)}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
+
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            RaisedButton(
+                              child: Text(
+                                "Update",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ), onPressed: () {
+
+                              OrderRequest().then((value) => OrderItemRequest()).then((value) {
+
+                                //
+                                //
+                                // if(li8.details[0].cateringService=="Y")
+                                //   Order2State.catcheck=true;
+                                // else
+                                //   Order2State.catcheck=false;
+                                // if(li8.details[0].vesselSet=="Y")
+                                //   Order2State.vescheck=true;
+                                // else
+                                //   Order2State.vescheck=false;
+                                // if(li8.details[0].vehicle=="Y")
+                                //   Order2State.vehcheck=true;
+                                // else
+                                //   Order2State.vehcheck=false;
+                                //
+                                // Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                                // Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                                // Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                                // Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                                // Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                                // print(Order2State.cntcontroller.text);
+                                NewOrderState.categoryid=li8.details[0].categoryID;
+                                // Order3State.cnt.clear();
+                                // Order3State.controllers.clear();
+                                // Order3State.total=0;
+                                // OrderListState.rowid.clear();
+                                // OrderListState.lineid.clear();
+                                // for(int i=0;i<li9.details.length;i++) {
+                                //   OrderListState.rowid.add( li9.details[i].rowID);
+                                //   OrderListState.lineid.add(li9.details[i].lineID);
+                                //
+                                //   Order3State.total=Order3State.total+li9.details[i].price;
+                                //   Order3State.cnt.add(li9.details[i].qty.round());
+                                //   Order3State.controllers.add(new TextEditingController());
+                                //   Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                                // }
+
+                                Navigator.pushReplacement(context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        Order3(id:int.parse(li8.details[0].categoryID.toString()),
+                                          edit: int.parse(widget.orderid),)));
+                              });
+
+                            },
+                            color: String_Values.primarycolor,),
+                            RaisedButton(
+                              child: Text(
+                                "Payment",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ), onPressed: () {
+                              OrderRequest().then((value) => OrderItemRequest()).then((value) {
+
+
+                                if(li8.details[0].cateringService=="Y")
+                                  Order2State.catcheck=true;
+                                else
+                                  Order2State.catcheck=false;
+                                if(li8.details[0].vesselSet=="Y")
+                                  Order2State.vescheck=true;
+                                else
+                                  Order2State.vescheck=false;
+                                if(li8.details[0].vehicle=="Y")
+                                  Order2State.vehcheck=true;
+                                else
+                                  Order2State.vehcheck=false;
+
+                                Order2State.vehkmcontroller.text=li8.details[0].vehicleKM.toString();
+                                Order2State.cnt=int.parse((li8.details[0].cateringAmount/100).round().toString());
+                                Order2State.vehcostcontroller.text=li8.details[0].vehicleAmount.round().toString();
+                                Order2State.vescontroller.text=li8.details[0].vesselSetAmount.round().toString();
+                                Order2State.cntcontroller.text=(li8.details[0].cateringAmount/100).round().toString();
+                                print(Order2State.cntcontroller.text);
+                                NewOrderState.categoryid=li8.details[0].categoryID;
+                                Order3State.cnt.clear();
+                                Order3State.controllers.clear();
+                                Order3State.total=0;
+                                OrderListState.rowid.clear();
+                                OrderListState.lineid.clear();
+                                for(int i=0;i<li9.details.length;i++) {
+                                  OrderListState.rowid.add( li9.details[i].rowID);
+                                  OrderListState.lineid.add(li9.details[i].lineID);
+
+                                  Order3State.total=Order3State.total+li9.details[i].price;
+                                  Order3State.cnt.add(li9.details[i].qty.round());
+                                  Order3State.controllers.add(new TextEditingController());
+                                  Order3State.controllers[i].text=li9.details[i].qty.round().toString();
+                                }
+                                itemRequest(li8.details[0].categoryID).then((value){
+                                  if(li5.details.length-Order3State.cnt.length==0);
+                                  else {
+                                    print("else");
+                                    print("length ${li5.details.length - Order3State.cnt.length}");
+                                    for (int i = 0; i <= (li5.details.length - Order3State.cnt.length); i++) {
+                                      Order3State.cnt.add(0);
+                                      Order3State.controllers.add(new TextEditingController(text: "0"));
+                                    }
+                                    print(Order3State.cnt);
+                                  }
+                                Navigator.pushReplacement(context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        OrderSummary(
+                                          edit: int.parse(widget.orderid),payment: 0,id: int.parse(widget.orderid),)));});
+                              });
+
+
+                            },
+                              color: String_Values.primarycolor,),
+                          ],
+                        ),
+                        SizedBox(height: height/6,),
+                      ],
+                    ),
+                  ],
+                ),
               )
             ],
           )),
