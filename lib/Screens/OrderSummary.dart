@@ -1,5 +1,7 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:anandhasapp/Models/AdvanceHistoryModel.dart';
 import 'package:anandhasapp/Models/InsertOrderResponse.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
@@ -27,11 +29,27 @@ class OrderSummary extends StatefulWidget {
   int edit;
   int payment;
   int id;
+
   @override
   _OrderSummaryState createState() => _OrderSummaryState();
 }
 
 class _OrderSummaryState extends State<OrderSummary> {
+  Future<void> pdf() async {
+    final pdf = pw.Document();
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String path = '$dir/report.pdf';
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) => pw.Center(
+          child: pw.Text('Hello World!'),
+        ),
+      ),
+    );
+
+    final file = File(path);
+    await file.writeAsBytes(await pdf.save());
+  }
   bool loading = false;
 
   ItemModelList li5;
@@ -615,9 +633,7 @@ print(bookingitem);
             textColor: Colors.white,
             fontSize: 16.0);
     } else {
-showDialog(context: context,child: AlertDialog(
-  title: Text(response.body),
-));
+
       Fluttertoast.showToast(
           msg: "Http error!, Response code${response.statusCode}, ${response.body} ",
           toastLength: Toast.LENGTH_LONG,
@@ -2572,7 +2588,104 @@ if(newValue=="Full Advance") {
                     (int.parse(vestot) + (int.parse(cattot)) +
                         (((Order3State.total * 5) / 100) +
                             Order3State.total)))))
-              postRequest();
+              showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white.withOpacity(0),
+                      title: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(50))),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                height: height / 30,
+                              ),
+                              Container(
+
+                                child: Image.asset(
+                                  "logo.png",width: width/2,
+
+                                ),
+                              ),
+                              SizedBox(
+                                height: height / 30,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:8.0,right:8.0),
+                                child: Text(
+                                  "Are you Sure, Do you want to confirm your order..",
+                                  style: TextStyle(
+                                      color: Colors.amber, fontSize: 16),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height / 30,
+                              ),
+                              SizedBox(height: height/50,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    width: width/4,
+
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50))),
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          pdf();
+                                          Navigator.pop(context);
+                                          postRequest();
+                                        },
+                                        child: Text(
+                                          "Yes",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor),
+                                        ),
+                                      )),
+                                  Container(
+                                    width: width/4,
+
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50))),
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+
+                                        },
+                                        child: Text(
+                                          "No",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor),
+                                        ),
+                                      )),
+                                ],
+                              ),
+
+
+
+                              SizedBox(
+                                height: height / 50,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+
             else if (dropdownValue1 == "Advance Type")
               Fluttertoast.showToast(
                   msg: "Please choose Advance Type",

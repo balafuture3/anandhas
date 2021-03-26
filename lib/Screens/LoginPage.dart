@@ -1,6 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'dart:io';
 import 'dart:math';
-
+import 'dart:typed_data';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'dart:typed_data';
 import 'package:anandhasapp/Models/BranchModel.dart';
 import 'package:anandhasapp/Models/Category.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
@@ -11,6 +16,8 @@ import 'package:anandhasapp/Widgets/AllWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/widgets/font.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart'as http;
 import 'package:xml/xml.dart' as xml;
@@ -28,7 +35,7 @@ class LoginPageState extends State<LoginPage> {
   static String rolename;
   static String roleid;
   static String token;
-
+  var pdf = pw.Document();
   var dropdownValue1= "Select Branch";
 
   var stringlist =["Select Branch","Coimbatore","Chennai"];
@@ -42,7 +49,42 @@ class LoginPageState extends State<LoginPage> {
   CategoryModelList li4;
 
   ItemModelList li5;
+  Future<Uint8List> generateDocument() async {
+    final pw.Document doc = pw.Document();
 
+    doc.addPage(pw.MultiPage(
+        pageFormat:
+        PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return pw.Container(
+              alignment: pw.Alignment.centerRight,
+              margin: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              padding: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+
+              child: pw.Text('Portable Document Format',
+                  style: pw.Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        build: (pw.Context context) => <pw.Widget>[
+          pw.Table.fromTextArray(
+              context: context,
+              border: null,
+              headerAlignment: pw.Alignment.centerLeft,
+              data: <List<String>>[
+                <String>['Item', 'Qty', 'Price'],
+             ]),
+          pw.Paragraph(text: ""),
+          pw.Paragraph(text: "Subtotal: 100"),
+          pw.Padding(padding: const pw.EdgeInsets.all(10)),
+        ]));
+
+    pdfsave();
+  }
   Future<http.Response> postRequest() async {
     setState(() {
       loading = true;
@@ -428,12 +470,37 @@ class LoginPageState extends State<LoginPage> {
 
   TextEditingController EmailController = new TextEditingController();
   static TextEditingController PasswordController = new TextEditingController();
+Future<void> pdfsave()
+async {
 
+
+
+  Directory documentDirectory = await getExternalStorageDirectory();
+  String documentPath = documentDirectory.path;
+  File file = File("$documentPath/example.pdf");
+  file.writeAsBytesSync(pdf.save());
+}
   static IconData toggle = Icons.visibility_off;
+  Future<void> pdfcall() async {
+    var data = await rootBundle.load("open-sans.ttf");
+    Font myFont = Font.ttf(data);
 
+      pdf.addPage(
+        pw.Page(
+          build: (pw.Context context) => pw.Center(
+            child: pw.Text('Hello World!'),
+          ),
+        ),
+      );
+
+
+
+pdfsave();
+  }
 
   @override
   void initState() {
+
     branchRequest();
     categoryRequest();
     itemRequest();
@@ -587,7 +654,8 @@ class LoginPageState extends State<LoginPage> {
                                 fontSize: 16.0);
                         }
                       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
-                    }, width / 2)
+                    }, width / 2),
+                    FlatButton(child: Text("Test"), onPressed: () {  generateDocument(); },)
                   ],
                 ),
               ),

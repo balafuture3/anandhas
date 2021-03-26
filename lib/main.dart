@@ -1,7 +1,9 @@
 import 'package:anandhasapp/Screens/Dashboard.dart';
 import 'package:anandhasapp/Screens/LoginPage.dart';
-import 'package:anandhasapp/test.dart';
+
 import 'package:flutter/material.dart';
+
+import 'Screens/test.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
+      home: Test(),
     );
   }
 }
