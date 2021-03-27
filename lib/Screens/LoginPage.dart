@@ -655,7 +655,7 @@ pdfsave();
                         }
                       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
                     }, width / 2),
-                    FlatButton(child: Text("Test"), onPressed: () {  generateDocument(); },)
+
                   ],
                 ),
               ),
