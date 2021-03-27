@@ -6,11 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf/widgets/placeholders.dart';
 import 'package:printing/printing.dart';
 import 'dart:io';
 
-import 'package:syncfusion_flutter_pdf/pdf.dart';
 class Test extends StatefulWidget {
   @override
   _TestState createState() => _TestState();
@@ -36,7 +34,7 @@ class _TestState extends State<Test> {
           children:[
               pw.Header(
               child: pw.Row(children: [
-                pw.Image.provider(image,width:200),
+
                 pw.Column(
                   children: [
                     pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",style: pw.TextStyle(fontSize: 18))

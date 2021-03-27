@@ -740,7 +740,7 @@ class OrderDetailsState extends State<OrderDetails> {
     //     bytes: await pdf.save(), filename: 'my-document.pdf');
      await Printing.layoutPdf(
          onLayout: (PdfPageFormat format) async => pdf.save(),
-     format: PdfPageFormat.a4);
+     );
   }
 
   Future<http.Response> AdvanceHistoryRequest() async {

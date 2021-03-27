@@ -8,7 +8,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:time_picker_widget/time_picker_widget.dart';
 
 import 'Order3.dart';
 import 'package:http/http.dart'as http;

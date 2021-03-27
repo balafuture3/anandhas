@@ -2,8 +2,6 @@ import 'package:anandhasapp/HallBooking.dart';
 import 'package:anandhasapp/Screens/NewOrder.dart';
 import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/String_Values.dart';
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
