@@ -540,6 +540,10 @@ print(bookingitem);
       <GST>${Order4State.GSTcontroller.text}</GST>
       <WhatsappNumber>${Order4State.Whatsappcontroller.text}</WhatsappNumber>
       <Pincode>642005</Pincode>
+      <DisAmount>0</DisAmount>
+      <DisApproval>N</DisApproval>
+      <DisApplied>N</DisApplied>
+      <DisApprovedBy>0</DisApprovedBy>
     </IN_MOB_INSERT_ORDER>
   </soap:Body>
 </soap:Envelope>

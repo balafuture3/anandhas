@@ -178,7 +178,7 @@ class NewOrderState extends State<NewOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Select Date"),
+                    Text("Select Delivery Date"),
                   ],
                 ),
               ),
@@ -223,7 +223,7 @@ class NewOrderState extends State<NewOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Select Time"),
+                    Text("Select Delivery Time"),
                   ],
                 ),
               ),

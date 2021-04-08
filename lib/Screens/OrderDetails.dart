@@ -22,7 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf/widgets/placeholders.dart';
+
 import 'package:printing/printing.dart';
 import 'package:xml/xml.dart' as xml;
 
@@ -73,8 +73,8 @@ class OrderDetailsState extends State<OrderDetails> {
 
     final ttf = pw.Font.ttf(data.buffer.asByteData());
     const imageProvider = const AssetImage('logo.png');
-    final image = await flutterImageProvider(imageProvider);
-
+    // final image = await flutterImageProvider(imageProvider);
+    final image = await imageFromAssetBundle('logo.png');
     pdf.addPage(pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
@@ -87,7 +87,8 @@ class OrderDetailsState extends State<OrderDetails> {
                       mainAxisAlignment: pw.MainAxisAlignment.end,
                       crossAxisAlignment: pw.CrossAxisAlignment.end,
                       children: [
-                        pw.Image.provider(image, width: 150),
+
+                        pw.Image(image, width: 150),
                         pw.Text("Taste of Life",
                             style: pw.TextStyle(fontSize: 10),
                             textAlign: pw.TextAlign.right),
@@ -738,8 +739,15 @@ class OrderDetailsState extends State<OrderDetails> {
     File file = File('$tempPath/example.pdf');
     // await Printing.sharePdf(
     //     bytes: await pdf.save(), filename: 'my-document.pdf');
+    // PdfPreview(
+    //   initialPageFormat: PdfPageFormat.a4,
+    //
+    //   build: (format) => pdf.save(),
+    // );
      await Printing.layoutPdf(
+       format: PdfPageFormat.a4,
          onLayout: (PdfPageFormat format) async => pdf.save(),
+
      );
   }
 
@@ -2588,6 +2596,7 @@ class OrderDetailsState extends State<OrderDetails> {
                                       },
                                       color: String_Values.primarycolor,
                                     ),
+                                    if((li8.details[0].orderPrice - li8.details[0].advanceAmount)>0)
                                     RaisedButton(
                                       child: Text(
                                         "Payment",
@@ -2681,6 +2690,123 @@ class OrderDetailsState extends State<OrderDetails> {
                                                           Order3State
                                                               .cnt.length);
                                                   i++) {
+                                                Order3State.cnt.add(0);
+                                                Order3State.controllers.add(
+                                                    new TextEditingController(
+                                                        text: "0"));
+                                              }
+                                              print(Order3State.cnt);
+                                            }
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        OrderSummary(
+                                                          edit: int.parse(
+                                                              widget.orderid),
+                                                          payment: 0,
+                                                          id: int.parse(
+                                                              widget.orderid),
+                                                        )));
+                                          });
+                                        });
+                                      },
+                                      color: String_Values.primarycolor,
+                                    ),
+                                    if((li8.details[0].orderPrice - li8.details[0].advanceAmount)>0)
+                                    RaisedButton(
+                                      child: Text(
+                                        "Discount",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(25.0),
+                                      ),
+                                      onPressed: () {
+                                        OrderRequest()
+                                            .then((value) => OrderItemRequest())
+                                            .then((value) {
+                                          if (li8.details[0].cateringService ==
+                                              "Y")
+                                            Order2State.catcheck = true;
+                                          else
+                                            Order2State.catcheck = false;
+                                          if (li8.details[0].vesselSet == "Y")
+                                            Order2State.vescheck = true;
+                                          else
+                                            Order2State.vescheck = false;
+                                          if (li8.details[0].vehicle == "Y")
+                                            Order2State.vehcheck = true;
+                                          else
+                                            Order2State.vehcheck = false;
+
+                                          Order2State.vehkmcontroller.text = li8
+                                              .details[0].vehicleKM
+                                              .toString();
+                                          Order2State.cnt = int.parse(
+                                              (li8.details[0].cateringAmount /
+                                                  100)
+                                                  .round()
+                                                  .toString());
+                                          Order2State.vehcostcontroller.text =
+                                              li8.details[0].vehicleAmount
+                                                  .round()
+                                                  .toString();
+                                          Order2State.vescontroller.text = li8
+                                              .details[0].vesselSetAmount
+                                              .round()
+                                              .toString();
+                                          Order2State.cntcontroller.text =
+                                              (li8.details[0].cateringAmount /
+                                                  100)
+                                                  .round()
+                                                  .toString();
+                                          print(Order2State.cntcontroller.text);
+                                          NewOrderState.categoryid =
+                                              li8.details[0].categoryID;
+                                          Order3State.cnt.clear();
+                                          Order3State.controllers.clear();
+                                          Order3State.total = 0;
+                                          OrderListState.rowid.clear();
+                                          OrderListState.lineid.clear();
+                                          for (int i = 0;
+                                          i < li9.details.length;
+                                          i++) {
+                                            OrderListState.rowid
+                                                .add(li9.details[i].rowID);
+                                            OrderListState.lineid
+                                                .add(li9.details[i].lineID);
+
+                                            Order3State.total =
+                                                Order3State.total +
+                                                    li9.details[i].price;
+                                            Order3State.cnt.add(
+                                                li9.details[i].qty.round());
+                                            Order3State.controllers.add(
+                                                new TextEditingController());
+                                            Order3State.controllers[i].text =
+                                                li9.details[i].qty
+                                                    .round()
+                                                    .toString();
+                                          }
+                                          itemRequest(li8.details[0].categoryID)
+                                              .then((value) {
+                                            if (li5.details.length -
+                                                Order3State.cnt.length ==
+                                                0)
+                                              ;
+                                            else {
+                                              print("else");
+                                              print(
+                                                  "length ${li5.details.length - Order3State.cnt.length}");
+                                              for (int i = 0;
+                                              i <=
+                                                  (li5.details.length -
+                                                      Order3State
+                                                          .cnt.length);
+                                              i++) {
                                                 Order3State.cnt.add(0);
                                                 Order3State.controllers.add(
                                                     new TextEditingController(

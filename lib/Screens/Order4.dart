@@ -140,7 +140,7 @@ class Order4State extends State<Order4> {
 
   @override
   void initState() {
-
+Namecontroller.text="";
     super.initState();
   }
 
