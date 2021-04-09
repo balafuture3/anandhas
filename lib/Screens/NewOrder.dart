@@ -28,6 +28,8 @@ class NewOrderState extends State<NewOrder> {
 
   static String timeupload;
 
+  static String dateupload;
+
 
   Future<http.Response> categoryRequest() async {
     setState(() {
@@ -196,6 +198,7 @@ class NewOrderState extends State<NewOrder> {
                           DateTime.now(),
                           lastDate: DateTime.now().add(
                               new Duration(days: 365)));
+                      dateupload=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0");
 
                       datefromcontroller.text =
                           date.day.toString().padLeft(2, "0") +
@@ -259,7 +262,7 @@ class NewOrderState extends State<NewOrder> {
                         }
                       }
                       timeupload = time.hour.toString().padLeft(2, '0') + ':' +
-                          time.minute.toString().padLeft(2, "0");
+                          time.minute.toString().padLeft(2, "0")+':00';
                       timecontroller.text = hour.toString().padLeft(2, '0') +
                           ':' +
                           time.minute.toString().padLeft(2, '0') +

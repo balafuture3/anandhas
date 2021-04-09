@@ -269,7 +269,7 @@ class _OrderSummaryState extends State<OrderSummary> {
     return response;
   }
 
-  Future<http.Response> AdvanceHistoryRequest() async {
+Future<http.Response> AdvanceHistoryRequest() async {
     setState(() {
       loading = true;
     });
@@ -348,7 +348,7 @@ class _OrderSummaryState extends State<OrderSummary> {
     // print("response: ${response.body}");
     return response;
   }
-  Future<http.Response> itemRequest() async {
+Future<http.Response> itemRequest() async {
     setState(() {
       loading = true;
     });
@@ -505,6 +505,7 @@ else
 
     bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
   }
+print(NewOrderState.dateupload+' '+ NewOrderState.timeupload);
 print(bookingitem);
     setState(() {
       loading = true;
@@ -514,7 +515,7 @@ print(bookingitem);
   <soap:Body>
     <IN_MOB_INSERT_ORDER xmlns="http://tempuri.org/">
       <DocNo>$doc</DocNo>
-      <OrderDate>${NewOrderState.datefromcontroller.text}</OrderDate>
+      <OrderDate>${NewOrderState.dateupload+' '+ NewOrderState.timeupload}</OrderDate>
       <OrderTime>${NewOrderState.timeupload}</OrderTime>      
       <CateringService>${Order2State.catcheck==true?"Y":"N"}</CateringService>
       <CateringAmount>${double.parse(cattot)}</CateringAmount>
@@ -665,7 +666,7 @@ print(bookingitem);
 
       NewOrderState.datefromcontroller.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
       NewOrderState.timeupload=DateFormat("hh:mm").format(DateTime.now());
-
+      NewOrderState.dateupload=DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
       OrderRequest().then((value) => OrderItemRequest()).then((value) => itemRequest()).then((value) => AdvanceHistoryRequest());
 
 
@@ -833,7 +834,8 @@ if(newValue=="Full Advance") {
             initiallyExpanded: true,
             children: [
               widget.edit!=0?
-              ListTile(title: Text("Order Time and Date"),trailing: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+OrderDetailsState.li8.details[0].bookingTime)) },${OrderDetailsState.li8.details[0].bookingDate}"),):ListTile(title: Text("Order Time and Date"),trailing: Text("${NewOrderState.timecontroller.text },${NewOrderState.datefromcontroller.text}")),
+              ListTile(title: Text("Order Time and Date"),trailing: Text("${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }")
+              ):ListTile(title: Text("Order Time and Date"),trailing: Text("${NewOrderState.timecontroller.text },${NewOrderState.datefromcontroller.text}")),
 
 
               widget.edit!=0?

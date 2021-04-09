@@ -387,7 +387,7 @@ class OrderListState extends State<OrderList> {
                               return Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
                                 child: ListTile(
-                                  subtitle: Text("${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li7.details[i].Time.trim())) },${li7.details[i].Date.trim()}"),
+                                  subtitle: Text("${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"),
                                   onTap: () {
 
                                     orderid=li2[i].orderno;

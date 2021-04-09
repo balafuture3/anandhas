@@ -733,7 +733,7 @@ class OrderListGSTState extends State<OrderListGST> {
       setState(() {
 
           for (int i = 0; i < li7.details.length; i++)
-            li2.add(FilterList(li7.details[i].Invoice,li7.details[i].orderNum,"${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li7.details[i].Time.trim())) },${li7.details[i].Date.trim()}"));
+            li2.add(FilterList(li7.details[i].Invoice,li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
 
 
       });
@@ -816,7 +816,7 @@ class OrderListGSTState extends State<OrderListGST> {
                                 .toLowerCase()) ) {
                               setState(() {
                                 li2.add(
-                                    FilterList(li7.details[i].Invoice,li7.details[i].orderNum,"${DateFormat.jm().format(DateTime.parse("2020-12-12 "+li7.details[i].Time.trim())) },${li7.details[i].Date.trim()}"));
+                                    FilterList(li7.details[i].Invoice,li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
                               });
                             }
                         },

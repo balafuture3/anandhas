@@ -24,8 +24,12 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import 'package:printing/printing.dart';
+import 'package:printing/printing.dart';
+import 'package:printing/printing.dart';
+import 'package:printing/printing.dart';
 import 'package:xml/xml.dart' as xml;
 
+import 'Order4.dart';
 import 'OrderList.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -73,8 +77,8 @@ class OrderDetailsState extends State<OrderDetails> {
 
     final ttf = pw.Font.ttf(data.buffer.asByteData());
     const imageProvider = const AssetImage('logo.png');
-    // final image = await flutterImageProvider(imageProvider);
-    final image = await imageFromAssetBundle('logo.png');
+    final image = await flutterImageProvider(imageProvider);
+    // final image = await imageFromAssetBundle('logo.png');
     pdf.addPage(pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
@@ -156,7 +160,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   top: 10,
                 ),
                 child: pw.Text(
-                  "Delivery Date: ${OrderDetailsState.li8.details[0].bookingDate}",
+                  "Delivery Date: ${DateFormat("dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
                   softWrap: true,
 
                 ),
@@ -183,7 +187,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   top: 10,
                 ),
                 child: pw.Text(
-                  "Delivery Time:  ${DateFormat.jm().format(DateTime.parse("2020-12-12 " + OrderDetailsState.li8.details[0].bookingTime))}",
+                  "Delivery Time:  ${DateFormat.jm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
                   softWrap: true,
 
                 ),
@@ -419,9 +423,9 @@ class OrderDetailsState extends State<OrderDetails> {
                 ],
               ),
             ),
-            li8.details[0].cateringService == "Y"
-                ? pw.Column(
-              children: [
+
+            if(li8.details[0].cateringService == "Y")
+
                 pw.Column(
                   children: [
                     pw.Container(
@@ -464,8 +468,7 @@ class OrderDetailsState extends State<OrderDetails> {
                     //             ]),
                     //       ],
                     //     ))
-                  ],
-                ),
+
 
 
                 pw.Padding(
@@ -522,10 +525,9 @@ class OrderDetailsState extends State<OrderDetails> {
                       ],
                     ))
               ],
-            )
-                : pw.Container(),
-            li8.details[0].vesselSet == "Y"
-                ? pw.Column(
+            ),
+            if(li8.details[0].vesselSet == "Y")
+                 pw.Column(
               children: [
                 pw.Container(
                   margin: pw.EdgeInsets.only(right: 16,top: 10),
@@ -571,10 +573,9 @@ class OrderDetailsState extends State<OrderDetails> {
                 //       ],
                 //     ))
               ],
-            )
-                : pw.Container(),
-            li8.details[0].vehicle == "Y"
-                ? pw.Column(
+            ),
+            if(li8.details[0].vehicle == "Y")
+                 pw.Column(
               children: [
                 pw.Container(
                   margin: pw.EdgeInsets.only(right: 16,top:10),
@@ -622,6 +623,7 @@ class OrderDetailsState extends State<OrderDetails> {
                         ],
                       ),
                     ),
+
                     // Padding(
                     //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
                     //     child: Column(
@@ -645,57 +647,7 @@ class OrderDetailsState extends State<OrderDetails> {
                     //     ))
                   ],
                 ),
-                pw.Divider(
-                  thickness: 0.5,
-                ),
-                pw.Container(
-                  child:
-                    pw.Container(
-                      padding: pw.EdgeInsets.only(right:16),
-                       child: pw.Row(
-                        children: [
-                          pw.Expanded(
-                              flex: 4,
-                              child: pw. Text(
-                                  "Total Amount",
-                                  style: pw. TextStyle(
-                                      color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),
-                                ),
-                              ),
-                          pw.Expanded(
-                              flex: 1,
-                              child: pw.Text(
-                                "Rs.${(li8.details[0].orderPrice)}",
-                                style: pw. TextStyle(
-                                    color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),
-                                textAlign: pw.TextAlign.center,
-                              )),
-                        ],
-                      ),
-                    ),
-                    // Padding(
-                    //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                    //     child: Column(
-                    //       children: [
-                    //         // Row(
-                    //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         //     children: [
-                    //         //       Expanded(flex:4,child: Container()),
-                    //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                    //         //     ]),
-                    //         // SizedBox(height: 10,),
-                    //         Row(
-                    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //             children: [
-                    //
-                    //               Expanded(flex:4,child: Container(),),
-                    //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                    //
-                    //             ]),
-                    //       ],
-                    //     ))
 
-                ),
                 // Padding(
                 //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
                 //     child: Column(
@@ -719,7 +671,58 @@ class OrderDetailsState extends State<OrderDetails> {
                 //     ))
               ],
             )
-                : pw.Container(),
+               ,
+            pw.Divider(
+              thickness: 0.5,
+            ),
+            pw.Container(
+              child:
+              pw.Container(
+                padding: pw.EdgeInsets.only(right:16),
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 4,
+                      child: pw. Text(
+                        "Total Amount",
+                        style: pw. TextStyle(
+                            color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Expanded(
+                        flex: 1,
+                        child: pw.Text(
+                          "Rs.${(li8.details[0].orderPrice)}",
+                          style: pw. TextStyle(
+                              color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),
+                          textAlign: pw.TextAlign.center,
+                        )),
+                  ],
+                ),
+              ),
+              // Padding(
+              //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+              //     child: Column(
+              //       children: [
+              //         // Row(
+              //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         //     children: [
+              //         //       Expanded(flex:4,child: Container()),
+              //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+              //         //     ]),
+              //         // SizedBox(height: 10,),
+              //         Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //
+              //               Expanded(flex:4,child: Container(),),
+              //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+              //
+              //             ]),
+              //       ],
+              //     ))
+
+            ),
 
 
           ]);
@@ -751,6 +754,142 @@ class OrderDetailsState extends State<OrderDetails> {
      );
   }
 
+  Future<http.Response> DiscountRequest() async {
+
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_INSERT_ORDER xmlns="http://tempuri.org/">
+      <DocNo>${widget.orderid}</DocNo>
+      <OrderDate>10-12-2021</OrderDate>
+      <OrderTime>10:30</OrderTime>      
+      <CateringService>N</CateringService>
+      <CateringAmount>0</CateringAmount>
+      <VaselSet>N</VaselSet>
+      <VaselAmount>0</VaselAmount>
+      <Vehicle>N</Vehicle>
+      <VechicleAmount>0</VechicleAmount>
+      <OrderPrice>0</OrderPrice>
+      <AdvanceType>full</AdvanceType>
+      <AdvanceAmount>0</AdvanceAmount>
+      <PaymentType>Y</PaymentType>
+      <OrderStatus>P</OrderStatus>
+      <Branch>1</Branch>
+      <Remarks></Remarks>
+      <ItemDetailXML><![CDATA[<NewDataSet><Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>Idly</ItemCode><ItemName>Idly</ItemName><Qty>5</Qty><UOM></UOM><Price>140.0</Price><OrderFlag>N</OrderFlag><OrderFlagNo>0</OrderFlagNo></Table1></NewDataSet>]]></ItemDetailXML>
+      <ItemDetailXMLID>1</ItemDetailXMLID>
+      <UserID>1</UserID>
+      <CategoryID>1</CategoryID>
+      <Name>sdsa</Name>
+      <Mobile>432234</Mobile>
+      <Email>23dfh4</Email>
+      <Address>324</Address>
+      <GST>324</GST>
+      <WhatsappNumber>342343223</WhatsappNumber>
+      <Pincode>323423</Pincode>
+      <DisAmount>${li8.details[0].orderPrice - li8.details[0].advanceAmount}</DisAmount>
+      <DisApproval>Y</DisApproval>
+      <DisApplied>Y</DisApplied>
+      <DisApprovedBy>0</DisApprovedBy>
+    </IN_MOB_INSERT_ORDER>
+  </soap:Body>
+</soap:Envelope>
+''';
+print(envelope);
+
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_INSERT_ORDER';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      if (parsedXml.text != "[]")
+      {
+
+
+        final decoded = json.decode(parsedXml.text);
+        li6 = SaveResponse.fromJson(decoded[0]);
+        print(li6.sTATUSID);
+        if(li6.sTATUSID==1) {
+
+
+          Fluttertoast.showToast(
+              msg: "Discount applied Successfully",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.SNACKBAR,
+              timeInSecForIosWeb: 1,
+              backgroundColor: String_Values.primarycolor,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
+
+        }
+        else if(li6.sTATUSID==2) {
+          // NewOrderState.datefromcontroller.text="";
+          // NewOrderState.categoryid=0;
+          // Order2State.cntcontroller.text="0";
+          // Order2State.vescontroller.text="";
+          // Order2State.vehcostcontroller.text="";
+          // Order2State.vehkmcontroller.text="";
+          // Fluttertoast.showToast(
+          //     msg: "Order Updated Successfully",
+          //     toastLength: Toast.LENGTH_LONG,
+          //     gravity: ToastGravity.SNACKBAR,
+          //     timeInSecForIosWeb: 1,
+          //     backgroundColor: String_Values.primarycolor,
+          //     textColor: Colors.white,
+          //     fontSize: 16.0);
+          // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
+
+        }
+
+
+      } else
+        Fluttertoast.showToast(
+            msg: "Please check your login details,No users found",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: String_Values.primarycolor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+    } else {
+
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code${response.statusCode}, ${response.body} ",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
   Future<http.Response> AdvanceHistoryRequest() async {
     setState(() {
       loading = true;
@@ -1343,9 +1482,12 @@ class OrderDetailsState extends State<OrderDetails> {
                           ),
                           ListTile(
                             title: Text("Order Time and Date"),
-                            trailing: Text(
-                                "${DateFormat.jm().format(DateTime.parse("2020-12-12 " + OrderDetailsState.li8.details[0].bookingTime))},${OrderDetailsState.li8.details[0].bookingDate}"),
-                          ),
+                            trailing: Text("${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }")
+                          )
+
+                          //   Text(
+                          //       "${DateFormat.jm().format(DateTime.parse("2020-12-12 " + OrderDetailsState.li8.details[0].bookingTime))},${OrderDetailsState.li8.details[0].bookingDate}"),
+                          // ),
 
                           // Padding(
                           //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
@@ -2089,7 +2231,7 @@ class OrderDetailsState extends State<OrderDetails> {
                                         flex: 4,
                                         child: ListTile(
                                           title: Text(
-                                              "Advance ${i + 1} (${DateFormat.jm().format(DateTime.parse("2020-12-12 " + li10.details[i].time.trim()))},${(li10.details[i].date.trim())})"),
+                                              "Advance ${i + 1} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li10.details[i].date.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})"),
                                         )),
                                     Expanded(
                                         flex: 1,
@@ -2128,24 +2270,29 @@ class OrderDetailsState extends State<OrderDetails> {
                           ? Container()
                           : Container(
                               margin: EdgeInsets.only(right: 16),
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                      flex: 4,
-                                      child: ListTile(
-                                        title: Text(
-                                          "Amount Paid",
-                                          style: TextStyle(
-                                              color:
-                                                  String_Values.primarycolor),
-                                        ),
-                                      )),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        "Rs.${(li8.details[0].advanceAmount)}",
-                                        textAlign: TextAlign.start,
-                                      )),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          flex: 4,
+                                          child: ListTile(
+                                            title: Text(
+                                              "Amount Paid",
+                                              style: TextStyle(
+                                                  color:
+                                                      String_Values.primarycolor),
+                                            ),
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            "Rs.${(li8.details[0].advanceAmount)}",
+                                            textAlign: TextAlign.start,
+                                          )),
+                                    ],
+                                  ),
+
                                 ],
                               ),
                             ),
@@ -2247,6 +2394,30 @@ class OrderDetailsState extends State<OrderDetails> {
                       widget.gst
                           ? Column(
                               children: [
+                                if(li8.details[0].disApplied.toString().replaceAll(" ", "")=="Y")
+                                  Container(
+                                    margin: EdgeInsets.only(right: 16),
+                                  child:
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          flex: 4,
+                                          child: ListTile(
+                                            title: Text(
+                                              "Discount Amount",
+                                              style: TextStyle(
+                                                  color:
+                                                  String_Values.primarycolor),
+                                            ),
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            "Rs.${(li8.details[0].disAmount)}",
+                                            textAlign: TextAlign.start,
+                                          )),
+                                    ],
+                                  ),),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -2495,10 +2666,37 @@ class OrderDetailsState extends State<OrderDetails> {
                           ? Container()
                           : Column(
                               children: [
+                                if((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y"))
+                                Container(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          flex: 4,
+                                          child: ListTile(
+                                              title: Text(
+                                                "Discount Amount",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Colors.purple),
+                                              ))),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            "Rs.${(li8.details[0].disAmount).toStringAsFixed(2)}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                color: Colors.purple),
+                                          )),
+                                    ],
+                                  ),
+                                ),
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Container(
+                                if(!((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y")))
+
+                                  Container(
                                   padding: const EdgeInsets.only(right: 16.0),
                                   child: Row(
                                     children: [
@@ -2525,7 +2723,9 @@ class OrderDetailsState extends State<OrderDetails> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Row(
+                                if(!((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y")))
+
+                                  Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
@@ -2725,108 +2925,104 @@ class OrderDetailsState extends State<OrderDetails> {
                                         BorderRadius.circular(25.0),
                                       ),
                                       onPressed: () {
-                                        OrderRequest()
-                                            .then((value) => OrderItemRequest())
-                                            .then((value) {
-                                          if (li8.details[0].cateringService ==
-                                              "Y")
-                                            Order2State.catcheck = true;
-                                          else
-                                            Order2State.catcheck = false;
-                                          if (li8.details[0].vesselSet == "Y")
-                                            Order2State.vescheck = true;
-                                          else
-                                            Order2State.vescheck = false;
-                                          if (li8.details[0].vehicle == "Y")
-                                            Order2State.vehcheck = true;
-                                          else
-                                            Order2State.vehcheck = false;
+                                        showDialog<void>(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                backgroundColor: Colors.white.withOpacity(0),
+                                                title: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(50))),
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        SizedBox(
+                                                          height: height / 30,
+                                                        ),
+                                                        Container(
 
-                                          Order2State.vehkmcontroller.text = li8
-                                              .details[0].vehicleKM
-                                              .toString();
-                                          Order2State.cnt = int.parse(
-                                              (li8.details[0].cateringAmount /
-                                                  100)
-                                                  .round()
-                                                  .toString());
-                                          Order2State.vehcostcontroller.text =
-                                              li8.details[0].vehicleAmount
-                                                  .round()
-                                                  .toString();
-                                          Order2State.vescontroller.text = li8
-                                              .details[0].vesselSetAmount
-                                              .round()
-                                              .toString();
-                                          Order2State.cntcontroller.text =
-                                              (li8.details[0].cateringAmount /
-                                                  100)
-                                                  .round()
-                                                  .toString();
-                                          print(Order2State.cntcontroller.text);
-                                          NewOrderState.categoryid =
-                                              li8.details[0].categoryID;
-                                          Order3State.cnt.clear();
-                                          Order3State.controllers.clear();
-                                          Order3State.total = 0;
-                                          OrderListState.rowid.clear();
-                                          OrderListState.lineid.clear();
-                                          for (int i = 0;
-                                          i < li9.details.length;
-                                          i++) {
-                                            OrderListState.rowid
-                                                .add(li9.details[i].rowID);
-                                            OrderListState.lineid
-                                                .add(li9.details[i].lineID);
+                                                          child: Image.asset(
+                                                            "logo.png",width: width/2,
 
-                                            Order3State.total =
-                                                Order3State.total +
-                                                    li9.details[i].price;
-                                            Order3State.cnt.add(
-                                                li9.details[i].qty.round());
-                                            Order3State.controllers.add(
-                                                new TextEditingController());
-                                            Order3State.controllers[i].text =
-                                                li9.details[i].qty
-                                                    .round()
-                                                    .toString();
-                                          }
-                                          itemRequest(li8.details[0].categoryID)
-                                              .then((value) {
-                                            if (li5.details.length -
-                                                Order3State.cnt.length ==
-                                                0)
-                                              ;
-                                            else {
-                                              print("else");
-                                              print(
-                                                  "length ${li5.details.length - Order3State.cnt.length}");
-                                              for (int i = 0;
-                                              i <=
-                                                  (li5.details.length -
-                                                      Order3State
-                                                          .cnt.length);
-                                              i++) {
-                                                Order3State.cnt.add(0);
-                                                Order3State.controllers.add(
-                                                    new TextEditingController(
-                                                        text: "0"));
-                                              }
-                                              print(Order3State.cnt);
-                                            }
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        OrderSummary(
-                                                          edit: int.parse(
-                                                              widget.orderid),
-                                                          payment: 0,
-                                                          id: int.parse(
-                                                              widget.orderid),
-                                                        )));
-                                          });
-                                        });
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: height / 30,
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(left:8.0,right:8.0),
+                                                          child: Text(
+                                                            "Are you Sure, Do you want to apply discount of Rs.${(li8.details[0].orderPrice - li8.details[0].advanceAmount).toStringAsFixed(2)}",
+                                                            style: TextStyle(
+                                                                color: Colors.amber, fontSize: 16),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: height / 30,
+                                                        ),
+                                                        SizedBox(height: height/50,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            Container(
+                                                                width: width/4,
+
+                                                                alignment: Alignment.center,
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors.white,
+                                                                    borderRadius: BorderRadius.all(
+                                                                        Radius.circular(50))),
+                                                                child: FlatButton(
+                                                                  onPressed: () {
+
+                                                                    Navigator.pop(context);
+                                                                    DiscountRequest();
+                                                                  },
+                                                                  child: Text(
+                                                                    "Yes",
+                                                                    style: TextStyle(
+                                                                        color: String_Values.primarycolor),
+                                                                  ),
+                                                                )),
+                                                            Container(
+                                                                width: width/4,
+
+                                                                alignment: Alignment.center,
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors.white,
+                                                                    borderRadius: BorderRadius.all(
+                                                                        Radius.circular(50))),
+                                                                child: FlatButton(
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+
+                                                                  },
+                                                                  child: Text(
+                                                                    "No",
+                                                                    style: TextStyle(
+                                                                        color: String_Values.primarycolor),
+                                                                  ),
+                                                                )),
+                                                          ],
+                                                        ),
+
+
+
+                                                        SizedBox(
+                                                          height: height / 50,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            });
+
                                       },
                                       color: String_Values.primarycolor,
                                     ),

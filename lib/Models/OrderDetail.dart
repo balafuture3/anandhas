@@ -51,6 +51,10 @@ class OrderDetailModel {
   String gSTno;
   String pincode;
   String whatsappNumber;
+  double disAmount;
+  String disApplied;
+  String disApproval;
+  String disApprovedBy;
 
   OrderDetailModel(
       {this.docNo,
@@ -85,7 +89,11 @@ class OrderDetailModel {
         this.address,
         this.gSTno,
         this.pincode,
-        this.whatsappNumber});
+        this.whatsappNumber,
+        this.disAmount,
+        this.disApplied,
+        this.disApproval,
+        this.disApprovedBy});
 
   OrderDetailModel.fromJson(Map<String, dynamic> json) {
     docNo = json['DocNo'];
@@ -121,6 +129,10 @@ class OrderDetailModel {
     gSTno = json['GSTno'];
     pincode = json['Pincode'];
     whatsappNumber = json['WhatsappNumber'];
+    disAmount = json['DisAmount'];
+    disApplied = json['DisApplied'];
+    disApproval = json['DisApproval'];
+    disApprovedBy = json['DisApprovedBy'];
   }
 
   Map<String, dynamic> toJson() {
@@ -158,6 +170,10 @@ class OrderDetailModel {
     data['GSTno'] = this.gSTno;
     data['Pincode'] = this.pincode;
     data['WhatsappNumber'] = this.whatsappNumber;
+    data['DisAmount'] = this.disAmount;
+    data['DisApplied'] = this.disApplied;
+    data['DisApproval'] = this.disApproval;
+    data['DisApprovedBy'] = this.disApprovedBy;
     return data;
   }
 }
