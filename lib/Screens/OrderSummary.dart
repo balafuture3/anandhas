@@ -1630,7 +1630,7 @@ print(bookingitem);
         li11 = SaveModel.fromJson(decoded[0]);
         print(li11.sTATUSID);
         if(li11.sTATUSID==1) {
-          NewOrderState.datefromcontroller.text="";
+
           NewOrderState.categoryid=0;
           Order2State.cntcontroller.text="0";
           Order2State.vescontroller.text="";
@@ -1638,7 +1638,7 @@ print(bookingitem);
           Order2State.vehkmcontroller.text="";
 
           Order4State.Addresscontroller.text="";
-          Order4State.Mobilecontroller.text="";
+
           Order4State.Emailcontroller.text="";
           Order4State.Whatsappcontroller.text="";
           Order4State.Pincodecontroller.text="";
@@ -3696,9 +3696,14 @@ if(newValue=="Full Advance") {
                                       child: FlatButton(
                                         onPressed: () {
                                           // pdf();
-                                          generateInvoice();
+                                          postRequest().then((value) => generateInvoice()).then((value)
+                                          {
+                                            NewOrderState.datefromcontroller.text="";
+                                            Order4State.Mobilecontroller.text="";
+                                          })
+                                          ;
                                           Navigator.pop(context);
-                                          postRequest();
+
                                         },
                                         child: Text(
                                           "Yes",
