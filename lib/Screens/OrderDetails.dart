@@ -27,6 +27,7 @@ import 'package:printing/printing.dart';
 import 'package:printing/printing.dart';
 import 'package:printing/printing.dart';
 import 'package:printing/printing.dart';
+import 'package:time_picker_widget/time_picker_widget.dart';
 import 'package:xml/xml.dart' as xml;
 
 import 'Order4.dart';
@@ -48,13 +49,20 @@ class OrderDetailsState extends State<OrderDetails> {
 
   var dropdownValue1 = "Advance Type";
 
+  TimeOfDay time;
+
+  int hour;
+  String amrpm;
   var stringlist = ["Advance Type", "Half Advance", "Full Advance"];
 
   var dropdownValue2 = "Payment Mode";
   var stringlist2 = ["Payment Mode", "Cash", "Card", "Net Banking"];
 
   SaveResponse li6;
-
+  static String timeupload;
+  static TextEditingController datefromcontroller = new TextEditingController();
+  static TextEditingController timecontroller = new TextEditingController();
+  static String dateupload;
   String vehtot;
 
   String vestot;
@@ -70,6 +78,8 @@ class OrderDetailsState extends State<OrderDetails> {
   double total = 0;
 
   OrderAdvanceHistoryList li10;
+
+  SaveResponse li11;
   Future<void> generateInvoice() async {
     final pdf = pw.Document();
 
@@ -160,7 +170,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   top: 10,
                 ),
                 child: pw.Text(
-                  "Delivery Date: ${DateFormat("dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                  "Delivery Date: ${datefromcontroller.text}",
                   softWrap: true,
 
                 ),
@@ -187,7 +197,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   top: 10,
                 ),
                 child: pw.Text(
-                  "Delivery Time:  ${DateFormat.jm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                  "Delivery Time:  ${timecontroller.text}",
                   softWrap: true,
 
                 ),
@@ -461,6 +471,7 @@ class OrderDetailsState extends State<OrderDetails> {
                     //         Row(
                     //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //             children: [
+                    //             children: [
                     //
                     //               Expanded(flex:4,child: Container(),),
                     //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
@@ -648,6 +659,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   ],
                 ),
 
+
                 // Padding(
                 //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
                 //     child: Column(
@@ -672,6 +684,53 @@ class OrderDetailsState extends State<OrderDetails> {
               ],
             )
                ,
+
+            pw.Divider(
+              thickness: 0.1,
+            ),
+            pw.Text("Advance Details"),
+            for (int i = 0; i < li10.details.length; i++)
+              pw.Container(
+                margin: pw.EdgeInsets.only(right: 16),
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                        flex: 4,
+                        child:  pw.Text(
+                              "Advance ${i + 1} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li10.details[i].date.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})"),
+                        ),
+                    pw.Expanded(
+                        flex: 1,
+                        child: pw.Text(
+                          "Rs.${(li10.details[i].advanceAmount)}",
+                          textAlign: pw.TextAlign.left,
+                        )),
+                  ],
+                ),
+              ),
+            if((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y"))
+              pw.Container(
+                padding: const pw.EdgeInsets.only(right: 16.0),
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                        flex: 4,
+                        child:  pw.Text(
+                          "Discount Amount",
+                          style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              color: PdfColor.fromHex("339B6F")),
+                        )),
+                    pw.Expanded(
+                        flex: 1,
+                        child: pw.Text(
+                          "Rs.${(li8.details[0].disAmount).toStringAsFixed(2)}",
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,),
+                        )),
+                  ],
+                ),
+              ),
             pw.Divider(
               thickness: 0.5,
             ),
@@ -828,7 +887,7 @@ print(envelope);
         final decoded = json.decode(parsedXml.text);
         li6 = SaveResponse.fromJson(decoded[0]);
         print(li6.sTATUSID);
-        if(li6.sTATUSID==1) {
+
 
 
           Fluttertoast.showToast(
@@ -841,25 +900,6 @@ print(envelope);
               fontSize: 16.0);
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
 
-        }
-        else if(li6.sTATUSID==2) {
-          // NewOrderState.datefromcontroller.text="";
-          // NewOrderState.categoryid=0;
-          // Order2State.cntcontroller.text="0";
-          // Order2State.vescontroller.text="";
-          // Order2State.vehcostcontroller.text="";
-          // Order2State.vehkmcontroller.text="";
-          // Fluttertoast.showToast(
-          //     msg: "Order Updated Successfully",
-          //     toastLength: Toast.LENGTH_LONG,
-          //     gravity: ToastGravity.SNACKBAR,
-          //     timeInSecForIosWeb: 1,
-          //     backgroundColor: String_Values.primarycolor,
-          //     textColor: Colors.white,
-          //     fontSize: 16.0);
-          // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
-
-        }
 
 
       } else
@@ -1048,7 +1088,83 @@ print(envelope);
     // print("response: ${response.body}");
     return response;
   }
+  Future<http.Response> updateDeliveryDate() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> 
+    <soap:Body> <IN_MOB_DELIVERYDATEUPDATE xmlns="http://tempuri.org/"> 
+    <OrderNo>${widget.orderid}</OrderNo> 
+    <DeliveryDate>${dateupload+' '+ timeupload}</DeliveryDate> 
+    <DeliveryTime>${timeupload}</DeliveryTime> 
+    <FormId>1</FormId> 
+    </IN_MOB_DELIVERYDATEUPDATE> 
+    </soap:Body>
+    </soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_DELIVERYDATEUPDATE';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
 
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+      li11 = SaveResponse.fromJson(decoded[0]);
+      print(li11.sTATUSMSG);
+
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
   Future<http.Response> OrderRequest() async {
     setState(() {
       loading = true;
@@ -1090,7 +1206,12 @@ print(envelope);
       final decoded = json.decode(parsedXml.text);
       li8 = OrderDetaillListModel.fromJson(decoded);
       // print(li5.details[0].itemName);
-      setState(() {});
+      setState(() {
+       datefromcontroller.text= "${(DateFormat("dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }";
+       timecontroller.text= "${(DateFormat("hh:mm a")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }";
+       timeupload="${(DateFormat("hh:mm:ss")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }";
+       dateupload ="${(DateFormat("yyyy-MM-dd")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }";
+      });
 
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
@@ -2491,6 +2612,114 @@ print(envelope);
                                                         SizedBox(
                                                           height: height / 30,
                                                         ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(16.0),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            children: [
+                                                              Text("Confirm Delivery Date",style: TextStyle(fontSize: 12),),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                            padding: const EdgeInsets.only(left: 24, right: 24),
+                                                            child: TextField(
+                                                              onTap: () async {
+                                                                DateTime date = DateTime(1900);
+                                                                FocusScope.of(context).requestFocus(new FocusNode());
+
+                                                                date = await showDatePicker(
+                                                                    context: context,
+                                                                    initialDate: DateTime.now(),
+                                                                    firstDate:
+                                                                    DateTime.now(),
+                                                                    lastDate: DateTime.now().add(
+                                                                        new Duration(days: 365)));
+                                                                dateupload=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0");
+
+                                                                datefromcontroller.text =
+                                                                    date.day.toString().padLeft(2, "0") +
+                                                                        '-' +
+                                                                        date.month.toString().padLeft(2, "0") +
+                                                                        '-' +
+                                                                        date.year.toString();
+                                                              },
+                                                              enabled: true,
+                                                              controller: datefromcontroller,
+                                                              decoration: InputDecoration(
+                                                                prefixIcon: Icon(Icons.calendar_today_outlined),
+                                                                labelText: 'Date',
+                                                                hintStyle: TextStyle(
+                                                                  color: Colors.grey,
+                                                                  fontSize: 16.0,
+                                                                ),
+                                                                border: OutlineInputBorder(
+                                                                  borderRadius: BorderRadius.circular(25.0),
+                                                                ),
+                                                              ),
+                                                            )),
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(16.0),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            children: [
+                                                              Text("Confirm Delivery Time",style: TextStyle(fontSize: 12),),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                            padding: const EdgeInsets.only(left: 24, right: 24),
+                                                            child: TextField(
+                                                              onTap: () async {
+                                                                DateTime date = DateTime(1900);
+                                                                FocusScope.of(context).requestFocus(new FocusNode());
+
+                                                                time = await showCustomTimePicker(
+                                                                  context: context, initialTime: TimeOfDay.now(),);
+
+                                                                // context: context;,
+                                                                // initialDate: DateTime.now(),
+                                                                // firstDate:
+                                                                // DateTime.now().subtract(new Duration(days: 23725)),
+                                                                // lastDate: DateTime.now().add(new Duration(days: 365)));
+
+                                                                if (time.hour >= 12) {
+                                                                  hour = time.hour - 12;
+                                                                  amrpm = 'PM';
+                                                                  if (time.hour == 12) {
+                                                                    hour = time.hour;
+                                                                  }
+                                                                } else {
+                                                                  if (time.hour != 0) {
+                                                                    hour = time.hour;
+                                                                    amrpm = 'AM';
+                                                                  } else {
+                                                                    hour = 12;
+                                                                    amrpm = 'AM';
+                                                                  }
+                                                                }
+                                                                timeupload = time.hour.toString().padLeft(2, '0') + ':' +
+                                                                    time.minute.toString().padLeft(2, "0")+':00';
+                                                                timecontroller.text = hour.toString().padLeft(2, '0') +
+                                                                    ':' +
+                                                                    time.minute.toString().padLeft(2, '0') +
+                                                                    ' ' +
+                                                                    amrpm;
+                                                              },
+                                                              enabled: true,
+                                                              controller: timecontroller,
+                                                              decoration: InputDecoration(
+                                                                prefixIcon: Icon(Icons.calendar_today_outlined),
+                                                                labelText: 'Time',
+                                                                hintStyle: TextStyle(
+                                                                  color: Colors.grey,
+                                                                  fontSize: 16.0,
+                                                                ),
+                                                                border: OutlineInputBorder(
+                                                                  borderRadius: BorderRadius.circular(25.0),
+                                                                ),
+                                                              ),
+                                                            )),
                                                         SizedBox(height: height/50,),
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -2507,7 +2736,8 @@ print(envelope);
                                                                   onPressed: () {
                                                                     Navigator.pop(
                                                                         context);
-                                                                    generateInvoice();
+                                                                    updateDeliveryDate().then((value) =>  generateInvoice())
+                                                                   ;
                                                                   },
                                                                   child: Text(
                                                                     "Confirm",

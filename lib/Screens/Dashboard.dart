@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import 'OrderList.dart';
 import 'OrderListGST.dart';
+import 'Report.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -225,6 +226,25 @@ decoration: BoxDecoration(
                                                     },
                                                     child: Text(
                                                       "GST Invoice",
+                                                      style: TextStyle(
+                                                          color: String_Values.primarycolor),
+                                                    ),
+                                                  )),
+                                              SizedBox(height: height/50,),
+                                              Container(
+                                                  margin: EdgeInsets.only(left:16,right: 16),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(50))),
+                                                  child: FlatButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>Reports()));
+                                                    },
+                                                    child: Text(
+                                                      "Sales Report",
                                                       style: TextStyle(
                                                           color: String_Values.primarycolor),
                                                     ),
