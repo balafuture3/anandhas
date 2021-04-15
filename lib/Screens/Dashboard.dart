@@ -244,7 +244,7 @@ decoration: BoxDecoration(
                                                       Navigator.push(context,MaterialPageRoute(builder: (context)=>Reports()));
                                                     },
                                                     child: Text(
-                                                      "Sales Report",
+                                                      "Reports",
                                                       style: TextStyle(
                                                           color: String_Values.primarycolor),
                                                     ),
