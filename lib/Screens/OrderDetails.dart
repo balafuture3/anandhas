@@ -614,53 +614,6 @@ class OrderDetailsState extends State<OrderDetails> {
                   ),
                 ),
 
-                pw.Column(
-                  children: [
-                    pw.Container(
-                      margin: pw.EdgeInsets.only(right: 16,top:10),
-                      child: pw.Row(
-                        children: [
-                          pw.Expanded(
-                              flex: 4,
-                              child:  pw.Text(
-                                  "Payment Mode",
-                                  style: pw.TextStyle(
-                                      color: PdfColor.fromHex("339B6F")),
-                                ),
-                              ),
-                          pw.Expanded(
-                              flex: 1,
-                              child: pw.Text(
-                                "${(li8.details[0].paymentType)}",
-                                textAlign: pw.TextAlign.center,
-                              )),
-                        ],
-                      ),
-                    ),
-
-                    // Padding(
-                    //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                    //     child: Column(
-                    //       children: [
-                    //         // Row(
-                    //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         //     children: [
-                    //         //       Expanded(flex:4,child: Container()),
-                    //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                    //         //     ]),
-                    //         // SizedBox(height: 10,),
-                    //         Row(
-                    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //             children: [
-                    //
-                    //               Expanded(flex:4,child: Container(),),
-                    //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                    //
-                    //             ]),
-                    //       ],
-                    //     ))
-                  ],
-                ),
 
 
                 // Padding(
@@ -687,6 +640,53 @@ class OrderDetailsState extends State<OrderDetails> {
               ],
             )
                ,
+            pw.Column(
+              children: [
+                pw.Container(
+                  margin: pw.EdgeInsets.only(right: 16,top:10),
+                  child: pw.Row(
+                    children: [
+                      pw.Expanded(
+                        flex: 4,
+                        child:  pw.Text(
+                          "Payment Mode",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("339B6F")),
+                        ),
+                      ),
+                      pw.Expanded(
+                          flex: 1,
+                          child: pw.Text(
+                            "${(li8.details[0].paymentType)}",
+                            textAlign: pw.TextAlign.center,
+                          )),
+                    ],
+                  ),
+                ),
+
+                // Padding(
+                //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                //     child: Column(
+                //       children: [
+                //         // Row(
+                //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         //     children: [
+                //         //       Expanded(flex:4,child: Container()),
+                //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                //         //     ]),
+                //         // SizedBox(height: 10,),
+                //         Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             children: [
+                //
+                //               Expanded(flex:4,child: Container(),),
+                //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                //
+                //             ]),
+                //       ],
+                //     ))
+              ],
+            ),
 
             pw.Divider(
               thickness: 0.1,
@@ -737,6 +737,35 @@ class OrderDetailsState extends State<OrderDetails> {
             pw.Divider(
               thickness: 0.5,
             ),
+
+            if(li8.details[0].paymentType.trim()=="Receive Later")
+            pw.Container(
+              padding: const pw.EdgeInsets.only(right: 16.0),
+              child: pw.Row(
+                children: [
+                  pw.Expanded(
+                      flex: 4,
+                      child:  pw.Text(
+                        "Amount Receivable",
+                        style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            color: PdfColor.fromHex("339B6F")),
+                      )),
+                  pw.Expanded(
+                      flex: 1,
+                      child: pw.Text(
+                        "Rs.${(li8.details[0].orderPrice-(li8.details[0].disAmount+li8.details[0].advanceAmount)).toStringAsFixed(2)}",
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,),
+                      )),
+                ],
+              ),
+            ),
+            if(li8.details[0].paymentType.trim()=="Receive Later")
+            pw.Divider(
+              thickness: 0.5,
+            ),
+
             pw.Container(
               child:
               pw.Container(
@@ -867,7 +896,7 @@ class OrderDetailsState extends State<OrderDetails> {
                     children: [
                       pw.Expanded(
                           flex: 1,
-                          child: pw.Text("Invoice No : ${widget.invoice}")),
+                          child: pw.Text("Invoice No : ${li8.details[0].inVoiceNo}")),
                       pw.Expanded(
                         flex: 1,
                         child: pw.Container(
@@ -894,7 +923,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   top: 10,
                 ),
                 child: pw.Text(
-                  "Name: ${OrderDetailsState.li8.details[0].name.toString()}",
+                  "Name: ${li8.details[0].name.toString()}",
                   softWrap: true,
 
                 ),
@@ -920,7 +949,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   top: 10,
                 ),
                 child: pw.Text(
-                  "Mobile: ${OrderDetailsState.li8.details[0].mobile.toString()}",
+                  "Mobile: ${li8.details[0].mobile.toString()}",
                   softWrap: true,
 
                 ),
@@ -1443,7 +1472,7 @@ class OrderDetailsState extends State<OrderDetails> {
                   ],
                 ),
               ),
-            if((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y"))
+
               pw.Container(
                 padding: const pw.EdgeInsets.only(right: 16.0),
                 child: pw.Row(
@@ -1459,7 +1488,7 @@ class OrderDetailsState extends State<OrderDetails> {
                     pw.Expanded(
                         flex: 1,
                         child: pw.Text(
-                          "Rs.${(li8.details[0].disAmount).toStringAsFixed(2)}",
+                          "Rs.${(discountcontroller.text)}",
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,),
                         )),
@@ -1541,7 +1570,7 @@ class OrderDetailsState extends State<OrderDetails> {
     //
     //   build: (format) => pdf.save(),
     // );
-    await Printing.sharePdf(bytes: await pdf.save(), filename: 'Discount ${li8.details[0].orderNo}.pdf');
+    await Printing.sharePdf(bytes: await pdf.save(), filename: 'Discount ${li8.details[0].inVoiceNo}.pdf');
     // await Printing.layoutPdf(
     //   format: PdfPageFormat.a4,
     //   onLayout: (PdfPageFormat format) async => pdf.save(),
@@ -1625,12 +1654,12 @@ print(envelope);
       print(parsedXml.text);
       if (parsedXml.text != "[]")
       {
-
+        shareInvoice();
 
         final decoded = json.decode(parsedXml.text);
         li6 = SaveResponse.fromJson(decoded[0]);
         print(li6.sTATUSID);
-shareInvoice();
+
 
 
           Fluttertoast.showToast(
@@ -1948,7 +1977,7 @@ shareInvoice();
       print(parsedXml.text);
       final decoded = json.decode(parsedXml.text);
       li8 = OrderDetaillListModel.fromJson(decoded);
-      // print(li5.details[0].itemName);
+      print("Invoice No: ${li8.details[0].inVoiceNo}");
       setState(() {
        datefromcontroller.text= "${(DateFormat("dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }";
        timecontroller.text= "${(DateFormat("hh:mm a")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(OrderDetailsState.li8.details[0].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }";
@@ -3696,13 +3725,14 @@ shareInvoice();
                                 SizedBox(
                                   height: 10,
                                 ),
-                                if(!((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y")))
 
                                   Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    RaisedButton(
+                                    if(!((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y")))
+
+                                      RaisedButton(
                                       child: Text(
                                         "Update",
                                         style: TextStyle(color: Colors.white),
@@ -3886,7 +3916,8 @@ shareInvoice();
                                       },
                                       color: String_Values.primarycolor,
                                     ),
-                                    if((li8.details[0].orderPrice - li8.details[0].advanceAmount)>0)
+                                    if(!((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y")))
+                                      if((li8.details[0].orderPrice - li8.details[0].advanceAmount)>0)
                                     RaisedButton(
                                       child: Text(
                                         "Discount",

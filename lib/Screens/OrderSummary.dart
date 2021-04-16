@@ -2159,7 +2159,7 @@ class _OrderSummaryState extends State<OrderSummary> {
 
   var dropdownValue1="Advance Type";
   TextEditingController AdvanceController = new TextEditingController();
-  var stringlist=["Advance Type","Advance","Full Advance"];
+  var stringlist=["Advance Type","Advance","Full/Balance Amount"];
 
   var dropdownValue2="Payment Mode";
   var stringlist2=["Payment Mode","Cash","Card","Receive Later"];
@@ -2836,7 +2836,7 @@ itemRequest();
                   setState(() {
 
                     dropdownValue1 = newValue;
-if(newValue=="Full Advance") {
+if(newValue=="Full/Balance Amount") {
   advenable=false;
   AdvanceController.text = widget.edit == 0 ? ((int.parse(vehtot) +
       (int.parse(vestot) + (int.parse(cattot)) +

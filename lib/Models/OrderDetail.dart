@@ -55,6 +55,7 @@ class OrderDetailModel {
   String disApplied;
   String disApproval;
   String disApprovedBy;
+  String inVoiceNo;
 
   OrderDetailModel(
       {this.docNo,
@@ -93,7 +94,7 @@ class OrderDetailModel {
         this.disAmount,
         this.disApplied,
         this.disApproval,
-        this.disApprovedBy});
+        this.disApprovedBy,this.inVoiceNo});
 
   OrderDetailModel.fromJson(Map<String, dynamic> json) {
     docNo = json['DocNo'];
@@ -133,6 +134,7 @@ class OrderDetailModel {
     disApplied = json['DisApplied'];
     disApproval = json['DisApproval'];
     disApprovedBy = json['DisApprovedBy'];
+    inVoiceNo = json['InvNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -174,6 +176,7 @@ class OrderDetailModel {
     data['DisApplied'] = this.disApplied;
     data['DisApproval'] = this.disApproval;
     data['DisApprovedBy'] = this.disApprovedBy;
+    data['InvNo']=this.inVoiceNo;
     return data;
   }
 }

@@ -54,12 +54,15 @@ dependencies:
 #  documents_picker: ^1.0.0
 #  flutter_rating_bar: ^3.2.0+1
   fluttertoast: ^7.1.4
-  xml: ^5.0.2
+  xml: ^5.1.0
   xml2json: ^5.0.0
   pdf: ^2.1.0
   path_provider: ^2.0.1
+  path: ^1.8.0
   printing: ^4.1.0
   table_calendar: ^2.3.3
+  excel: ^2.0.0-null-safety
+
 
 
 
