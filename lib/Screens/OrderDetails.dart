@@ -6,6 +6,7 @@ import 'package:anandhasapp/Models/InsertOrderResponse.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
 import 'package:anandhasapp/Models/OrderDetail.dart';
 import 'package:anandhasapp/Models/OrderIdemDetailModel.dart';
+import 'package:anandhasapp/Models/SaveModel.dart';
 import 'package:anandhasapp/Screens/Dashboard.dart';
 import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/Screens/NewOrder.dart';
@@ -81,6 +82,8 @@ class OrderDetailsState extends State<OrderDetails> {
   OrderAdvanceHistoryList li10;
 
   SaveResponse li11;
+
+  SaveModel li18;
 
 
   Future<void> generateInvoice() async {
@@ -1782,7 +1785,101 @@ print(envelope);
     // print("response: ${response.body}");
     return response;
   }
+  Future<http.Response> CancelRequest() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
+      <OrderNo>${widget.orderid}</OrderNo>
+      <BranchID>${LoginPageState.branchid}</BranchID>
+       <FormId>4</FormId>
+    </IN_MOB_GET_ORDER_NO>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GET_ORDER_NO';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
 
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+
+      li18 = SaveModel.fromJson(decoded[0]);
+      print(li18.sTATUSID);
+      if(li18.sTATUSID==1) {
+
+
+        Fluttertoast.showToast(
+            msg: "Order Cancelled Successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: String_Values.primarycolor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Dashboard()), (route) => false);
+
+      }
+      // print(li5.details[0].itemName);
+      setState(() {});
+
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
   Future<http.Response> itemRequest(id) async {
     setState(() {
       loading = true;
@@ -4051,6 +4148,121 @@ print(envelope);
                                       color: String_Values.primarycolor,
                                     ),
                                   ],
+                                ),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                RaisedButton(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(25.0),
+                                  ),
+                                  onPressed: () {
+                                    showDialog<void>(
+                                        context: context,
+                                        barrierDismissible: true,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: Colors.white.withOpacity(0),
+                                            title: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(50))),
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: height / 30,
+                                                    ),
+                                                    Container(
+
+                                                      child: Image.asset(
+                                                        "logo.png",width: width/2,
+
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: height / 30,
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left:8.0,right:8.0),
+                                                      child: Text(
+                                                        "Are you Sure, Do you want to cancel this order",
+                                                        style: TextStyle(
+                                                            color: Colors.amber, fontSize: 16),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: height / 30,
+                                                    ),
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Container(
+                                                            width: width/4,
+
+                                                            alignment: Alignment.center,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.white,
+                                                                borderRadius: BorderRadius.all(
+                                                                    Radius.circular(50))),
+                                                            child: FlatButton(
+                                                              onPressed: () {
+
+                                                                Navigator.pop(context);
+                                                                CancelRequest();
+                                                              },
+                                                              child: Text(
+                                                                "Yes",
+                                                                style: TextStyle(
+                                                                    color: String_Values.primarycolor),
+                                                              ),
+                                                            )),
+                                                        Container(
+                                                            width: width/4,
+
+                                                            alignment: Alignment.center,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.white,
+                                                                borderRadius: BorderRadius.all(
+                                                                    Radius.circular(50))),
+                                                            child: FlatButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(context);
+
+                                                              },
+                                                              child: Text(
+                                                                "No",
+                                                                style: TextStyle(
+                                                                    color: String_Values.primarycolor),
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+
+
+
+                                                    SizedBox(
+                                                      height: height / 50,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        });
+
+                                  },
+                                  color: String_Values.primarycolor,
                                 ),
                                 SizedBox(
                                   height: height / 6,
