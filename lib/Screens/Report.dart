@@ -1,10 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:anandhasapp/Models/ItemModel.dart';
+import 'package:anandhasapp/Models/ItemModel1.dart';
+import 'package:anandhasapp/Models/OrderIdemDetailModel.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_typeahead/cupertino_flutter_typeahead.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart';
 import 'package:printing/printing.dart';
-import 'package:syncfusion_flutter_xlsio/xlsio.dart' hide Column, Alignment, Row;
+import 'package:syncfusion_flutter_xlsio/xlsio.dart'
+    hide Column, Alignment, Row;
 import 'package:anandhasapp/Models/ReportsModel.dart';
 import 'package:anandhasapp/Models/ResponseModelList1.dart';
 import 'package:anandhasapp/Screens/LoginPage.dart';
@@ -21,16 +27,16 @@ import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-
-
 class Reports extends StatefulWidget {
   @override
   _ReportsState createState() => _ReportsState();
 }
 
 class _ReportsState extends State<Reports> {
-  bool loading=false;
-
+  bool loading = false;
+  var cnt1 = 0;
+  static var cnt = [0, 0, 0];
+  static List<TextEditingController> controllers = List();
   String dateupload;
   TextEditingController EndDateController = new TextEditingController();
   TextEditingController StartDateController = new TextEditingController();
@@ -61,9 +67,9 @@ class _ReportsState extends State<Reports> {
 
   ReportsModelList li10;
 
-  double cashcount=0;
+  double cashcount = 0;
 
-  double cardcount=0;
+  double cardcount = 0;
 
   ResponseModelListings1 li11;
 
@@ -71,9 +77,13 @@ class _ReportsState extends State<Reports> {
 
   Directory tempDir;
 
-  var selectedPlanIds = new List<String> ();
+  var selectedPlanIds = new List<String>();
 
   ReportsModelList li13;
+  ItemModelList1 li14;
+ // OrderItemDetailModelList li14;
+
+  OrderItemDetailModelList li15;
 
   Future<void> generateExcel() async {
     //Create a Excel document.
@@ -83,10 +93,6 @@ class _ReportsState extends State<Reports> {
     //Accessing via index
     final Worksheet sheet = workbook.worksheets[0];
     sheet.showGridlines = false;
-
-
-
-
 
 // Save the document.
 //     final List<int> byte = workbook.saveAsStream();
@@ -170,32 +176,40 @@ class _ReportsState extends State<Reports> {
     // range6.cellStyle.bold = true;
     //
     sheet.getRangeByIndex(8, 2).setText('Order No');
-    for(int i=0;i<li6.details.length;i++)
-    sheet.getRangeByIndex(9+i, 2).setText(li6.details[i].orderNo);
+    for (int i = 0; i < li6.details.length; i++)
+      sheet.getRangeByIndex(9 + i, 2).setText(li6.details[i].orderNo);
 
     sheet.getRangeByIndex(8, 3).setText('Name');
-    for(int i=0;i<li6.details.length;i++)
-      sheet.getRangeByIndex(9+i, 3).setText(li6.details[i].name);
+    for (int i = 0; i < li6.details.length; i++)
+      sheet.getRangeByIndex(9 + i, 3).setText(li6.details[i].name);
 
     sheet.getRangeByIndex(8, 4).setText('Bill Date');
-    for(int i=0;i<li6.details.length;i++)
-      sheet.getRangeByIndex(9+i, 4).setText("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}");
+    for (int i = 0; i < li6.details.length; i++)
+      sheet.getRangeByIndex(9 + i, 4).setText(
+          "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}");
 
     sheet.getRangeByIndex(8, 5).setText('Bill Amount');
-    for(int i=0;i<li6.details.length;i++)
-      sheet.getRangeByIndex(9+i, 5).setText(li6.details[i].orderPrice.toString());
+    for (int i = 0; i < li6.details.length; i++)
+      sheet
+          .getRangeByIndex(9 + i, 5)
+          .setText(li6.details[i].orderPrice.toString());
 
     sheet.getRangeByIndex(8, 6).setText('Advance');
-    for(int i=0;i<li6.details.length;i++)
-      sheet.getRangeByIndex(9+i, 6).setText(li6.details[i].advanceAmount.toString());
+    for (int i = 0; i < li6.details.length; i++)
+      sheet
+          .getRangeByIndex(9 + i, 6)
+          .setText(li6.details[i].advanceAmount.toString());
 
     sheet.getRangeByIndex(8, 7).setText('Discount');
-    for(int i=0;i<li6.details.length;i++)
-      sheet.getRangeByIndex(9+i, 7).setText(li6.details[i].disAmount.toString());
+    for (int i = 0; i < li6.details.length; i++)
+      sheet
+          .getRangeByIndex(9 + i, 7)
+          .setText(li6.details[i].disAmount.toString());
 
     sheet.getRangeByIndex(8, 8).setText('Balance Receivable');
-    for(int i=0;i<li6.details.length;i++)
-      sheet.getRangeByIndex(9+i, 8).setText("${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}");
+    for (int i = 0; i < li6.details.length; i++)
+      sheet.getRangeByIndex(9 + i, 8).setText(
+          "${li6.details[i].orderPrice - li6.details[i].advanceAmount - li6.details[i].disAmount}");
 
     // sheet.getRangeByIndex(16, 2).setText('CA-1098');
     // sheet.getRangeByIndex(17, 2).setText('LJ-0192');
@@ -268,13 +282,14 @@ class _ReportsState extends State<Reports> {
     // range9.cellStyle.hAlign = HAlignType.center;
     // range9.cellStyle.vAlign = VAlignType.center;
     ByteData data = await rootBundle.load("logo.png");
-    List<int> byt = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    List<int> byt =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     // final byt = rootBundle.load("logo.png").readAsBytesSync();
     final Picture picture = sheet.pictures.addBase64(3, 4, base64.encode(byt));
     picture.lastRow = 7;
     picture.lastColumn = 8;
-    picture.height=200;
-    picture.width=200;
+    picture.height = 200;
+    picture.width = 200;
 //
 // //Adding a picture
 //     final List<int> bytsafd = File('logo.png').readAsBytesSync();
@@ -294,7 +309,9 @@ class _ReportsState extends State<Reports> {
     }
     final String path = tempDir.path;
     final File file = File('$path/output.xlsx');
-    await file.writeAsBytes(bytes).then((value) async => await OpenFile.open('$path/output.xlsx'));
+    await file
+        .writeAsBytes(bytes)
+        .then((value) async => await OpenFile.open('$path/output.xlsx'));
 
     //Launch the file (used open_file package)
     ;
@@ -313,67 +330,96 @@ class _ReportsState extends State<Reports> {
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
         build: (pw.Context context) {
-          return  [
+          return [
             pw.Header(
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.end,
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-
-                            pw.Image(image, width: 150),
-                            pw.Text("Taste of Life",
-                                style: pw.TextStyle(fontSize: 10),
-                                textAlign: pw.TextAlign.right),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-                      pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-                            pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
-                                style: pw.TextStyle(
-                                    fontSize: 14,
-                                    color: PdfColor.fromHex("339B6F"))),
-                            pw.Text("747,Puliakulam Road, P.N. Palayam,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-                    ])),
-
-            pw.Center(child: pw.Text("Sales Report",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold,fontSize: 16))),
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Image(image, width: 150),
+                        pw.Text("Taste of Life",
+                            style: pw.TextStyle(fontSize: 10),
+                            textAlign: pw.TextAlign.right),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                            style: pw.TextStyle(
+                                fontSize: 14,
+                                color: PdfColor.fromHex("339B6F"))),
+                        pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                ])),
+            pw.Center(
+                child: pw.Text("Sales Report",
+                    style: pw.TextStyle(
+                        color: PdfColor.fromHex("339B6F"),
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 16))),
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
                 pw.TableRow(
-                  decoration: pw.BoxDecoration(
-                    color: PdfColor.fromHex("339B6F")
-                  ),
-                  children: [
-                    pw.Text("Order No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    pw.Text("Name",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    pw.Text("GST No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    pw.Text("Bill Date",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    pw.Text("Bill Amount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    pw.Text("Advance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    pw.Text("Discount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    pw.Text("Balance Receivable",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                  ]
-                ),
-                pw.TableRow(
-          children: [
-          pw.Text(""),]
-                ),
-
-                for(int i=0;i<li6.details.length;i++)
-                pw.TableRow(
-
-                  children: [
+                    decoration:
+                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
+                    children: [
+                      pw.Text("Order No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Name",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("GST No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Date",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Amount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Advance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Discount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Balance Receivable",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                    ]),
+                pw.TableRow(children: [
+                  pw.Text(""),
+                ]),
+                for (int i = 0; i < li6.details.length; i++)
+                  pw.TableRow(children: [
                     pw.Text(li6.details[i].orderNo),
                     pw.Text(li6.details[i].name),
                     pw.Text(li6.details[i].invNo),
@@ -381,15 +427,11 @@ class _ReportsState extends State<Reports> {
                     pw.Text(li6.details[i].orderPrice.toString()),
                     pw.Text(li6.details[i].advanceAmount.toString()),
                     pw.Text(li6.details[i].disAmount.toString()),
-                    pw.Text("${li6.details[i].orderPrice-(li6.details[i].advanceAmount+li6.details[i].disAmount)}"),
-
-                  ]
-                )
+                    pw.Text(
+                        "${li6.details[i].orderPrice - (li6.details[i].advanceAmount + li6.details[i].disAmount)}"),
+                  ])
               ],
-
             )
-
-
           ];
           // Center
         })); // Pa
@@ -415,7 +457,6 @@ class _ReportsState extends State<Reports> {
     await Printing.layoutPdf(
       format: PdfPageFormat.a4,
       onLayout: (PdfPageFormat format) async => pdf.save(),
-
     );
   }
 
@@ -432,232 +473,398 @@ class _ReportsState extends State<Reports> {
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
         build: (pw.Context context) {
-          return  [
+          return [
             pw.Header(
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.end,
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-
-                            pw.Image(image, width: 150),
-                            pw.Text("Taste of Life",
-                                style: pw.TextStyle(fontSize: 10),
-                                textAlign: pw.TextAlign.right),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-                      pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-                            pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
-                                style: pw.TextStyle(
-                                    fontSize: 14,
-                                    color: PdfColor.fromHex("339B6F"))),
-                            pw.Text("747,Puliakulam Road, P.N. Palayam,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-
-                    ])),
-
-            pw.Center(child: pw.Text("Cash settlement Report",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold,fontSize: 16))),
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Image(image, width: 150),
+                        pw.Text("Taste of Life",
+                            style: pw.TextStyle(fontSize: 10),
+                            textAlign: pw.TextAlign.right),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                            style: pw.TextStyle(
+                                fontSize: 14,
+                                color: PdfColor.fromHex("339B6F"))),
+                        pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                ])),
+            pw.Center(
+                child: pw.Text("Cash settlement Report",
+                    style: pw.TextStyle(
+                        color: PdfColor.fromHex("339B6F"),
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 16))),
             pw.SizedBox(width: 10, height: 10),
-            pw.Text("PO-Advance",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 12)),
+            pw.Text("PO-Advance",
+                style:
+                    pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
                 pw.TableRow(
-                    decoration: pw.BoxDecoration(
-                        color: PdfColor.fromHex("339B6F")
-                    ),
+                    decoration:
+                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
-                      pw.Text("Order No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Name",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("GST No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Delivery Date",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Amount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Cash",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Card",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Advance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Discount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Balance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    ]
-                ),
-                pw.TableRow(
-                    children: [
-                      pw.Text(""),]
-                ),
-
-                for(int i=0;i<li7.details.length;i++)
-                  pw.TableRow(
-
-                      children: [
-                        pw.Text(li7.details[i].orderNo),
-                        pw.Text(li7.details[i].name),
-                        pw.Text(li7.details[i].invNo),
-                        pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
-                        pw.Text(li7.details[i].orderPrice.toString()),
-                        pw.Text(li7.details[i].paymentType1.toString().trim()=="Cash"?li7.details[i].advanceAmount1.toString():""),
-                        pw.Text(li7.details[i].paymentType1.toString().trim()=="Card"?li7.details[i].advanceAmount1.toString():""),
-                        pw.Text(li7.details[i].advanceAmount.toString()),
-                        pw.Text(li7.details[i].disAmount.toString()),
-                        pw.Text("${li7.details[i].orderPrice-(li7.details[i].advanceAmount+li7.details[i].disAmount)}"),
-
-                      ]
-                  )
+                      pw.Text("Order No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Name",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("GST No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Delivery Date",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Amount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Cash",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Card",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Advance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Discount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Balance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                    ]),
+                pw.TableRow(children: [
+                  pw.Text(""),
+                ]),
+                for (int i = 0; i < li7.details.length; i++)
+                  pw.TableRow(children: [
+                    pw.Text(li7.details[i].orderNo),
+                    pw.Text(li7.details[i].name),
+                    pw.Text(li7.details[i].invNo),
+                    pw.Text(
+                        "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+                    pw.Text(li7.details[i].orderPrice.toString()),
+                    pw.Text(
+                        li7.details[i].paymentType1.toString().trim() == "Cash"
+                            ? li7.details[i].advanceAmount1.toString()
+                            : ""),
+                    pw.Text(
+                        li7.details[i].paymentType1.toString().trim() == "Card"
+                            ? li7.details[i].advanceAmount1.toString()
+                            : ""),
+                    pw.Text(li7.details[i].advanceAmount.toString()),
+                    pw.Text(li7.details[i].disAmount.toString()),
+                    pw.Text(
+                        "${li7.details[i].orderPrice - (li7.details[i].advanceAmount + li7.details[i].disAmount)}"),
+                  ])
               ],
-
             ),
             pw.SizedBox(width: 10, height: 10),
-            pw.Text("PO-Fully Settlement as Advance",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 12)),
+            pw.Text("PO-Fully Settlement as Advance",
+                style:
+                    pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
                 pw.TableRow(
-                    decoration: pw.BoxDecoration(
-                        color: PdfColor.fromHex("339B6F")
-                    ),
+                    decoration:
+                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
-                      pw.Text("Order No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Name",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("GST No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Delivery Date",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Amount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Cash",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Card",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Advance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Discount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Balance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    ]
-                ),
-                pw.TableRow(
-                    children: [
-                      pw.Text(""),]
-                ),
-
-                for(int i=0;i<li8.details.length;i++)
-                  pw.TableRow(
-
-                      children: [
-                        pw.Text(li8.details[i].orderNo),
-                        pw.Text(li8.details[i].name),
-                        pw.Text(li8.details[i].invNo),
-                        pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li8.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
-                        pw.Text(li8.details[i].orderPrice.toString()),
-                        pw.Text(li8.details[i].paymentType.toString().trim()=="Cash"?li8.details[i].advanceAmount.toString():""),
-                        pw.Text(li8.details[i].paymentType.toString().trim()=="Card"?li8.details[i].advanceAmount.toString():""),
-                        pw.Text(li8.details[i].advanceAmount.toString()),
-                        pw.Text(li8.details[i].disAmount.toString()),
-                        pw.Text("${li8.details[i].orderPrice-(li8.details[i].advanceAmount+li8.details[i].disAmount)}"),
-
-                      ]
-                  )
+                      pw.Text("Order No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Name",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("GST No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Delivery Date",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Amount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Cash",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Card",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Advance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Discount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Balance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                    ]),
+                pw.TableRow(children: [
+                  pw.Text(""),
+                ]),
+                for (int i = 0; i < li8.details.length; i++)
+                  pw.TableRow(children: [
+                    pw.Text(li8.details[i].orderNo),
+                    pw.Text(li8.details[i].name),
+                    pw.Text(li8.details[i].invNo),
+                    pw.Text(
+                        "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li8.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+                    pw.Text(li8.details[i].orderPrice.toString()),
+                    pw.Text(
+                        li8.details[i].paymentType.toString().trim() == "Cash"
+                            ? li8.details[i].advanceAmount.toString()
+                            : ""),
+                    pw.Text(
+                        li8.details[i].paymentType.toString().trim() == "Card"
+                            ? li8.details[i].advanceAmount.toString()
+                            : ""),
+                    pw.Text(li8.details[i].advanceAmount.toString()),
+                    pw.Text(li8.details[i].disAmount.toString()),
+                    pw.Text(
+                        "${li8.details[i].orderPrice - (li8.details[i].advanceAmount + li8.details[i].disAmount)}"),
+                  ])
               ],
-
             ),
-
             pw.SizedBox(width: 10, height: 10),
-            pw.Text("PO-Balance Amount Received",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 12)),
+            pw.Text("PO-Balance Amount Received",
+                style:
+                    pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
                 pw.TableRow(
-                    decoration: pw.BoxDecoration(
-                        color: PdfColor.fromHex("339B6F")
-                    ),
+                    decoration:
+                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
-                      pw.Text("Order No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Name",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("GST No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Delivery Date",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Amount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Cash",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Card",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Advance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Discount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Balance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    ]
-                ),
-                pw.TableRow(
-                    children: [
-                      pw.Text(""),]
-                ),
-
-                for(int i=0;i<li9.details.length;i++)
-                  pw.TableRow(
-
-                      children: [
-                        pw.Text(li9.details[i].orderNo),
-                        pw.Text(li9.details[i].name),
-                        pw.Text(li9.details[i].invNo),
-                        pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li9.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
-                        pw.Text(li9.details[i].orderPrice.toString()),
-                        pw.Text(li9.details[i].paymentType.toString().trim()=="Cash"?li9.details[i].advanceAmount.toString():""),
-                        pw.Text(li9.details[i].paymentType.toString().trim()=="Card"?li9.details[i].advanceAmount.toString():""),
-                        pw.Text(li9.details[i].advanceAmount.toString()),
-                        pw.Text(li9.details[i].disAmount.toString()),
-                        pw.Text("${li9.details[i].orderPrice-(li9.details[i].advanceAmount+li9.details[i].disAmount)}"),
-
-                      ]
-                  )
+                      pw.Text("Order No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Name",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("GST No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Delivery Date",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Amount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Cash",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Card",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Advance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Discount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Balance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                    ]),
+                pw.TableRow(children: [
+                  pw.Text(""),
+                ]),
+                for (int i = 0; i < li9.details.length; i++)
+                  pw.TableRow(children: [
+                    pw.Text(li9.details[i].orderNo),
+                    pw.Text(li9.details[i].name),
+                    pw.Text(li9.details[i].invNo),
+                    pw.Text(
+                        "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li9.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+                    pw.Text(li9.details[i].orderPrice.toString()),
+                    pw.Text(
+                        li9.details[i].paymentType.toString().trim() == "Cash"
+                            ? li9.details[i].advanceAmount.toString()
+                            : ""),
+                    pw.Text(
+                        li9.details[i].paymentType.toString().trim() == "Card"
+                            ? li9.details[i].advanceAmount.toString()
+                            : ""),
+                    pw.Text(li9.details[i].advanceAmount.toString()),
+                    pw.Text(li9.details[i].disAmount.toString()),
+                    pw.Text(
+                        "${li9.details[i].orderPrice - (li9.details[i].advanceAmount + li9.details[i].disAmount)}"),
+                  ])
               ],
-
             ),
-
             pw.SizedBox(width: 10, height: 10),
-            pw.Text("PO-Ondate Sales and Settlement",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 12)),
+            pw.Text("PO-Ondate Sales and Settlement",
+                style:
+                    pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
                 pw.TableRow(
-                    decoration: pw.BoxDecoration(
-                        color: PdfColor.fromHex("339B6F")
-                    ),
+                    decoration:
+                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
-                      pw.Text("Order No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Name",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("GST No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Delivery Date",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Amount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Cash",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Card",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Advance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Discount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Balance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    ]
-                ),
-                pw.TableRow(
-                    children: [
-                      pw.Text(""),]
-                ),
-
-                for(int i=0;i<li11.details.length;i++)
-                  pw.TableRow(
-
-                      children: [
-                        pw.Text(li11.details[i].orderNo),
-                        pw.Text(li11.details[i].name),
-                        pw.Text(li11.details[i].invNo),
-                        pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li11.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
-                        pw.Text(li11.details[i].orderPrice.toString()),
-                        pw.Text(li11.details[i].paymentType.toString().trim()=="Cash"?li11.details[i].advanceAmount.toString():""),
-                        pw.Text(li11.details[i].paymentType.toString().trim()=="Card"?li11.details[i].advanceAmount.toString():""),
-                        pw.Text(li11.details[i].advanceAmount.toString()),
-                        pw.Text(li11.details[i].disAmount.toString()),
-                        pw.Text("${li11.details[i].orderPrice-(li11.details[i].advanceAmount+li11.details[i].disAmount)}"),
-
-                      ]
-                  )
+                      pw.Text("Order No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Name",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("GST No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Delivery Date",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Amount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Cash",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Card",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Advance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Discount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Balance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                    ]),
+                pw.TableRow(children: [
+                  pw.Text(""),
+                ]),
+                for (int i = 0; i < li11.details.length; i++)
+                  pw.TableRow(children: [
+                    pw.Text(li11.details[i].orderNo),
+                    pw.Text(li11.details[i].name),
+                    pw.Text(li11.details[i].invNo),
+                    pw.Text(
+                        "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li11.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+                    pw.Text(li11.details[i].orderPrice.toString()),
+                    pw.Text(
+                        li11.details[i].paymentType.toString().trim() == "Cash"
+                            ? li11.details[i].advanceAmount.toString()
+                            : ""),
+                    pw.Text(
+                        li11.details[i].paymentType.toString().trim() == "Card"
+                            ? li11.details[i].advanceAmount.toString()
+                            : ""),
+                    pw.Text(li11.details[i].advanceAmount.toString()),
+                    pw.Text(li11.details[i].disAmount.toString()),
+                    pw.Text(
+                        "${li11.details[i].orderPrice - (li11.details[i].advanceAmount + li11.details[i].disAmount)}"),
+                  ])
               ],
-
             ),
-            pw.SizedBox(height: 20,),
+            pw.SizedBox(
+              height: 20,
+            ),
             pw.Column(
               children: [
                 pw.Padding(
@@ -665,9 +872,16 @@ class _ReportsState extends State<Reports> {
                   child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text("Card Total:",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),),
-                      pw.Text("$cardcount",style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
-
+                      pw.Text(
+                        "Card Total:",
+                        style: pw.TextStyle(
+                            color: PdfColor.fromHex("339B6F"),
+                            fontWeight: pw.FontWeight.bold),
+                      ),
+                      pw.Text(
+                        "$cardcount",
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
                     ],
                   ),
                 ),
@@ -676,16 +890,21 @@ class _ReportsState extends State<Reports> {
                   child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text("Cash Total:",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),),
-                      pw.Text("$cashcount",style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
-
+                      pw.Text(
+                        "Cash Total:",
+                        style: pw.TextStyle(
+                            color: PdfColor.fromHex("339B6F"),
+                            fontWeight: pw.FontWeight.bold),
+                      ),
+                      pw.Text(
+                        "$cashcount",
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
                     ],
                   ),
-                ),],
+                ),
+              ],
             ),
-
-
-
           ];
           // Center
         })); // Pa
@@ -711,7 +930,6 @@ class _ReportsState extends State<Reports> {
     await Printing.layoutPdf(
       format: PdfPageFormat.a4,
       onLayout: (PdfPageFormat format) async => pdf.save(),
-
     );
   }
 
@@ -728,84 +946,108 @@ class _ReportsState extends State<Reports> {
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
         build: (pw.Context context) {
-          return  [
+          return [
             pw.Header(
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.end,
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-
-                            pw.Image(image, width: 150),
-                            pw.Text("Taste of Life",
-                                style: pw.TextStyle(fontSize: 10),
-                                textAlign: pw.TextAlign.right),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-                      pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-                            pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
-                                style: pw.TextStyle(
-                                    fontSize: 14,
-                                    color: PdfColor.fromHex("339B6F"))),
-                            pw.Text("747,Puliakulam Road, P.N. Palayam,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-
-                    ])),
-
-            pw.Center(child: pw.Text("Receivables Report",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold,fontSize: 16))),
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Image(image, width: 150),
+                        pw.Text("Taste of Life",
+                            style: pw.TextStyle(fontSize: 10),
+                            textAlign: pw.TextAlign.right),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                            style: pw.TextStyle(
+                                fontSize: 14,
+                                color: PdfColor.fromHex("339B6F"))),
+                        pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                ])),
+            pw.Center(
+                child: pw.Text("Receivables Report",
+                    style: pw.TextStyle(
+                        color: PdfColor.fromHex("339B6F"),
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 16))),
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
                 pw.TableRow(
-                    decoration: pw.BoxDecoration(
-                        color: PdfColor.fromHex("339B6F")
-                    ),
+                    decoration:
+                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
-                      pw.Text("Order No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Name",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("GST No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Date",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Amount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Advance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Discount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Balance Receivable",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    ]
-                ),
-                pw.TableRow(
-                    children: [
-                      pw.Text(""),]
-                ),
-
-                for(int i=0;i<li10.details.length;i++)
-                  pw.TableRow(
-
-                      children: [
-                        pw.Text(li10.details[i].orderNo),
-                        pw.Text(li10.details[i].name),
-                        pw.Text(li10.details[i].invNo),
-                        pw.Text(li10.details[i].docDate),
-                        pw.Text(li10.details[i].orderPrice.toString()),
-                        pw.Text(li10.details[i].advanceAmount.toString()),
-                        pw.Text(li10.details[i].disAmount.toString()),
-                        pw.Text("${li10.details[i].orderPrice-(li10.details[i].advanceAmount+li10.details[i].disAmount)}"),
-
-                      ]
-                  )
+                      pw.Text("Order No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Name",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("GST No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Date",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Amount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Advance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Discount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Balance Receivable",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                    ]),
+                pw.TableRow(children: [
+                  pw.Text(""),
+                ]),
+                for (int i = 0; i < li10.details.length; i++)
+                  pw.TableRow(children: [
+                    pw.Text(li10.details[i].orderNo),
+                    pw.Text(li10.details[i].name),
+                    pw.Text(li10.details[i].invNo),
+                    pw.Text(li10.details[i].docDate),
+                    pw.Text(li10.details[i].orderPrice.toString()),
+                    pw.Text(li10.details[i].advanceAmount.toString()),
+                    pw.Text(li10.details[i].disAmount.toString()),
+                    pw.Text(
+                        "${li10.details[i].orderPrice - (li10.details[i].advanceAmount + li10.details[i].disAmount)}"),
+                  ])
               ],
-
             )
-
-
           ];
           // Center
         })); // Pa
@@ -831,7 +1073,6 @@ class _ReportsState extends State<Reports> {
     await Printing.layoutPdf(
       format: PdfPageFormat.a4,
       onLayout: (PdfPageFormat format) async => pdf.save(),
-
     );
   }
 
@@ -848,84 +1089,108 @@ class _ReportsState extends State<Reports> {
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
         build: (pw.Context context) {
-          return  [
+          return [
             pw.Header(
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.end,
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-
-                            pw.Image(image, width: 150),
-                            pw.Text("Taste of Life",
-                                style: pw.TextStyle(fontSize: 10),
-                                textAlign: pw.TextAlign.right),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-                      pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.end,
-                          children: [
-                            pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
-                                style: pw.TextStyle(
-                                    fontSize: 14,
-                                    color: PdfColor.fromHex("339B6F"))),
-                            pw.Text("747,Puliakulam Road, P.N. Palayam,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
-                                style: pw.TextStyle(fontSize: 12)),
-                            pw.SizedBox(width: 10, height: 10),
-                          ]),
-
-                    ])),
-
-            pw.Center(child: pw.Text("Discount Report",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold,fontSize: 16))),
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Image(image, width: 150),
+                        pw.Text("Taste of Life",
+                            style: pw.TextStyle(fontSize: 10),
+                            textAlign: pw.TextAlign.right),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                            style: pw.TextStyle(
+                                fontSize: 14,
+                                color: PdfColor.fromHex("339B6F"))),
+                        pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                            style: pw.TextStyle(fontSize: 12)),
+                        pw.SizedBox(width: 10, height: 10),
+                      ]),
+                ])),
+            pw.Center(
+                child: pw.Text("Discount Report",
+                    style: pw.TextStyle(
+                        color: PdfColor.fromHex("339B6F"),
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 16))),
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
                 pw.TableRow(
-                    decoration: pw.BoxDecoration(
-                        color: PdfColor.fromHex("339B6F")
-                    ),
+                    decoration:
+                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
-                      pw.Text("Order No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Name",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("GST No",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Date",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Bill Amount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Advance",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Discount",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                      pw.Text("Balance Receivable",style: pw.TextStyle(color: PdfColor.fromHex("FFFFFF"),fontWeight: pw.FontWeight.bold,fontSize: 12)),
-                    ]
-                ),
-                pw.TableRow(
-                    children: [
-                      pw.Text(""),]
-                ),
-
-                for(int i=0;i<li12.details.length;i++)
-                  pw.TableRow(
-
-                      children: [
-                        pw.Text(li12.details[i].orderNo),
-                        pw.Text(li12.details[i].name),
-                        pw.Text(li12.details[i].invNo),
-                        pw.Text(li12.details[i].docDate),
-                        pw.Text(li12.details[i].orderPrice.toString()),
-                        pw.Text(li12.details[i].advanceAmount.toString()),
-                        pw.Text(li12.details[i].disAmount.toString()),
-                        pw.Text("${li12.details[i].orderPrice-(li12.details[i].advanceAmount+li12.details[i].disAmount)}"),
-
-                      ]
-                  )
+                      pw.Text("Order No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Name",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("GST No",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Date",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Bill Amount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Advance",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Discount",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Balance Receivable",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                    ]),
+                pw.TableRow(children: [
+                  pw.Text(""),
+                ]),
+                for (int i = 0; i < li12.details.length; i++)
+                  pw.TableRow(children: [
+                    pw.Text(li12.details[i].orderNo),
+                    pw.Text(li12.details[i].name),
+                    pw.Text(li12.details[i].invNo),
+                    pw.Text(li12.details[i].docDate),
+                    pw.Text(li12.details[i].orderPrice.toString()),
+                    pw.Text(li12.details[i].advanceAmount.toString()),
+                    pw.Text(li12.details[i].disAmount.toString()),
+                    pw.Text(
+                        "${li12.details[i].orderPrice - (li12.details[i].advanceAmount + li12.details[i].disAmount)}"),
+                  ])
               ],
-
             )
-
-
           ];
           // Center
         })); // Pa
@@ -951,7 +1216,205 @@ class _ReportsState extends State<Reports> {
     await Printing.layoutPdf(
       format: PdfPageFormat.a4,
       onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+  }
 
+  Future<void> OrderReport() async {
+    final pdf = pw.Document();
+
+    var data = await rootBundle.load("open-sans.ttf");
+
+    final ttf = pw.Font.ttf(data.buffer.asByteData());
+    const imageProvider = const AssetImage('logo.png');
+    final image = await flutterImageProvider(imageProvider);
+    // final image = await imageFromAssetBundle('logo.png');
+    pdf.addPage(pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        orientation: pw.PageOrientation.portrait,
+        build: (pw.Context context) {
+          return [
+            pw.Header(
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Column(
+                          mainAxisAlignment: pw.MainAxisAlignment.end,
+                          crossAxisAlignment: pw.CrossAxisAlignment.end,
+                          children: [
+                            pw.Image(image, width: 150),
+                            pw.Text("Taste of Life",
+                                style: pw.TextStyle(fontSize: 10),
+                                textAlign: pw.TextAlign.right),
+                            pw.SizedBox(width: 10, height: 10),
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.end,
+                          children: [
+                            pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                                style: pw.TextStyle(
+                                    fontSize: 14,
+                                    color: PdfColor.fromHex("339B6F"))),
+                            pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                                style: pw.TextStyle(fontSize: 12)),
+                            pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                                style: pw.TextStyle(fontSize: 12)),
+                            pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                                style: pw.TextStyle(fontSize: 12)),
+                            pw.SizedBox(width: 10, height: 10),
+                          ]),
+                    ])),
+            pw.Center(
+                child: pw.Text("Order Report",
+                    style: pw.TextStyle(
+                        color: PdfColor.fromHex("339B6F"),
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 16))),
+            pw.SizedBox(width: 10, height: 10),
+            pw.Table(
+              children: [
+                pw.TableRow(
+                    decoration:
+                    pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
+                    children: [
+                      pw.Text("Order Details",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+
+                    ]),
+
+              ],
+            ),
+            pw.SizedBox(width: 10, height: 10),
+            for(int index=0;index<li14.details.length;index++)
+            pw.Column(
+              children: [
+                index != 0
+                    ? li14
+                    .details[
+                index]
+                    .orderFlag !=
+                    "Y"
+                    ? li14.details[index].docNo !=
+                    li14
+                        .details[index -
+                        1]
+                        .docNo
+                    ? pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                    children:[pw.Text(
+                      "Order No : ${li14.details[index].docNo} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,color: PdfColor.fromHex("800080")),)])
+                    : pw.Container()
+                    : pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                    children:[ pw.Text(
+                        "Additional Order ${li14.details[index].docNo}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,color: PdfColor.fromHex("800080")))])
+                    : pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                    children:[pw.Text(
+                      "Order No : ${li14.details[index].docNo } (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,color: PdfColor.fromHex("800080")),)]),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left:24.0,right: 24),
+                  child: pw.Column(
+                    children: [
+                      pw.Row(
+                        mainAxisAlignment:
+                        pw.MainAxisAlignment
+                            .spaceBetween,
+                        children: [
+                          pw.Text(
+                              "${li14.details[index].itemName}"),
+                          pw.Text(
+                              "${li14.details[index].qty.round()}")
+
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            pw.SizedBox(width: 10, height: 10),
+            pw.Table(
+              children: [
+                pw.TableRow(
+                    decoration:
+                    pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
+                    children: [
+                      pw.Text("Itemwise Total",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+
+                    ]),
+
+              ],
+            ),
+            pw.SizedBox(
+              height: 10,
+            ),
+           pw.Column(
+                    children: [
+                      for (int i = 0;
+                      i <
+                          controllers
+                              .length;
+                      i++)
+                        pw.Padding(
+                          padding: pw.EdgeInsets.only(left:24,right: 24),
+                          child:
+                        pw.Row(
+                          mainAxisAlignment:
+                          pw.MainAxisAlignment
+                              .spaceBetween,
+                          children: [
+                            pw.Text(
+                              "${controllers[i].text}",
+                              style: pw.TextStyle(
+                                  fontWeight:
+                                  pw.FontWeight
+                                      .bold),
+                            ),
+                            pw.Text(
+                              "${cnt[i]}",
+                              style: pw.TextStyle(
+                                  fontWeight:
+                                  pw.FontWeight
+                                      .bold),
+                            ),
+                          ],
+                        ),)
+                    ]),
+            pw.Divider(thickness: 2),
+
+          ];
+
+          // Center
+        })); // Pa
+    Directory tempDir; // g
+    if (Platform.isAndroid) {
+      tempDir = await getExternalStorageDirectory();
+      // Android-specific code
+    } else {
+      tempDir = await getApplicationDocumentsDirectory();
+      // iOS-specific code
+    }
+
+    String tempPath = tempDir.path;
+    print(tempPath);
+    File file = File('$tempPath/example.pdf');
+    // await Printing.sharePdf(
+    //     bytes: await pdf.save(), filename: 'my-document.pdf');
+    // PdfPreview(
+    //   initialPageFormat: PdfPageFormat.a4,
+    //
+    //   build: (format) => pdf.save(),
+    // );
+    await Printing.layoutPdf(
+      format: PdfPageFormat.a4,
+      onLayout: (PdfPageFormat format) async => pdf.save(),
     );
   }
 
@@ -1006,8 +1469,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li6 = ReportsModelList.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1026,6 +1487,7 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> PO_Advance() async {
     setState(() {
       loading = true;
@@ -1067,8 +1529,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li7 = ResponseModelListings1.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1087,6 +1547,7 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> PO_Ondate_Sales_Settlement() async {
     setState(() {
       loading = true;
@@ -1128,8 +1589,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li11 = ResponseModelListings1.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1148,6 +1607,7 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> PO_Advance_fullsettlement() async {
     setState(() {
       loading = true;
@@ -1189,8 +1649,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li8 = ReportsModelList.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1209,6 +1667,7 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> BalanceOrderAmountFullPaid() async {
     setState(() {
       loading = true;
@@ -1250,8 +1709,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li9 = ReportsModelList.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1270,6 +1727,7 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> ReceivebillsReport() async {
     setState(() {
       loading = true;
@@ -1311,8 +1769,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li10 = ReportsModelList.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1331,6 +1787,7 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> DiscountReportList() async {
     setState(() {
       loading = true;
@@ -1372,8 +1829,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li12 = ReportsModelList.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1392,6 +1847,7 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   Future<http.Response> OrderReportList() async {
     setState(() {
       loading = true;
@@ -1433,8 +1889,6 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li13 = ReportsModelList.fromJson(decoded);
-
-
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1453,21 +1907,89 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
+  Future<http.Response> ItemListAPI() async {
+    setState(() {
+      loading = true;
+    });
+
+    var envelope = '''
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+ <soap:Body> <IN_MOB_GETREPORTS xmlns="http://tempuri.org/"> 
+ <OrderNo>1</OrderNo>
+  <FromDate>${dateupload8}</FromDate> 
+  <ToDate>${dateupload9}</ToDate> 
+  <FormId>10</FormId> 
+  <BranchID>${LoginPageState.branchid}</BranchID> 
+  </IN_MOB_GETREPORTS> 
+  </soap:Body> </soap:Envelope>
+
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GET_ORDER_NO';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+
+      li15 = OrderItemDetailModelList.fromJson(decoded);
+      cnt.clear();
+      for (int i = 0; i < li15.details.length; i++) {
+        cnt.add(0);
+        controllers.add(new TextEditingController());
+        controllers[i].text = "0";
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
+
   Future<http.Response> OrderReportListDetail() async {
     setState(() {
       loading = true;
     });
-    String orderid="";
-    for(int i=0;i<selectedPlanIds.length;i++)
-      if(i!=selectedPlanIds.length-1)
-      orderid=orderid+selectedPlanIds[i]+',';
+    String orderid = "";
+    for (int i = 0; i < selectedPlanIds.length; i++)
+      if (i != selectedPlanIds.length - 1)
+        orderid = orderid + selectedPlanIds[i] + ',';
       else
-        orderid=orderid+selectedPlanIds[i];
-      print(orderid);
+        orderid = orderid + selectedPlanIds[i];
+    print(orderid);
     var envelope = '''
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body> <IN_MOB_GETREPORTS xmlns="http://tempuri.org/"> 
- <OrderNo>8,1</OrderNo>
+ <OrderNo>$orderid</OrderNo>
   <FromDate>${dateupload8}</FromDate> 
   <ToDate>${dateupload9}</ToDate> 
   <FormId>9</FormId> 
@@ -1500,9 +2022,7 @@ class _ReportsState extends State<Reports> {
       print(parsedXml.text);
       final decoded = json.decode(parsedXml.text);
 
-      li13 = ReportsModelList.fromJson(decoded);
-
-
+      li14 =ItemModelList1.fromJson(decoded);
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -1521,3315 +2041,233 @@ class _ReportsState extends State<Reports> {
     // print("response: ${response.body}");
     return response;
   }
+
   @override
   void initState() {
-    dateupload=DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
-    dateupload1=DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
-    StartDateController.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
-    EndDateController.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
-    dateupload2=DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
-    dateupload3=DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
-    StartDateController1.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
-    EndDateController1.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
+    dateupload = DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
+    dateupload1 = DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
+    StartDateController.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+    EndDateController.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+    dateupload2 = DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
+    dateupload3 = DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
+    StartDateController1.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+    EndDateController1.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
 
-    dateupload4=DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
-    dateupload5=DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
-    StartDateController2.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
-    EndDateController2.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
+    dateupload4 = DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
+    dateupload5 = DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
+    StartDateController2.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+    EndDateController2.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
 
-    dateupload6=DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
-    dateupload7=DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
-    StartDateController3.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
-    EndDateController3.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
+    dateupload6 = DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
+    dateupload7 = DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
+    StartDateController3.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+    EndDateController3.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
 
-    dateupload8=DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
-    dateupload9=DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
-    StartDateController4.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
-    EndDateController4.text=DateFormat("dd-MM-yyyy").format(DateTime.now());
+    dateupload8 = DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
+    dateupload9 = DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
+    StartDateController4.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+    EndDateController4.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
 
-    SalesReportList().then((value) =>
-    PO_Advance()).then((value) =>
-    PO_Advance_fullsettlement()).then((value) =>
-    BalanceOrderAmountFullPaid()).then((value) =>
-    ReceivebillsReport()).then((value)=>PO_Ondate_Sales_Settlement().then((value)=>DiscountReportList().then((value)=>OrderReportList().then((value)
-    {
-      cashcount = 0;
+    SalesReportList()
+        .then((value) => PO_Advance())
+        .then((value) => PO_Advance_fullsettlement())
+        .then((value) => BalanceOrderAmountFullPaid())
+        .then((value) => ReceivebillsReport())
+        .then((value) => PO_Ondate_Sales_Settlement().then((value) =>
+            DiscountReportList().then((value) =>
+                OrderReportList().then((value) {
+                  cashcount = 0;
 
-      cardcount = 0;
-      for (int i = 0; i < li7.details.length; i++) {
-        if (li7.details[i].paymentType1.toString().trim() == "Cash")
-          cashcount = cashcount + li7.details[i].advanceAmount1;
-        else if (li7.details[i].paymentType1.toString().trim() == "Card")
-          cardcount = cardcount + li7.details[i].advanceAmount1;
-      }
-      for (int i = 0; i < li8.details.length; i++) {
-        if (li8.details[i].paymentType == "Cash")
-          cashcount = cashcount + li8.details[i].advanceAmount;
-        else if (li8.details[i].paymentType == "Card")
-          cardcount = cardcount + li8.details[i].advanceAmount;
-      }
-      for (int i = 0; i < li9.details.length; i++) {
-        if (li9.details[i].paymentType == "Cash")
-          cashcount = cashcount + li9.details[i].advanceAmount;
-        else if (li9.details[i].paymentType == "Card")
-          cardcount = cardcount + li9.details[i].advanceAmount;
-      }
-      for (int i = 0; i < li11.details.length; i++) {
-        if (li11.details[i].paymentType == "Cash")
-          cashcount = cashcount + li11.details[i].advanceAmount;
-        else if (li11.details[i].paymentType == "Card")
-          cardcount = cardcount + li11.details[i].advanceAmount;
-      }
-
-    }))));
+                  cardcount = 0;
+                  for (int i = 0; i < li7.details.length; i++) {
+                    if (li7.details[i].paymentType1.toString().trim() == "Cash")
+                      cashcount = cashcount + li7.details[i].advanceAmount1;
+                    else if (li7.details[i].paymentType1.toString().trim() ==
+                        "Card")
+                      cardcount = cardcount + li7.details[i].advanceAmount1;
+                  }
+                  for (int i = 0; i < li8.details.length; i++) {
+                    if (li8.details[i].paymentType == "Cash")
+                      cashcount = cashcount + li8.details[i].advanceAmount;
+                    else if (li8.details[i].paymentType == "Card")
+                      cardcount = cardcount + li8.details[i].advanceAmount;
+                  }
+                  for (int i = 0; i < li9.details.length; i++) {
+                    if (li9.details[i].paymentType == "Cash")
+                      cashcount = cashcount + li9.details[i].advanceAmount;
+                    else if (li9.details[i].paymentType == "Card")
+                      cardcount = cardcount + li9.details[i].advanceAmount;
+                  }
+                  for (int i = 0; i < li11.details.length; i++) {
+                    if (li11.details[i].paymentType == "Cash")
+                      cashcount = cashcount + li11.details[i].advanceAmount;
+                    else if (li11.details[i].paymentType == "Card")
+                      cardcount = cardcount + li11.details[i].advanceAmount;
+                  }
+                }))));
     // TODO: implement initState
   }
+
   @override
   Widget build(BuildContext context) {
-
-
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-          body: TabBarView(
-
-
-              children: [
-                Scaffold(
-      body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
-        child: Column(
-          children: [
-
-            SizedBox(height: height/30,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                    height: 55,
-                    width: width/2.2,
-
-                    child: TextField(
-                      onTap: () async {
-                        DateTime date = DateTime(1900);
-                        FocusScope.of(context)
-                            .requestFocus(new FocusNode());
-
-                        date = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now()
-                                .subtract(new Duration(days: 365 * 120)),
-                            lastDate: DateTime.now()
-                                .add(new Duration(days: 365)));
-                        dateupload=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+" 00:00:00";
-
-                        StartDateController.text =date.day.toString().padLeft(2, "0") +
-                                        '-' + date.month.toString().padLeft(2, "0") +
-                                        '-' +date.year.toString();
-                        check().then((value) {
-                          if(value)
-                            SalesReportList();
-                          else
-                            Fluttertoast.showToast(msg: "No Internet Connection");
-                        });
-
-                      },
-                      enabled: true,
-                      controller: StartDateController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.calendar_today_outlined),
-                        labelText: 'Start Date',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16.0,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                      ),
-                    )),
-                Container(
-                    height: 55,
-                    width: width/2.2,
-
-                    child: TextField(
-                      onTap: () async {
-                        DateTime date = DateTime(1900);
-                        FocusScope.of(context)
-                            .requestFocus(new FocusNode());
-
-                        date = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now()
-                                .subtract(new Duration(days: 365 * 120)),
-                            lastDate: DateTime.now()
-                                .add(new Duration(days: 365)));
-
-                        dateupload1=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+' 23:59:59';
-
-                        EndDateController.text =
-                            date.day.toString().padLeft(2, "0") +
-                                '-' + date.month.toString().padLeft(2, "0") +
-                                '-' +date.year.toString();
-                        check().then((value) {
-                          if(value)
-                            SalesReportList();
-                          else
-                            Fluttertoast.showToast(msg: "No Internet Connection");
-                        });
-                      },
-                      enabled: true,
-                      controller: EndDateController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.calendar_today_outlined),
-                        labelText: 'End Date',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16.0,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                      ),
-                    )),
-              ],
-            ),
-SizedBox(height: height/40,),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-
-                sortColumnIndex: 0,
-                columnSpacing: width / 20,
-                columns: [
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text(
-                              "Order No",
-                              softWrap: true,
-                              style: TextStyle(fontSize: 12),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("Name",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("GST No",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("Bill Date",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("Bill Amount",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("Advance",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("Discount",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-                  DataColumn(
-                    label: Center(
-                        child: Wrap(
-                          direction: Axis.vertical, //default
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("Balance Receivable",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 12),
-                                textAlign: TextAlign.center),
-                          ],
-                        )),
-                    numeric: false,
-
-                    // onSort: (columnIndex, ascending) {
-                    //   onSortColum(columnIndex, ascending);
-                    //   setState(() {
-                    //     sort = !sort;
-                    //   });
-                    // }
-                  ),
-
-                ],
-                rows: li6.details
-                    .map(
-                      (list) => DataRow(cells: [
-                    DataCell(Center(
-                        child: Center(
-                          child: Wrap(
-                              direction: Axis.vertical, //default
-                              alignment: WrapAlignment.center,
-                              children: [
-                                Text(
-                                  list.orderNo.toString(),
-                                  textAlign: TextAlign.center,
-                                )
-                              ]),
-                        ))),
-                        DataCell(Center(
-                            child: Center(
-                              child: Wrap(
-                                  direction: Axis.vertical, //default
-                                  alignment: WrapAlignment.center,
-                                  children: [
-                                    Text(
-                                      list.name.toString(),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ]),
-                            ))),
-                    DataCell(Center(
-                        child: Center(
-                          child: Wrap(
-                              direction: Axis.vertical, //default
-                              alignment: WrapAlignment.center,
-                              children: [
-                                Text(
-                                    list.invNo.toString() ,
-                                    textAlign: TextAlign.center)
-                              ]),
-                        ))),
-                    DataCell(
-                      Center(
-                          child: Center(
-                              child: Wrap(
-                                  direction: Axis.vertical, //default
-                                  alignment: WrapAlignment.center,
-                                  children: [
-                                    Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                        textAlign: TextAlign.center)
-                                  ]))),
-                    ),
-
-                    DataCell(
-                      Center(
-                          child: Center(
-                              child: Wrap(
-                                  direction: Axis.vertical, //default
-                                  alignment: WrapAlignment.center,
-                                  children: [
-                                    Text(list.orderPrice.toString(),
-                                        textAlign: TextAlign.center)
-                                  ]))),
-                    ),
-
-                        DataCell(
-                          Center(
-                              child: Center(
-                                  child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("${list.advanceAmount}",
-                                            textAlign: TextAlign.center)
-                                      ]))),
-                        ),
-                        DataCell(
-                          Center(
-                              child: Center(
-                                  child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("${list.disAmount}",
-                                            textAlign: TextAlign.center)
-                                      ]))),
-                        ),
-                        DataCell(
-                          Center(
-                              child: Center(
-                                  child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                            textAlign: TextAlign.center)
-                                      ]))),
-                        ),
-
-                  ]),
-                )
-                    .toList(),
-              ),
-            ),
-
-
-          ],
-        ),
-      ),
-                  floatingActionButton: FloatingActionButton.extended(onPressed: () async {
-                    // generateExcel();
-                    generateSalesReport();
-     //                Excel excel;
-     //                 excel = Excel.createExcel();
-     //                Sheet sheetObject = excel['Sales Report'];
-     //                sheetObject.appendRow([""]);
-     //                sheetObject.appendRow([""]);
-     //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
-     //                for(int i=0;i<li6.details.length;i++)
-     //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
-     //
-     //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
-     //
-     //                cellStyle.underline = Underline.Single; // or Underline.Double
-     //
-     //
-     //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
-     //                // cell.value = 8; // dynamic values support provided;
-     //                cell.cellStyle = cellStyle;
-     //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
-     //                cell.cellStyle = cellStyle;
-     //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
-     //                cell.cellStyle = cellStyle;
-     //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
-     //                cell.cellStyle = cellStyle;
-     //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
-     //                cell.cellStyle = cellStyle;
-     //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
-     //                cell.cellStyle = cellStyle;
-     //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
-     //                cell.cellStyle = cellStyle;
-     //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
-     //                cell.cellStyle = cellStyle;
-     // //                 var sheet = excel['mySheet'];
-     // //
-     // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
-     // //                 cell.value = "Heya How are you I am fine ok goood night";
-     // //                 cell.cellStyle = cellStyle;
-     // //
-     // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
-     // //                 cell2.value = "Heya How night";
-     // //                 cell2.cellStyle = cellStyle;
-     // //                 /*
-     // // * sheetObject.appendRow(list-iterables);
-     // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-     // // * list-iterables === list of iterables
-     // // */
-     // //
-     // //
-     // //
-     // //
-     // //                 /// printing cell-type
-     // //                 print("CellType: " + cell.cellType.toString());
-     //
-     //                 ///
-     //                 ///
-     //                 /// Iterating and changing values to desired type
-     //                 ///
-     //                 ///
-     //                 // for (int row = 0; row < sheet.maxRows; row++) {
-     //                 //   sheet.row(row).forEach((cell1) {
-     //                 //     if (cell1 != null) {
-     //                 //       cell1.value = ' My custom Value ';
-     //                 //     }
-     //                 //   });
-     //                 // }
-     //
-     //                 var fileBytes = excel.save();
-     //                 var tempDir;
-     //                 if (Platform.isAndroid) {
-     //                   tempDir = await getExternalStorageDirectory();
-     //                   // Android-specific code
-     //                 } else {
-     //                   tempDir = await getApplicationDocumentsDirectory();
-     //                   // iOS-specific code
-     //                 }
-     //                 String tempPath = tempDir.path;
-     //                 print("$tempPath/text.xlsx");
-     //                 File(join("$tempPath/text.xlsx"))
-     //                   ..createSync(recursive: true)
-     //                   ..writeAsBytesSync(fileBytes);
-
-    },
-    icon: Icon(Icons.download_outlined),
-    backgroundColor: String_Values.primarycolor,
-    label: Text("Download"))
-
-     ),
-                Scaffold(
-                    body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
-                      child: Column(
-                        children: [
-
-                          SizedBox(height: height/30,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+        length: 5,
+        child: Scaffold(
+            body: TabBarView(children: [
+              Scaffold(
+                  body: loading
+                      ? Center(child: CircularProgressIndicator())
+                      : SingleChildScrollView(
+                          child: Column(
                             children: [
-                              Container(
-                                  height: 55,
-                                  width: width/2.2,
-
-                                  child: TextField(
-                                    onTap: () async {
-                                      DateTime date = DateTime(1900);
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-
-                                      date = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now()
-                                              .subtract(new Duration(days: 365 * 120)),
-                                          lastDate: DateTime.now()
-                                              .add(new Duration(days: 365)));
-                                      dateupload2=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+" 00:00:00";
-
-                                      StartDateController1.text =date.day.toString().padLeft(2, "0") +
-                                          '-' + date.month.toString().padLeft(2, "0") +
-                                          '-' +date.year.toString();
-                                      check().then((value) {
-                                        if(value)
-                                          PO_Advance().then((value) => PO_Advance_fullsettlement() ).then((value) => BalanceOrderAmountFullPaid()).then((value)=>PO_Ondate_Sales_Settlement().then((value)
-                                          {
-                                            cashcount=0;
-
-                                            cardcount=0;
-                                            for(int i=0;i<li7.details.length;i++)
-                                            {
-                                              if(li7.details[i].paymentType1.toString().trim()=="Cash")
-                                                cashcount=cashcount+li7.details[i].advanceAmount1;
-                                              else if(li7.details[i].paymentType1.toString().trim()=="Card")
-                                                cardcount=cardcount+li7.details[i].advanceAmount1;
-                                            }
-                                            for(int i=0;i<li8.details.length;i++)
-                                            {
-                                              if(li8.details[i].paymentType=="Cash")
-                                                cashcount=cashcount+li8.details[i].advanceAmount;
-                                              else if(li8.details[i].paymentType=="Card")
-                                                cardcount=cardcount+li8.details[i].advanceAmount;
-                                            }
-                                            for(int i=0;i<li9.details.length;i++)
-                                            {
-                                              if(li9.details[i].paymentType=="Cash")
-                                                cashcount=cashcount+li9.details[i].advanceAmount;
-                                              else if(li9.details[i].paymentType=="Card")
-                                                cardcount=cardcount+li9.details[i].advanceAmount;
-                                            }
-                                            for (int i = 0; i < li11.details.length; i++) {
-                                              if (li11.details[i].paymentType == "Cash")
-                                                cashcount = cashcount + li11.details[i].advanceAmount;
-                                              else if (li11.details[i].paymentType == "Card")
-                                                cardcount = cardcount + li11.details[i].advanceAmount;
-                                            }
-                                          }));
-                                        else
-                                          Fluttertoast.showToast(msg: "No Internet Connection");
-                                      });
-
-                                    },
-                                    enabled: true,
-                                    controller: StartDateController1,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.calendar_today_outlined),
-                                      labelText: 'Start Date',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 16.0,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(25.0),
-                                      ),
-                                    ),
-                                  )),
-                              Container(
-                                  height: 55,
-                                  width: width/2.2,
-
-                                  child: TextField(
-                                    onTap: () async {
-                                      DateTime date = DateTime(1900);
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-
-                                      date = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now()
-                                              .subtract(new Duration(days: 365 * 120)),
-                                          lastDate: DateTime.now()
-                                              .add(new Duration(days: 365)));
-
-                                      dateupload3=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+' 23:59:59';
-
-                                      EndDateController1.text =
-                                          date.day.toString().padLeft(2, "0") +
-                                              '-' + date.month.toString().padLeft(2, "0") +
-                                              '-' +date.year.toString();
-                                      check().then((value) {
-                                        if(value)
-                                          PO_Advance().then((value) => PO_Advance_fullsettlement() ).then((value) => BalanceOrderAmountFullPaid()).then((value)=>PO_Ondate_Sales_Settlement().then((value)
-                                          {
-                                            cashcount=0;
-
-                                            cardcount=0;
-                                            for(int i=0;i<li7.details.length;i++)
-                                            {
-                                              if(li7.details[i].paymentType1.toString().trim()=="Cash")
-                                                cashcount=cashcount+li7.details[i].advanceAmount1;
-                                              else if(li7.details[i].paymentType1.toString().trim()=="Card")
-                                                cardcount=cardcount+li7.details[i].advanceAmount1;
-                                            }
-                                            for(int i=0;i<li8.details.length;i++)
-                                            {
-                                              if(li8.details[i].paymentType=="Cash")
-                                                cashcount=cashcount+li8.details[i].advanceAmount;
-                                              else if(li8.details[i].paymentType=="Card")
-                                                cardcount=cardcount+li8.details[i].advanceAmount;
-                                            }
-                                            for(int i=0;i<li9.details.length;i++)
-                                            {
-                                              if(li9.details[i].paymentType=="Cash")
-                                                cashcount=cashcount+li9.details[i].advanceAmount;
-                                              else if(li9.details[i].paymentType=="Card")
-                                                cardcount=cardcount+li9.details[i].advanceAmount;
-                                            }
-                                            for (int i = 0; i < li11.details.length; i++) {
-                                              if (li11.details[i].paymentType == "Cash")
-                                                cashcount = cashcount + li11.details[i].advanceAmount;
-                                              else if (li11.details[i].paymentType == "Card")
-                                                cardcount = cardcount + li11.details[i].advanceAmount;
-                                            }
-                                          }));
-                                        else
-                                          Fluttertoast.showToast(msg: "No Internet Connection");
-                                      });
-                                    },
-                                    enabled: true,
-                                    controller: EndDateController1,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.calendar_today_outlined),
-                                      labelText: 'End Date',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 16.0,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(25.0),
-                                      ),
-                                    ),
-                                  )),
-                            ],
-                          ),
-                          SizedBox(height: height/40,),
-                          Container(
-                            width: width,
-                            color: String_Values.primarycolor,
-                            padding: EdgeInsets.all(10),
-                            child: Text("PO-Advance",style: TextStyle(color: Colors.white),),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-
-                              sortColumnIndex: 0,
-                              columnSpacing: width / 20,
-                              columns: [
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Order No",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Name",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("GST No",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Delivery Date",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Bill Amount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Cash",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Card",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Discount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Balance Receivable",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                              ],
-                              rows: li7.details
-                                  .map(
-                                    (list) => DataRow(cells: [
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.orderNo.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.name.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                  list.invNo.toString() ,
-                                                  textAlign: TextAlign.center)
-                                            ]),
-                                      ))),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.orderPrice.toString(),
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                      DataCell(
-                                        Center(
-                                            child: Center(
-                                                child: Wrap(
-                                                    direction: Axis.vertical, //default
-                                                    alignment: WrapAlignment.center,
-                                                    children: [
-                                                      Text(list.paymentType1.toString().trim()=="Cash"?list.advanceAmount1.toString():"",
-                                                          textAlign: TextAlign.center)
-                                                    ]))),
-                                      ),
-                                      DataCell(
-                                        Center(
-                                            child: Center(
-                                                child: Wrap(
-                                                    direction: Axis.vertical, //default
-                                                    alignment: WrapAlignment.center,
-                                                    children: [
-                                                      Text(list.paymentType1.toString().trim()=="Card"?list.advanceAmount1.toString():"",
-                                                          textAlign: TextAlign.center)
-                                                    ]))),
-                                      ),
-
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.advanceAmount1}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                ]),
-                              )
-                                  .toList(),
-                            ),
-                          ),
-                          SizedBox(height: height/40,),
-                          Container(
-                            width: width,
-                            color: String_Values.primarycolor,
-                            padding: EdgeInsets.all(10),
-                            child: Text("PO-Fully Settlement as Advance",style: TextStyle(color: Colors.white),),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-
-                              sortColumnIndex: 0,
-                              columnSpacing: width / 20,
-                              columns: [
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Order No",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Name",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("GST No",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Delivery Date",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Bill Amount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Cash",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Card",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Discount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Balance Receivable",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                              ],
-                              rows: li8.details
-                                  .map(
-                                    (list) => DataRow(cells: [
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.orderNo.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.name.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                  list.invNo.toString() ,
-                                                  textAlign: TextAlign.center)
-                                            ]),
-                                      ))),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.orderPrice.toString(),
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.paymentType.toString()=="Cash"?list.advanceAmount.toString():"",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.paymentType.toString()=="Card"?list.advanceAmount.toString():"",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                ]),
-                              )
-                                  .toList(),
-                            ),
-                          ),
-                          SizedBox(height: height/40,),
-                          Container(
-                            width: width,
-                            color: String_Values.primarycolor,
-                            padding: EdgeInsets.all(10),
-                            child: Text("PO-Balance Amount Received",style: TextStyle(color: Colors.white),),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-
-                              sortColumnIndex: 0,
-                              columnSpacing: width / 20,
-                              columns: [
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Order No",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Name",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("GST No",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Delivery Date",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Bill Amount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Cash",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Card",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Discount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Balance Receivable",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                              ],
-                              rows: li9.details
-                                  .map(
-                                    (list) => DataRow(cells: [
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.orderNo.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.name.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                  list.invNo.toString() ,
-                                                  textAlign: TextAlign.center)
-                                            ]),
-                                      ))),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.orderPrice.toString(),
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.paymentType.toString()=="Cash"?list.advanceAmount.toString():"",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.paymentType.toString()=="Card"?list.advanceAmount.toString():"",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                ]),
-                              )
-                                  .toList(),
-                            ),
-                          ),
-                          SizedBox(height: height/40,),
-                          Container(
-                            width: width,
-                            color: String_Values.primarycolor,
-                            padding: EdgeInsets.all(10),
-                            child: Text("PO-Ondate Sales and Settlement",style: TextStyle(color: Colors.white),),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-
-                              sortColumnIndex: 0,
-                              columnSpacing: width / 20,
-                              columns: [
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Order No",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Name",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("GST No",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Delivery Date",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Bill Amount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Cash",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Card",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Discount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Balance Receivable",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                  numeric: false,
-
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                              ],
-                              rows: li11.details
-                                  .map(
-                                    (list) => DataRow(cells: [
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.orderNo.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.name.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                  list.invNo.toString() ,
-                                                  textAlign: TextAlign.center)
-                                            ]),
-                                      ))),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.orderPrice.toString(),
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.paymentType.toString()=="Cash"?list.advanceAmount.toString():"",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.paymentType.toString()=="Card"?list.advanceAmount.toString():"",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
-
-                                ]),
-                              )
-                                  .toList(),
-                            ),
-                          ),
-                          SizedBox(height: height/40,),
-                          Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Card Total:",style: TextStyle(color: String_Values.primarycolor,fontWeight: FontWeight.w800),),
-                                    Text("$cardcount",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800),),
-
-                                  ],
-                                ),
+                              SizedBox(
+                                height: height / 30,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Cash Total:",style: TextStyle(color: String_Values.primarycolor,fontWeight: FontWeight.w800),),
-                                    Text("$cashcount",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800),),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
 
-                                  ],
-                                ),
-                              ),],
-                          ),
-                          SizedBox(height: height/10,),
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+                                          dateupload = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              " 00:00:00";
 
-                        ],
-                      ),
-
-                    ),
-                    floatingActionButton: FloatingActionButton.extended(onPressed: () async {
-                      // generateExcel();
-                      generateCashSettlementReport();
-                      //                Excel excel;
-                      //                 excel = Excel.createExcel();
-                      //                Sheet sheetObject = excel['Sales Report'];
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
-                      //                for(int i=0;i<li6.details.length;i++)
-                      //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
-                      //
-                      //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
-                      //
-                      //                cellStyle.underline = Underline.Single; // or Underline.Double
-                      //
-                      //
-                      //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
-                      //                // cell.value = 8; // dynamic values support provided;
-                      //                cell.cellStyle = cellStyle;
-                      //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
-                      //                cell.cellStyle = cellStyle;
-                      // //                 var sheet = excel['mySheet'];
-                      // //
-                      // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
-                      // //                 cell.value = "Heya How are you I am fine ok goood night";
-                      // //                 cell.cellStyle = cellStyle;
-                      // //
-                      // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
-                      // //                 cell2.value = "Heya How night";
-                      // //                 cell2.cellStyle = cellStyle;
-                      // //                 /*
-                      // // * sheetObject.appendRow(list-iterables);
-                      // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-                      // // * list-iterables === list of iterables
-                      // // */
-                      // //
-                      // //
-                      // //
-                      // //
-                      // //                 /// printing cell-type
-                      // //                 print("CellType: " + cell.cellType.toString());
-                      //
-                      //                 ///
-                      //                 ///
-                      //                 /// Iterating and changing values to desired type
-                      //                 ///
-                      //                 ///
-                      //                 // for (int row = 0; row < sheet.maxRows; row++) {
-                      //                 //   sheet.row(row).forEach((cell1) {
-                      //                 //     if (cell1 != null) {
-                      //                 //       cell1.value = ' My custom Value ';
-                      //                 //     }
-                      //                 //   });
-                      //                 // }
-                      //
-                      //                 var fileBytes = excel.save();
-                      //                 var tempDir;
-                      //                 if (Platform.isAndroid) {
-                      //                   tempDir = await getExternalStorageDirectory();
-                      //                   // Android-specific code
-                      //                 } else {
-                      //                   tempDir = await getApplicationDocumentsDirectory();
-                      //                   // iOS-specific code
-                      //                 }
-                      //                 String tempPath = tempDir.path;
-                      //                 print("$tempPath/text.xlsx");
-                      //                 File(join("$tempPath/text.xlsx"))
-                      //                   ..createSync(recursive: true)
-                      //                   ..writeAsBytesSync(fileBytes);
-
-                    },
-                        icon: Icon(Icons.download_outlined),
-                        backgroundColor: String_Values.primarycolor,
-                        label: Text("Download"))
-                    ),
-                Scaffold(
-                  body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
-                    child: Column(
-                      children: [
-
-                        SizedBox(height: height/30,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                                height: 55,
-                                width: width/2.2,
-
-                                child: TextField(
-                                  onTap: () async {
-                                    DateTime date = DateTime(1900);
-                                    FocusScope.of(context)
-                                        .requestFocus(new FocusNode());
-
-                                    date = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now()
-                                            .subtract(new Duration(days: 365 * 120)),
-                                        lastDate: DateTime.now()
-                                            .add(new Duration(days: 365)));
-                                    dateupload4=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+" 00:00:00";
-
-                                    StartDateController2.text =date.day.toString().padLeft(2, "0") +
-                                        '-' + date.month.toString().padLeft(2, "0") +
-                                        '-' +date.year.toString();
-                                    check().then((value) {
-                                      if(value)
-                                        ReceivebillsReport();
-                                      else
-                                        Fluttertoast.showToast(msg: "No Internet Connection");
-                                    });
-
-                                  },
-                                  enabled: true,
-                                  controller: StartDateController2,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.calendar_today_outlined),
-                                    labelText: 'Start Date',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.0,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                  ),
-                                )),
-                            Container(
-                                height: 55,
-                                width: width/2.2,
-
-                                child: TextField(
-                                  onTap: () async {
-                                    DateTime date = DateTime(1900);
-                                    FocusScope.of(context)
-                                        .requestFocus(new FocusNode());
-
-                                    date = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now()
-                                            .subtract(new Duration(days: 365 * 120)),
-                                        lastDate: DateTime.now()
-                                            .add(new Duration(days: 365)));
-
-                                    dateupload5=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+' 23:59:59';
-
-                                    EndDateController2.text =
-                                        date.day.toString().padLeft(2, "0") +
-                                            '-' + date.month.toString().padLeft(2, "0") +
-                                            '-' +date.year.toString();
-                                    check().then((value) {
-                                      if(value)
-                                        ReceivebillsReport();
-                                      else
-                                        Fluttertoast.showToast(msg: "No Internet Connection");
-                                    });
-                                  },
-                                  enabled: true,
-                                  controller: EndDateController2,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.calendar_today_outlined),
-                                    labelText: 'End Date',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.0,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                  ),
-                                )),
-                          ],
-                        ),
-                        SizedBox(height: height/40,),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: DataTable(
-
-                            sortColumnIndex: 0,
-                            columnSpacing: width / 20,
-                            columns: [
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Order No",
-                                          softWrap: true,
-                                          style: TextStyle(fontSize: 12),
-                                          textAlign: TextAlign.center,
+                                          StartDateController.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              SalesReportList();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: StartDateController,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'Start Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
                                         ),
-                                      ],
-                                    )),
-                                numeric: false,
+                                      )),
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
 
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Name",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
 
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("GST No",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
+                                          dateupload1 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              ' 23:59:59';
 
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Bill Date",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Bill Amount",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Advance",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Discount",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Balance Receivable",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-
-                            ],
-                            rows: li10.details
-                                .map(
-                                  (list) => DataRow(cells: [
-                                DataCell(Center(
-                                    child: Center(
-                                      child: Wrap(
-                                          direction: Axis.vertical, //default
-                                          alignment: WrapAlignment.center,
-                                          children: [
-                                            Text(
-                                              list.orderNo.toString(),
-                                              textAlign: TextAlign.center,
-                                            )
-                                          ]),
-                                    ))),
-                                DataCell(Center(
-                                    child: Center(
-                                      child: Wrap(
-                                          direction: Axis.vertical, //default
-                                          alignment: WrapAlignment.center,
-                                          children: [
-                                            Text(
-                                              list.name.toString(),
-                                              textAlign: TextAlign.center,
-                                            )
-                                          ]),
-                                    ))),
-                                DataCell(Center(
-                                    child: Center(
-                                      child: Wrap(
-                                          direction: Axis.vertical, //default
-                                          alignment: WrapAlignment.center,
-                                          children: [
-                                            Text(
-                                                list.invNo.toString() ,
-                                                textAlign: TextAlign.center)
-                                          ]),
-                                    ))),
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text(list.orderPrice.toString(),
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${list.advanceAmount}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${list.disAmount}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-
-                              ]),
-                            )
-                                .toList(),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                  ),
-                    floatingActionButton: FloatingActionButton.extended(onPressed: () async {
-                      // generateExcel();
-                      receivablesReport();
-                      //                Excel excel;
-                      //                 excel = Excel.createExcel();
-                      //                Sheet sheetObject = excel['Sales Report'];
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
-                      //                for(int i=0;i<li6.details.length;i++)
-                      //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
-                      //
-                      //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
-                      //
-                      //                cellStyle.underline = Underline.Single; // or Underline.Double
-                      //
-                      //
-                      //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
-                      //                // cell.value = 8; // dynamic values support provided;
-                      //                cell.cellStyle = cellStyle;
-                      //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
-                      //                cell.cellStyle = cellStyle;
-                      // //                 var sheet = excel['mySheet'];
-                      // //
-                      // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
-                      // //                 cell.value = "Heya How are you I am fine ok goood night";
-                      // //                 cell.cellStyle = cellStyle;
-                      // //
-                      // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
-                      // //                 cell2.value = "Heya How night";
-                      // //                 cell2.cellStyle = cellStyle;
-                      // //                 /*
-                      // // * sheetObject.appendRow(list-iterables);
-                      // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-                      // // * list-iterables === list of iterables
-                      // // */
-                      // //
-                      // //
-                      // //
-                      // //
-                      // //                 /// printing cell-type
-                      // //                 print("CellType: " + cell.cellType.toString());
-                      //
-                      //                 ///
-                      //                 ///
-                      //                 /// Iterating and changing values to desired type
-                      //                 ///
-                      //                 ///
-                      //                 // for (int row = 0; row < sheet.maxRows; row++) {
-                      //                 //   sheet.row(row).forEach((cell1) {
-                      //                 //     if (cell1 != null) {
-                      //                 //       cell1.value = ' My custom Value ';
-                      //                 //     }
-                      //                 //   });
-                      //                 // }
-                      //
-                      //                 var fileBytes = excel.save();
-                      //                 var tempDir;
-                      //                 if (Platform.isAndroid) {
-                      //                   tempDir = await getExternalStorageDirectory();
-                      //                   // Android-specific code
-                      //                 } else {
-                      //                   tempDir = await getApplicationDocumentsDirectory();
-                      //                   // iOS-specific code
-                      //                 }
-                      //                 String tempPath = tempDir.path;
-                      //                 print("$tempPath/text.xlsx");
-                      //                 File(join("$tempPath/text.xlsx"))
-                      //                   ..createSync(recursive: true)
-                      //                   ..writeAsBytesSync(fileBytes);
-
-                    },
-                        icon: Icon(Icons.download_outlined),
-                        backgroundColor: String_Values.primarycolor,
-                        label: Text("Download"))
-                ),
-                Scaffold(
-                  body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
-                    child: Column(
-                      children: [
-
-                        SizedBox(height: height/30,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                                height: 55,
-                                width: width/2.2,
-
-                                child: TextField(
-                                  onTap: () async {
-                                    DateTime date = DateTime(1900);
-                                    FocusScope.of(context)
-                                        .requestFocus(new FocusNode());
-
-                                    date = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now()
-                                            .subtract(new Duration(days: 365 * 120)),
-                                        lastDate: DateTime.now()
-                                            .add(new Duration(days: 365)));
-                                    dateupload6=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+" 00:00:00";
-
-                                    StartDateController3.text =date.day.toString().padLeft(2, "0") +
-                                        '-' + date.month.toString().padLeft(2, "0") +
-                                        '-' +date.year.toString();
-                                    check().then((value) {
-                                      if(value)
-                                        DiscountReportList();
-                                      else
-                                        Fluttertoast.showToast(msg: "No Internet Connection");
-                                    });
-
-                                  },
-                                  enabled: true,
-                                  controller: StartDateController3,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.calendar_today_outlined),
-                                    labelText: 'Start Date',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.0,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                  ),
-                                )),
-                            Container(
-                                height: 55,
-                                width: width/2.2,
-
-                                child: TextField(
-                                  onTap: () async {
-                                    DateTime date = DateTime(1900);
-                                    FocusScope.of(context)
-                                        .requestFocus(new FocusNode());
-
-                                    date = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now()
-                                            .subtract(new Duration(days: 365 * 120)),
-                                        lastDate: DateTime.now()
-                                            .add(new Duration(days: 365)));
-
-                                    dateupload7=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+' 23:59:59';
-
-                                    EndDateController3.text =
-                                        date.day.toString().padLeft(2, "0") +
-                                            '-' + date.month.toString().padLeft(2, "0") +
-                                            '-' +date.year.toString();
-                                    check().then((value) {
-                                      if(value)
-                                        DiscountReportList();
-                                      else
-                                        Fluttertoast.showToast(msg: "No Internet Connection");
-                                    });
-                                  },
-                                  enabled: true,
-                                  controller: EndDateController3,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.calendar_today_outlined),
-                                    labelText: 'End Date',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.0,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                  ),
-                                )),
-                          ],
-                        ),
-                        SizedBox(height: height/40,),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: DataTable(
-
-                            sortColumnIndex: 0,
-                            columnSpacing: width / 20,
-                            columns: [
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Order No",
-                                          softWrap: true,
-                                          style: TextStyle(fontSize: 12),
-                                          textAlign: TextAlign.center,
+                                          EndDateController.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              SalesReportList();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: EndDateController,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'End Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
                                         ),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
+                                      )),
+                                ],
                               ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Name",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
+                              SizedBox(
+                                height: height / 40,
                               ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("GST No",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Bill Date",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Bill Amount",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Advance",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Discount",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Balance Receivable",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
-
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
-
-                            ],
-                            rows: li12.details
-                                .map(
-                                  (list) => DataRow(cells: [
-                                DataCell(Center(
-                                    child: Center(
-                                      child: Wrap(
-                                          direction: Axis.vertical, //default
-                                          alignment: WrapAlignment.center,
-                                          children: [
-                                            Text(
-                                              list.orderNo.toString(),
-                                              textAlign: TextAlign.center,
-                                            )
-                                          ]),
-                                    ))),
-                                DataCell(Center(
-                                    child: Center(
-                                      child: Wrap(
-                                          direction: Axis.vertical, //default
-                                          alignment: WrapAlignment.center,
-                                          children: [
-                                            Text(
-                                              list.name.toString(),
-                                              textAlign: TextAlign.center,
-                                            )
-                                          ]),
-                                    ))),
-                                DataCell(Center(
-                                    child: Center(
-                                      child: Wrap(
-                                          direction: Axis.vertical, //default
-                                          alignment: WrapAlignment.center,
-                                          children: [
-                                            Text(
-                                                list.invNo.toString() ,
-                                                textAlign: TextAlign.center)
-                                          ]),
-                                    ))),
-                                DataCell(
-                                  Center(
-                                      child: Center(
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
                                           child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text(list.orderPrice.toString(),
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${list.advanceAmount}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${list.disAmount}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis.vertical, //default
-                                              alignment: WrapAlignment.center,
-                                              children: [
-                                                Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                                    textAlign: TextAlign.center)
-                                              ]))),
-                                ),
-
-                              ]),
-                            )
-                                .toList(),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                  ),
-                    floatingActionButton: FloatingActionButton.extended(onPressed: () async {
-                      // generateExcel();
-                      discountReport();
-                      //                Excel excel;
-                      //                 excel = Excel.createExcel();
-                      //                Sheet sheetObject = excel['Sales Report'];
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
-                      //                for(int i=0;i<li6.details.length;i++)
-                      //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
-                      //
-                      //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
-                      //
-                      //                cellStyle.underline = Underline.Single; // or Underline.Double
-                      //
-                      //
-                      //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
-                      //                // cell.value = 8; // dynamic values support provided;
-                      //                cell.cellStyle = cellStyle;
-                      //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
-                      //                cell.cellStyle = cellStyle;
-                      // //                 var sheet = excel['mySheet'];
-                      // //
-                      // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
-                      // //                 cell.value = "Heya How are you I am fine ok goood night";
-                      // //                 cell.cellStyle = cellStyle;
-                      // //
-                      // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
-                      // //                 cell2.value = "Heya How night";
-                      // //                 cell2.cellStyle = cellStyle;
-                      // //                 /*
-                      // // * sheetObject.appendRow(list-iterables);
-                      // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-                      // // * list-iterables === list of iterables
-                      // // */
-                      // //
-                      // //
-                      // //
-                      // //
-                      // //                 /// printing cell-type
-                      // //                 print("CellType: " + cell.cellType.toString());
-                      //
-                      //                 ///
-                      //                 ///
-                      //                 /// Iterating and changing values to desired type
-                      //                 ///
-                      //                 ///
-                      //                 // for (int row = 0; row < sheet.maxRows; row++) {
-                      //                 //   sheet.row(row).forEach((cell1) {
-                      //                 //     if (cell1 != null) {
-                      //                 //       cell1.value = ' My custom Value ';
-                      //                 //     }
-                      //                 //   });
-                      //                 // }
-                      //
-                      //                 var fileBytes = excel.save();
-                      //                 var tempDir;
-                      //                 if (Platform.isAndroid) {
-                      //                   tempDir = await getExternalStorageDirectory();
-                      //                   // Android-specific code
-                      //                 } else {
-                      //                   tempDir = await getApplicationDocumentsDirectory();
-                      //                   // iOS-specific code
-                      //                 }
-                      //                 String tempPath = tempDir.path;
-                      //                 print("$tempPath/text.xlsx");
-                      //                 File(join("$tempPath/text.xlsx"))
-                      //                   ..createSync(recursive: true)
-                      //                   ..writeAsBytesSync(fileBytes);
-
-                    },
-                        icon: Icon(Icons.download_outlined),
-                        backgroundColor: String_Values.primarycolor,
-                        label: Text("Download"))
-                ),
-                Scaffold(
-                    body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
-                      child: Column(
-                        children: [
-
-                          SizedBox(height: height/30,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  height: 55,
-                                  width: width/2.2,
-
-                                  child: TextField(
-                                    onTap: () async {
-                                      DateTime date = DateTime(1900);
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-
-                                      date = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now()
-                                              .subtract(new Duration(days: 365 * 120)),
-                                          lastDate: DateTime.now()
-                                              .add(new Duration(days: 365)));
-                                      dateupload8=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+" 00:00:00";
-
-                                      StartDateController4.text =date.day.toString().padLeft(2, "0") +
-                                          '-' + date.month.toString().padLeft(2, "0") +
-                                          '-' +date.year.toString();
-                                      check().then((value) {
-                                        if(value)
-                                          OrderReportList();
-                                        else
-                                          Fluttertoast.showToast(msg: "No Internet Connection");
-                                      });
-
-                                    },
-                                    enabled: true,
-                                    controller: StartDateController4,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.calendar_today_outlined),
-                                      labelText: 'Start Date',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 16.0,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(25.0),
-                                      ),
-                                    ),
-                                  )),
-                              Container(
-                                  height: 55,
-                                  width: width/2.2,
-
-                                  child: TextField(
-                                    onTap: () async {
-                                      DateTime date = DateTime(1900);
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-
-                                      date = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now()
-                                              .subtract(new Duration(days: 365 * 120)),
-                                          lastDate: DateTime.now()
-                                              .add(new Duration(days: 365)));
-
-                                      dateupload9=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0")+' 23:59:59';
-
-                                      EndDateController4.text =
-                                          date.day.toString().padLeft(2, "0") +
-                                              '-' + date.month.toString().padLeft(2, "0") +
-                                              '-' +date.year.toString();
-                                      check().then((value) {
-                                        if(value)
-                                          OrderReportList();
-                                        else
-                                          Fluttertoast.showToast(msg: "No Internet Connection");
-                                      });
-                                    },
-                                    enabled: true,
-                                    controller: EndDateController4,
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.calendar_today_outlined),
-                                      labelText: 'End Date',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 16.0,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(25.0),
-                                      ),
-                                    ),
-                                  )),
-                            ],
-                          ),
-                          SizedBox(height: height/40,),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-
-                              sortColumnIndex: 0,
-                              columnSpacing: width / 20,
-                              columns: [
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4841,18 +2279,18 @@ SizedBox(height: height/40,),
                                           ),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4862,18 +2300,18 @@ SizedBox(height: height/40,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4883,18 +2321,18 @@ SizedBox(height: height/40,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4904,18 +2342,18 @@ SizedBox(height: height/40,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4925,19 +2363,18 @@ SizedBox(height: height/40,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4947,18 +2384,18 @@ SizedBox(height: height/40,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4968,18 +2405,18 @@ SizedBox(height: height/40,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
-                                ),
-                                DataColumn(
-                                  label: Center(
-                                      child: Wrap(
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -4989,552 +2426,4493 @@ SizedBox(height: height/40,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
-                                  numeric: false,
+                                      numeric: false,
 
-                                  // onSort: (columnIndex, ascending) {
-                                  //   onSortColum(columnIndex, ascending);
-                                  //   setState(() {
-                                  //     sort = !sort;
-                                  //   });
-                                  // }
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li6.details
+                                      .map(
+                                        (list) => DataRow(cells: [
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.orderNo.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.name.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(list.invNo.toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]),
+                                          ))),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.orderPrice
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.advanceAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                        ]),
+                                      )
+                                      .toList(),
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                  floatingActionButton: FloatingActionButton.extended(
+                      onPressed: () async {
+                        // generateExcel();
+                        generateSalesReport();
+                        //                Excel excel;
+                        //                 excel = Excel.createExcel();
+                        //                Sheet sheetObject = excel['Sales Report'];
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
+                        //                for(int i=0;i<li6.details.length;i++)
+                        //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
+                        //
+                        //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
+                        //
+                        //                cellStyle.underline = Underline.Single; // or Underline.Double
+                        //
+                        //
+                        //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
+                        //                // cell.value = 8; // dynamic values support provided;
+                        //                cell.cellStyle = cellStyle;
+                        //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
+                        //                cell.cellStyle = cellStyle;
+                        // //                 var sheet = excel['mySheet'];
+                        // //
+                        // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
+                        // //                 cell.value = "Heya How are you I am fine ok goood night";
+                        // //                 cell.cellStyle = cellStyle;
+                        // //
+                        // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
+                        // //                 cell2.value = "Heya How night";
+                        // //                 cell2.cellStyle = cellStyle;
+                        // //                 /*
+                        // // * sheetObject.appendRow(list-iterables);
+                        // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+                        // // * list-iterables === list of iterables
+                        // // */
+                        // //
+                        // //
+                        // //
+                        // //
+                        // //                 /// printing cell-type
+                        // //                 print("CellType: " + cell.cellType.toString());
+                        //
+                        //                 ///
+                        //                 ///
+                        //                 /// Iterating and changing values to desired type
+                        //                 ///
+                        //                 ///
+                        //                 // for (int row = 0; row < sheet.maxRows; row++) {
+                        //                 //   sheet.row(row).forEach((cell1) {
+                        //                 //     if (cell1 != null) {
+                        //                 //       cell1.value = ' My custom Value ';
+                        //                 //     }
+                        //                 //   });
+                        //                 // }
+                        //
+                        //                 var fileBytes = excel.save();
+                        //                 var tempDir;
+                        //                 if (Platform.isAndroid) {
+                        //                   tempDir = await getExternalStorageDirectory();
+                        //                   // Android-specific code
+                        //                 } else {
+                        //                   tempDir = await getApplicationDocumentsDirectory();
+                        //                   // iOS-specific code
+                        //                 }
+                        //                 String tempPath = tempDir.path;
+                        //                 print("$tempPath/text.xlsx");
+                        //                 File(join("$tempPath/text.xlsx"))
+                        //                   ..createSync(recursive: true)
+                        //                   ..writeAsBytesSync(fileBytes);
+                      },
+                      icon: Icon(Icons.download_outlined),
+                      backgroundColor: String_Values.primarycolor,
+                      label: Text("Download"))),
+              Scaffold(
+                  body: loading
+                      ? Center(child: CircularProgressIndicator())
+                      : SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: height / 30,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
 
-                              ],
-                              rows: li13.details
-                                  .map(
-                                    (list) => DataRow(
-                                        selected:
-                                        selectedPlanIds.contains(list.orderNo),
-                                        onSelectChanged: (b) {
-                                          setState(() {
-                                            if (b) {
-                                              selectedPlanIds.add(list.orderNo);
-                                            } else {
-                                              selectedPlanIds.remove(list.orderNo);
-                                            }
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+                                          dateupload2 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              " 00:00:00";
+
+                                          StartDateController1.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              PO_Advance()
+                                                  .then((value) =>
+                                                      PO_Advance_fullsettlement())
+                                                  .then((value) =>
+                                                      BalanceOrderAmountFullPaid())
+                                                  .then((value) =>
+                                                      PO_Ondate_Sales_Settlement()
+                                                          .then((value) {
+                                                        cashcount = 0;
+
+                                                        cardcount = 0;
+                                                        for (int i = 0;
+                                                            i <
+                                                                li7.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li7.details[i]
+                                                                  .paymentType1
+                                                                  .toString()
+                                                                  .trim() ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li7.details[i]
+                                                                    .advanceAmount1;
+                                                          else if (li7
+                                                                  .details[i]
+                                                                  .paymentType1
+                                                                  .toString()
+                                                                  .trim() ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li7.details[i]
+                                                                    .advanceAmount1;
+                                                        }
+                                                        for (int i = 0;
+                                                            i <
+                                                                li8.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li8.details[i]
+                                                                  .paymentType ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li8.details[i]
+                                                                    .advanceAmount;
+                                                          else if (li8
+                                                                  .details[i]
+                                                                  .paymentType ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li8.details[i]
+                                                                    .advanceAmount;
+                                                        }
+                                                        for (int i = 0;
+                                                            i <
+                                                                li9.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li9.details[i]
+                                                                  .paymentType ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li9.details[i]
+                                                                    .advanceAmount;
+                                                          else if (li9
+                                                                  .details[i]
+                                                                  .paymentType ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li9.details[i]
+                                                                    .advanceAmount;
+                                                        }
+                                                        for (int i = 0;
+                                                            i <
+                                                                li11.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li11.details[i]
+                                                                  .paymentType ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li11.details[i]
+                                                                    .advanceAmount;
+                                                          else if (li11
+                                                                  .details[i]
+                                                                  .paymentType ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li11.details[i]
+                                                                    .advanceAmount;
+                                                        }
+                                                      }));
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
                                           });
                                         },
-                                      
-                                      
-                                        cells: [
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.orderNo.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                list.name.toString(),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ]),
-                                      ))),
-                                  DataCell(Center(
-                                      child: Center(
-                                        child: Wrap(
-                                            direction: Axis.vertical, //default
-                                            alignment: WrapAlignment.center,
-                                            children: [
-                                              Text(
-                                                  list.invNo.toString() ,
-                                                  textAlign: TextAlign.center)
-                                            ]),
-                                      ))),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
+                                        enabled: true,
+                                        controller: StartDateController1,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'Start Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
 
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Text(list.orderPrice.toString(),
-                                                      textAlign: TextAlign.center)
-                                                ]))),
-                                  ),
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
 
-                                  DataCell(
-                                    Center(
-                                        child: Center(
+                                          dateupload3 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              ' 23:59:59';
+
+                                          EndDateController1.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              PO_Advance()
+                                                  .then((value) =>
+                                                      PO_Advance_fullsettlement())
+                                                  .then((value) =>
+                                                      BalanceOrderAmountFullPaid())
+                                                  .then((value) =>
+                                                      PO_Ondate_Sales_Settlement()
+                                                          .then((value) {
+                                                        cashcount = 0;
+
+                                                        cardcount = 0;
+                                                        for (int i = 0;
+                                                            i <
+                                                                li7.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li7.details[i]
+                                                                  .paymentType1
+                                                                  .toString()
+                                                                  .trim() ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li7.details[i]
+                                                                    .advanceAmount1;
+                                                          else if (li7
+                                                                  .details[i]
+                                                                  .paymentType1
+                                                                  .toString()
+                                                                  .trim() ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li7.details[i]
+                                                                    .advanceAmount1;
+                                                        }
+                                                        for (int i = 0;
+                                                            i <
+                                                                li8.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li8.details[i]
+                                                                  .paymentType ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li8.details[i]
+                                                                    .advanceAmount;
+                                                          else if (li8
+                                                                  .details[i]
+                                                                  .paymentType ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li8.details[i]
+                                                                    .advanceAmount;
+                                                        }
+                                                        for (int i = 0;
+                                                            i <
+                                                                li9.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li9.details[i]
+                                                                  .paymentType ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li9.details[i]
+                                                                    .advanceAmount;
+                                                          else if (li9
+                                                                  .details[i]
+                                                                  .paymentType ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li9.details[i]
+                                                                    .advanceAmount;
+                                                        }
+                                                        for (int i = 0;
+                                                            i <
+                                                                li11.details
+                                                                    .length;
+                                                            i++) {
+                                                          if (li11.details[i]
+                                                                  .paymentType ==
+                                                              "Cash")
+                                                            cashcount = cashcount +
+                                                                li11.details[i]
+                                                                    .advanceAmount;
+                                                          else if (li11
+                                                                  .details[i]
+                                                                  .paymentType ==
+                                                              "Card")
+                                                            cardcount = cardcount +
+                                                                li11.details[i]
+                                                                    .advanceAmount;
+                                                        }
+                                                      }));
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: EndDateController1,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'End Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Container(
+                                width: width,
+                                color: String_Values.primarycolor,
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "PO-Advance",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order No",
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Name",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("GST No",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Delivery Date",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Amount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Cash",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Card",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Advance",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Discount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Balance Receivable",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li7.details
+                                      .map(
+                                        (list) => DataRow(cells: [
+                                          DataCell(Center(
+                                              child: Center(
                                             child: Wrap(
-                                                direction: Axis.vertical, //default
+                                                direction:
+                                                    Axis.vertical, //default
                                                 alignment: WrapAlignment.center,
                                                 children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign: TextAlign.center)
+                                                  Text(
+                                                    list.orderNo.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.name.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(list.invNo.toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]),
+                                          ))),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                      textAlign:
+                                                          TextAlign.center)
                                                 ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
-                                            child: Wrap(
-                                                direction: Axis.vertical, //default
-                                                alignment: WrapAlignment.center,
-                                                children: [
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.orderPrice
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType1
+                                                                  .toString()
+                                                                  .trim() ==
+                                                              "Cash"
+                                                          ? list.advanceAmount1
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType1
+                                                                  .toString()
+                                                                  .trim() ==
+                                                              "Card"
+                                                          ? list.advanceAmount1
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.advanceAmount1}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
                                                   Text("${list.disAmount}",
-                                                      textAlign: TextAlign.center)
+                                                      textAlign:
+                                                          TextAlign.center)
                                                 ]))),
-                                  ),
-                                  DataCell(
-                                    Center(
-                                        child: Center(
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                        ]),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Container(
+                                width: width,
+                                color: String_Values.primarycolor,
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "PO-Fully Settlement as Advance",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order No",
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Name",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("GST No",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Delivery Date",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Amount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Cash",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Card",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Advance",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Discount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Balance Receivable",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li8.details
+                                      .map(
+                                        (list) => DataRow(cells: [
+                                          DataCell(Center(
+                                              child: Center(
                                             child: Wrap(
-                                                direction: Axis.vertical, //default
+                                                direction:
+                                                    Axis.vertical, //default
                                                 alignment: WrapAlignment.center,
                                                 children: [
-                                                  Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                                                      textAlign: TextAlign.center)
+                                                  Text(
+                                                    list.orderNo.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.name.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(list.invNo.toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]),
+                                          ))),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                      textAlign:
+                                                          TextAlign.center)
                                                 ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.orderPrice
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType
+                                                                  .toString() ==
+                                                              "Cash"
+                                                          ? list.advanceAmount
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType
+                                                                  .toString() ==
+                                                              "Card"
+                                                          ? list.advanceAmount
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.advanceAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                        ]),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Container(
+                                width: width,
+                                color: String_Values.primarycolor,
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "PO-Balance Amount Received",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order No",
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Name",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("GST No",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Delivery Date",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Amount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Cash",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Card",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Advance",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Discount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Balance Receivable",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li9.details
+                                      .map(
+                                        (list) => DataRow(cells: [
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.orderNo.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.name.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(list.invNo.toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]),
+                                          ))),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.orderPrice
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType
+                                                                  .toString() ==
+                                                              "Cash"
+                                                          ? list.advanceAmount
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType
+                                                                  .toString() ==
+                                                              "Card"
+                                                          ? list.advanceAmount
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.advanceAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                        ]),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Container(
+                                width: width,
+                                color: String_Values.primarycolor,
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "PO-Ondate Sales and Settlement",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order No",
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Name",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("GST No",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Delivery Date",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Amount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Cash",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Card",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Advance",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Discount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Balance Receivable",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li11.details
+                                      .map(
+                                        (list) => DataRow(cells: [
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.orderNo.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.name.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(list.invNo.toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]),
+                                          ))),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.orderPrice
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType
+                                                                  .toString() ==
+                                                              "Cash"
+                                                          ? list.advanceAmount
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.paymentType
+                                                                  .toString() ==
+                                                              "Card"
+                                                          ? list.advanceAmount
+                                                              .toString()
+                                                          : "",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.advanceAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                        ]),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Card Total:",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        Text(
+                                          "$cardcount",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-
-                                ]),
-                              )
-                                  .toList(),
-                            ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Cash Total:",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        Text(
+                                          "$cashcount",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height / 10,
+                              ),
+                            ],
                           ),
+                        ),
+                  floatingActionButton: FloatingActionButton.extended(
+                      onPressed: () async {
+                        // generateExcel();
+                        generateCashSettlementReport();
+                        //                Excel excel;
+                        //                 excel = Excel.createExcel();
+                        //                Sheet sheetObject = excel['Sales Report'];
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
+                        //                for(int i=0;i<li6.details.length;i++)
+                        //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
+                        //
+                        //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
+                        //
+                        //                cellStyle.underline = Underline.Single; // or Underline.Double
+                        //
+                        //
+                        //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
+                        //                // cell.value = 8; // dynamic values support provided;
+                        //                cell.cellStyle = cellStyle;
+                        //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
+                        //                cell.cellStyle = cellStyle;
+                        // //                 var sheet = excel['mySheet'];
+                        // //
+                        // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
+                        // //                 cell.value = "Heya How are you I am fine ok goood night";
+                        // //                 cell.cellStyle = cellStyle;
+                        // //
+                        // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
+                        // //                 cell2.value = "Heya How night";
+                        // //                 cell2.cellStyle = cellStyle;
+                        // //                 /*
+                        // // * sheetObject.appendRow(list-iterables);
+                        // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+                        // // * list-iterables === list of iterables
+                        // // */
+                        // //
+                        // //
+                        // //
+                        // //
+                        // //                 /// printing cell-type
+                        // //                 print("CellType: " + cell.cellType.toString());
+                        //
+                        //                 ///
+                        //                 ///
+                        //                 /// Iterating and changing values to desired type
+                        //                 ///
+                        //                 ///
+                        //                 // for (int row = 0; row < sheet.maxRows; row++) {
+                        //                 //   sheet.row(row).forEach((cell1) {
+                        //                 //     if (cell1 != null) {
+                        //                 //       cell1.value = ' My custom Value ';
+                        //                 //     }
+                        //                 //   });
+                        //                 // }
+                        //
+                        //                 var fileBytes = excel.save();
+                        //                 var tempDir;
+                        //                 if (Platform.isAndroid) {
+                        //                   tempDir = await getExternalStorageDirectory();
+                        //                   // Android-specific code
+                        //                 } else {
+                        //                   tempDir = await getApplicationDocumentsDirectory();
+                        //                   // iOS-specific code
+                        //                 }
+                        //                 String tempPath = tempDir.path;
+                        //                 print("$tempPath/text.xlsx");
+                        //                 File(join("$tempPath/text.xlsx"))
+                        //                   ..createSync(recursive: true)
+                        //                   ..writeAsBytesSync(fileBytes);
+                      },
+                      icon: Icon(Icons.download_outlined),
+                      backgroundColor: String_Values.primarycolor,
+                      label: Text("Download"))),
+              Scaffold(
+                  body: loading
+                      ? Center(child: CircularProgressIndicator())
+                      : SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: height / 30,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+                                          dateupload4 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              " 00:00:00";
+
+                                          StartDateController2.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              ReceivebillsReport();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: StartDateController2,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'Start Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+
+                                          dateupload5 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              ' 23:59:59';
+
+                                          EndDateController2.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              ReceivebillsReport();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: EndDateController2,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'End Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order No",
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Name",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("GST No",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Date",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Amount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Advance",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Discount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Balance Receivable",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li10.details
+                                      .map(
+                                        (list) => DataRow(cells: [
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.orderNo.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.name.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(list.invNo.toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]),
+                                          ))),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.orderPrice
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.advanceAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                        ]),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                  floatingActionButton: FloatingActionButton.extended(
+                      onPressed: () async {
+                        // generateExcel();
+                        receivablesReport();
+                        //                Excel excel;
+                        //                 excel = Excel.createExcel();
+                        //                Sheet sheetObject = excel['Sales Report'];
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
+                        //                for(int i=0;i<li6.details.length;i++)
+                        //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
+                        //
+                        //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
+                        //
+                        //                cellStyle.underline = Underline.Single; // or Underline.Double
+                        //
+                        //
+                        //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
+                        //                // cell.value = 8; // dynamic values support provided;
+                        //                cell.cellStyle = cellStyle;
+                        //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
+                        //                cell.cellStyle = cellStyle;
+                        // //                 var sheet = excel['mySheet'];
+                        // //
+                        // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
+                        // //                 cell.value = "Heya How are you I am fine ok goood night";
+                        // //                 cell.cellStyle = cellStyle;
+                        // //
+                        // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
+                        // //                 cell2.value = "Heya How night";
+                        // //                 cell2.cellStyle = cellStyle;
+                        // //                 /*
+                        // // * sheetObject.appendRow(list-iterables);
+                        // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+                        // // * list-iterables === list of iterables
+                        // // */
+                        // //
+                        // //
+                        // //
+                        // //
+                        // //                 /// printing cell-type
+                        // //                 print("CellType: " + cell.cellType.toString());
+                        //
+                        //                 ///
+                        //                 ///
+                        //                 /// Iterating and changing values to desired type
+                        //                 ///
+                        //                 ///
+                        //                 // for (int row = 0; row < sheet.maxRows; row++) {
+                        //                 //   sheet.row(row).forEach((cell1) {
+                        //                 //     if (cell1 != null) {
+                        //                 //       cell1.value = ' My custom Value ';
+                        //                 //     }
+                        //                 //   });
+                        //                 // }
+                        //
+                        //                 var fileBytes = excel.save();
+                        //                 var tempDir;
+                        //                 if (Platform.isAndroid) {
+                        //                   tempDir = await getExternalStorageDirectory();
+                        //                   // Android-specific code
+                        //                 } else {
+                        //                   tempDir = await getApplicationDocumentsDirectory();
+                        //                   // iOS-specific code
+                        //                 }
+                        //                 String tempPath = tempDir.path;
+                        //                 print("$tempPath/text.xlsx");
+                        //                 File(join("$tempPath/text.xlsx"))
+                        //                   ..createSync(recursive: true)
+                        //                   ..writeAsBytesSync(fileBytes);
+                      },
+                      icon: Icon(Icons.download_outlined),
+                      backgroundColor: String_Values.primarycolor,
+                      label: Text("Download"))),
+              Scaffold(
+                  body: loading
+                      ? Center(child: CircularProgressIndicator())
+                      : SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: height / 30,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+                                          dateupload6 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              " 00:00:00";
+
+                                          StartDateController3.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              DiscountReportList();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: StartDateController3,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'Start Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+
+                                          dateupload7 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              ' 23:59:59';
+
+                                          EndDateController3.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              DiscountReportList();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: EndDateController3,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'End Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order No",
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Name",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("GST No",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Date",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Amount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Advance",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Discount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Balance Receivable",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li12.details
+                                      .map(
+                                        (list) => DataRow(cells: [
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.orderNo.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    list.name.toString(),
+                                                    textAlign: TextAlign.center,
+                                                  )
+                                                ]),
+                                          ))),
+                                          DataCell(Center(
+                                              child: Center(
+                                            child: Wrap(
+                                                direction:
+                                                    Axis.vertical, //default
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Text(list.invNo.toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]),
+                                          ))),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      list.orderPrice
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.advanceAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text("${list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                                child: Center(
+                                                    child: Wrap(
+                                                        direction: Axis
+                                                            .vertical, //default
+                                                        alignment: WrapAlignment
+                                                            .center,
+                                                        children: [
+                                                  Text(
+                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                      textAlign:
+                                                          TextAlign.center)
+                                                ]))),
+                                          ),
+                                        ]),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                  floatingActionButton: FloatingActionButton.extended(
+                      onPressed: () async {
+                        // generateExcel();
+                        discountReport();
+                        //                Excel excel;
+                        //                 excel = Excel.createExcel();
+                        //                Sheet sheetObject = excel['Sales Report'];
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
+                        //                for(int i=0;i<li6.details.length;i++)
+                        //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
+                        //
+                        //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
+                        //
+                        //                cellStyle.underline = Underline.Single; // or Underline.Double
+                        //
+                        //
+                        //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
+                        //                // cell.value = 8; // dynamic values support provided;
+                        //                cell.cellStyle = cellStyle;
+                        //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
+                        //                cell.cellStyle = cellStyle;
+                        // //                 var sheet = excel['mySheet'];
+                        // //
+                        // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
+                        // //                 cell.value = "Heya How are you I am fine ok goood night";
+                        // //                 cell.cellStyle = cellStyle;
+                        // //
+                        // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
+                        // //                 cell2.value = "Heya How night";
+                        // //                 cell2.cellStyle = cellStyle;
+                        // //                 /*
+                        // // * sheetObject.appendRow(list-iterables);
+                        // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+                        // // * list-iterables === list of iterables
+                        // // */
+                        // //
+                        // //
+                        // //
+                        // //
+                        // //                 /// printing cell-type
+                        // //                 print("CellType: " + cell.cellType.toString());
+                        //
+                        //                 ///
+                        //                 ///
+                        //                 /// Iterating and changing values to desired type
+                        //                 ///
+                        //                 ///
+                        //                 // for (int row = 0; row < sheet.maxRows; row++) {
+                        //                 //   sheet.row(row).forEach((cell1) {
+                        //                 //     if (cell1 != null) {
+                        //                 //       cell1.value = ' My custom Value ';
+                        //                 //     }
+                        //                 //   });
+                        //                 // }
+                        //
+                        //                 var fileBytes = excel.save();
+                        //                 var tempDir;
+                        //                 if (Platform.isAndroid) {
+                        //                   tempDir = await getExternalStorageDirectory();
+                        //                   // Android-specific code
+                        //                 } else {
+                        //                   tempDir = await getApplicationDocumentsDirectory();
+                        //                   // iOS-specific code
+                        //                 }
+                        //                 String tempPath = tempDir.path;
+                        //                 print("$tempPath/text.xlsx");
+                        //                 File(join("$tempPath/text.xlsx"))
+                        //                   ..createSync(recursive: true)
+                        //                   ..writeAsBytesSync(fileBytes);
+                      },
+                      icon: Icon(Icons.download_outlined),
+                      backgroundColor: String_Values.primarycolor,
+                      label: Text("Download"))),
+              Scaffold(
+                  body: loading
+                      ? Center(child: CircularProgressIndicator())
+                      : SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: height / 30,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+                                          dateupload8 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              " 00:00:00";
+
+                                          StartDateController4.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              OrderReportList();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: StartDateController4,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'Start Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                      height: 55,
+                                      width: width / 2.2,
+                                      child: TextField(
+                                        onTap: () async {
+                                          DateTime date = DateTime(1900);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(new Duration(
+                                                      days: 365 * 120)),
+                                              lastDate: DateTime.now().add(
+                                                  new Duration(days: 365)));
+
+                                          dateupload9 = date.year.toString() +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              ' 23:59:59';
+
+                                          EndDateController4.text = date.day
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.month
+                                                  .toString()
+                                                  .padLeft(2, "0") +
+                                              '-' +
+                                              date.year.toString();
+                                          check().then((value) {
+                                            if (value)
+                                              OrderReportList();
+                                            else
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Internet Connection");
+                                          });
+                                        },
+                                        enabled: true,
+                                        controller: EndDateController4,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              Icons.calendar_today_outlined),
+                                          labelText: 'End Date',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  sortColumnIndex: 0,
+                                  columnSpacing: width / 20,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order No",
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Name",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("GST No",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Delivery Date",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Bill Amount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Advance",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Discount",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("Balance Receivable",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                  ],
+                                  rows: li13.details
+                                      .map(
+                                        (list) => DataRow(
+                                            selected: selectedPlanIds
+                                                .contains(list.orderNo),
+                                            onSelectChanged: (b) {
+                                              setState(() {
+                                                if (b) {
+                                                  selectedPlanIds
+                                                      .add(list.orderNo);
+                                                } else {
+                                                  selectedPlanIds
+                                                      .remove(list.orderNo);
+                                                }
+                                              });
+                                            },
+                                            cells: [
+                                              DataCell(Center(
+                                                  child: Center(
+                                                child: Wrap(
+                                                    direction:
+                                                        Axis.vertical, //default
+                                                    alignment:
+                                                        WrapAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        list.orderNo.toString(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      )
+                                                    ]),
+                                              ))),
+                                              DataCell(Center(
+                                                  child: Center(
+                                                child: Wrap(
+                                                    direction:
+                                                        Axis.vertical, //default
+                                                    alignment:
+                                                        WrapAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        list.name.toString(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      )
+                                                    ]),
+                                              ))),
+                                              DataCell(Center(
+                                                  child: Center(
+                                                child: Wrap(
+                                                    direction:
+                                                        Axis.vertical, //default
+                                                    alignment:
+                                                        WrapAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                          list.invNo.toString(),
+                                                          textAlign:
+                                                              TextAlign.center)
+                                                    ]),
+                                              ))),
+                                              DataCell(
+                                                Center(
+                                                    child: Center(
+                                                        child: Wrap(
+                                                            direction: Axis
+                                                                .vertical, //default
+                                                            alignment:
+                                                                WrapAlignment
+                                                                    .center,
+                                                            children: [
+                                                      Text(
+                                                          "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                                                          textAlign:
+                                                              TextAlign.center)
+                                                    ]))),
+                                              ),
+                                              DataCell(
+                                                Center(
+                                                    child: Center(
+                                                        child: Wrap(
+                                                            direction: Axis
+                                                                .vertical, //default
+                                                            alignment: WrapAlignment.center,
+                                                            children: [
+                                                      Text(
+                                                          list.orderPrice
+                                                              .toString(),
+                                                          textAlign:
+                                                              TextAlign.center)
+                                                    ]))),
+                                              ),
+                                              DataCell(
+                                                Center(
+                                                    child: Center(
+                                                        child: Wrap(
+                                                            direction: Axis
+                                                                .vertical, //default
+                                                            alignment: WrapAlignment.center,
+                                                            children: [
+                                                      Text(
+                                                          "${list.advanceAmount}",
+                                                          textAlign:
+                                                              TextAlign.center)
+                                                    ]))),
+                                              ),
+                                              DataCell(
+                                                Center(
+                                                    child: Center(
+                                                        child: Wrap(
+                                                            direction: Axis
+                                                                .vertical, //default
+                                                            alignment: WrapAlignment.center,
+                                                            children: [
+                                                      Text("${list.disAmount}",
+                                                          textAlign:
+                                                              TextAlign.center)
+                                                    ]))),
+                                              ),
+                                              DataCell(
+                                                Center(
+                                                    child: Center(
+                                                        child: Wrap(
+                                                            direction: Axis
+                                                                .vertical, //default
+                                                            alignment:
+                                                                WrapAlignment
+                                                                    .center,
+                                                            children: [
+                                                      Text(
+                                                          "${list.orderPrice - list.advanceAmount - list.disAmount}",
+                                                          textAlign:
+                                                              TextAlign.center)
+                                                    ]))),
+                                              ),
+                                            ]),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                  floatingActionButton: FloatingActionButton.extended(
+                      onPressed: () async {
+                        selectedPlanIds.isNotEmpty?
+                        OrderReportListDetail()
+                            .then((value) => ItemListAPI().then((value) {
+                                  setState(() {
+                                    controllers.clear();
+                                    cnt.clear();
+                                    print("li14 ${li14.details.length}");
+                                    print("li15 ${li15.details.length}");
+                                    for (int i = 0;
+                                        i < li14.details.length;
+                                        i++) {
+                                      for (int j = 0;
+                                          j < li15.details.length;
+                                          j++) {
+                                        if (li15.details[j].itemName ==
+                                            li14.details[i].itemName) {
+                                          cnt1 = 0;
+                                          for (int k = 0;
+                                              k < controllers.length;
+                                              k++) {
+                                            if (controllers[k].text ==
+                                                li14.details[i].itemName)
+                                              cnt1++;
+                                          }
+                                          if (cnt1 == 0) {
+                                            controllers.add(
+                                                new TextEditingController(
+                                                    text: li14
+                                                        .details[i].itemName));
+                                            cnt.add(0);
+                                            // if (li14.details.length <
+                                            //     li15.details.length) {
+                                            //   controllers[i].text =
+                                            //       li14.details[i].itemName;
+                                            //   // cnt[i]+=li14.details[i].qty.round();
+                                            // } else {
+                                            //   controllers[j].text =
+                                            //       li15.details[j].itemName;
+                                            //   // cnt[j]+=li15.details[j].qty.round();
+                                            // }
+                                          }
+                                        }
+                                      }
+                                    }
+
+                                    for (int i = 0;
+                                        i < li14.details.length;
+                                        i++) {
+                                      for (int j = 0;
+                                          j < controllers.length;
+                                          j++) {
+                                        if (li14.details[i].itemName ==
+                                            controllers[j].text)
+                                          cnt[j] += li14.details[i].qty.round();
+                                      }
+                                    }
+                                  });
+                                }))
+                            .then((value) {
+
+                          showDialog<void>(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  actions: [ Container(
+                                      width: width/4,
+
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50))),
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          // pdf();
+                                          OrderReport();
+                                          Navigator.pop(context);
+
+                                        },
+                                        child: Text(
+                                          "Yes",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor),
+                                        ),
+                                      )),
+                                    Container(
+                                        width: width/4,
+
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50))),
+                                        child: FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+
+                                          },
+                                          child: Text(
+                                            "No",
+                                            style: TextStyle(
+                                                color: String_Values.primarycolor),
+                                          ),
+                                        )),],
+                                    // backgroundColor:
+                                    //     Colors.white.withOpacity(0),
+                                    content: StatefulBuilder(builder:
+                                        (BuildContext context,
+                                            StateSetter setState) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50))),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              SizedBox(
+                                                height: height / 30,
+                                              ),
+                                              Container(
+                                                child: Image.asset(
+                                                  "logo.png",
+                                                  width: width / 2,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: height / 30,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0, right: 8.0),
+                                                child: Text(
+                                                  "Are you Sure, Do you want to Print/Download your order..",
+                                                  style: TextStyle(
+                                                      color: Colors.amber,
+                                                      fontSize: 16),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: height / 50,
+                                              ),
+                                              Text(
+                                                "Order Details",
+                                                style: TextStyle(
+                                                    color: Colors.indigoAccent,fontWeight: FontWeight.w700),
+                                              ),
+                                              SizedBox(
+                                                height: height / 50,
+                                              ),
+                                              Container(
+                                                width: width / 1.2,
+                                                height: height / 4,
+                                                child: Scrollbar(
+                                                  thickness: 3,
+
+                                                  child: ListView.builder(
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return Column(
+                                                        children: [
+                                                          index != 0
+                                                              ? li14
+                                                                          .details[
+                                                                              index]
+                                                                          .orderFlag !=
+                                                                      "Y"
+                                                                  ? li14.details[index].docNo !=
+                                                                          li14
+                                                                              .details[index -
+                                                                                  1]
+                                                                              .docNo
+                                                                      ? Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                          children:[Text(
+                                                                            "Order No : ${li14.details[index].docNo} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.purple,fontSize: 12),)])
+                                                                      : Container()
+                                                                  : Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          children:[ Text(
+                                                                          "Additional Order ${li14.details[index].docNo}",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.purple,fontSize: 12))])
+                                                              : Row(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              children:[Text(
+                                                                "Order No : ${li14.details[index].docNo} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.purple,fontSize: 12),)])
+                                                          ,Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        "${li14.details[index].itemName}"),
+                                                                    Text(
+                                                                        "${li14.details[index].qty.round()}")
+
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                    itemCount:
+                                                        li14.details.length,
+                                                  ),
+                                                ),
+                                              ),
+                                              Divider(
+                                                thickness: 2,
+                                              ),
+                                              Text(
+                                                "Itemwise Total",
+                                                style: TextStyle(
+                                                    color: String_Values
+                                                        .primarycolor),
+                                              ),
+                                              SizedBox(
+                                                height: height / 50,
+                                              ),
+                                              Container(
+                                                height: height / 10,
+
+                                                // padding: const EdgeInsets.only(
+                                                //     left: 24.0, right: 24.0),
+                                                child: Scrollbar(
+                                                  isAlwaysShown: true,
+                                                  thickness: 3,
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        for (int i = 0;
+                                                            i <
+                                                                controllers
+                                                                    .length;
+                                                            i++)
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "${controllers[i].text}",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              Text(
+                                                                "${cnt[i]}",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
 
 
-                        ],
-                      ),
-                    ),
-                    floatingActionButton: FloatingActionButton.extended(onPressed: () async {
-                      OrderReportListDetail();
-                      // generateExcel();
-                      // discountReport();
-                      //                Excel excel;
-                      //                 excel = Excel.createExcel();
-                      //                Sheet sheetObject = excel['Sales Report'];
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow([""]);
-                      //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
-                      //                for(int i=0;i<li6.details.length;i++)
-                      //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
-                      //
-                      //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
-                      //
-                      //                cellStyle.underline = Underline.Single; // or Underline.Double
-                      //
-                      //
-                      //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
-                      //                // cell.value = 8; // dynamic values support provided;
-                      //                cell.cellStyle = cellStyle;
-                      //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
-                      //                cell.cellStyle = cellStyle;
-                      //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
-                      //                cell.cellStyle = cellStyle;
-                      // //                 var sheet = excel['mySheet'];
-                      // //
-                      // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
-                      // //                 cell.value = "Heya How are you I am fine ok goood night";
-                      // //                 cell.cellStyle = cellStyle;
-                      // //
-                      // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
-                      // //                 cell2.value = "Heya How night";
-                      // //                 cell2.cellStyle = cellStyle;
-                      // //                 /*
-                      // // * sheetObject.appendRow(list-iterables);
-                      // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-                      // // * list-iterables === list of iterables
-                      // // */
-                      // //
-                      // //
-                      // //
-                      // //
-                      // //                 /// printing cell-type
-                      // //                 print("CellType: " + cell.cellType.toString());
-                      //
-                      //                 ///
-                      //                 ///
-                      //                 /// Iterating and changing values to desired type
-                      //                 ///
-                      //                 ///
-                      //                 // for (int row = 0; row < sheet.maxRows; row++) {
-                      //                 //   sheet.row(row).forEach((cell1) {
-                      //                 //     if (cell1 != null) {
-                      //                 //       cell1.value = ' My custom Value ';
-                      //                 //     }
-                      //                 //   });
-                      //                 // }
-                      //
-                      //                 var fileBytes = excel.save();
-                      //                 var tempDir;
-                      //                 if (Platform.isAndroid) {
-                      //                   tempDir = await getExternalStorageDirectory();
-                      //                   // Android-specific code
-                      //                 } else {
-                      //                   tempDir = await getApplicationDocumentsDirectory();
-                      //                   // iOS-specific code
-                      //                 }
-                      //                 String tempPath = tempDir.path;
-                      //                 print("$tempPath/text.xlsx");
-                      //                 File(join("$tempPath/text.xlsx"))
-                      //                   ..createSync(recursive: true)
-                      //                   ..writeAsBytesSync(fileBytes);
+                                        ]),
+                                      ));
+                                    }));
+                              });
+                        }):Fluttertoast.showToast(msg: "Please choose order");
+                        // generateExcel();
+                        // discountReport();
+                        //                Excel excel;
+                        //                 excel = Excel.createExcel();
+                        //                Sheet sheetObject = excel['Sales Report'];
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow([""]);
+                        //                sheetObject.appendRow(["OrderNo","Name", "GST No","Bill Date","Bill Amount","Advance","Discount", "Balance Receivable"]);
+                        //                for(int i=0;i<li6.details.length;i++)
+                        //                 sheetObject.appendRow([li6.details[i].orderNo, li6.details[i].name, li6.details[i].invNo,"${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",li6.details[i].orderPrice,li6.details[i].advanceAmount,li6.details[i].disAmount,"${li6.details[i].orderPrice-li6.details[i].advanceAmount-li6.details[i].disAmount}"]);
+                        //
+                        //                CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
+                        //
+                        //                cellStyle.underline = Underline.Single; // or Underline.Double
+                        //
+                        //
+                        //                var cell = sheetObject.cell(CellIndex.indexByString("A3"));
+                        //                // cell.value = 8; // dynamic values support provided;
+                        //                cell.cellStyle = cellStyle;
+                        //                 cell = sheetObject.cell(CellIndex.indexByString("B3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("C3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("D3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("E3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("F3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("G3"));
+                        //                cell.cellStyle = cellStyle;
+                        //                cell = sheetObject.cell(CellIndex.indexByString("H3"));
+                        //                cell.cellStyle = cellStyle;
+                        // //                 var sheet = excel['mySheet'];
+                        // //
+                        // //                 var cell = sheet.cell(CellIndex.indexByString("A1"));
+                        // //                 cell.value = "Heya How are you I am fine ok goood night";
+                        // //                 cell.cellStyle = cellStyle;
+                        // //
+                        // //                 var cell2 = sheet.cell(CellIndex.indexByString("E5"));
+                        // //                 cell2.value = "Heya How night";
+                        // //                 cell2.cellStyle = cellStyle;
+                        // //                 /*
+                        // // * sheetObject.appendRow(list-iterables);
+                        // // * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+                        // // * list-iterables === list of iterables
+                        // // */
+                        // //
+                        // //
+                        // //
+                        // //
+                        // //                 /// printing cell-type
+                        // //                 print("CellType: " + cell.cellType.toString());
+                        //
+                        //                 ///
+                        //                 ///
+                        //                 /// Iterating and changing values to desired type
+                        //                 ///
+                        //                 ///
+                        //                 // for (int row = 0; row < sheet.maxRows; row++) {
+                        //                 //   sheet.row(row).forEach((cell1) {
+                        //                 //     if (cell1 != null) {
+                        //                 //       cell1.value = ' My custom Value ';
+                        //                 //     }
+                        //                 //   });
+                        //                 // }
+                        //
+                        //                 var fileBytes = excel.save();
+                        //                 var tempDir;
+                        //                 if (Platform.isAndroid) {
+                        //                   tempDir = await getExternalStorageDirectory();
+                        //                   // Android-specific code
+                        //                 } else {
+                        //                   tempDir = await getApplicationDocumentsDirectory();
+                        //                   // iOS-specific code
+                        //                 }
+                        //                 String tempPath = tempDir.path;
+                        //                 print("$tempPath/text.xlsx");
+                        //                 File(join("$tempPath/text.xlsx"))
+                        //                   ..createSync(recursive: true)
+                        //                   ..writeAsBytesSync(fileBytes);
+                      },
+                      icon: Icon(Icons.download_outlined),
+                      backgroundColor: String_Values.primarycolor,
+                      label: Text("Download"))),
+              // Scaffold(
+              //   body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
+              //     child: Column(
+              //       children: [
+              //
+              //         SizedBox(height: height/30,),
+              //         TableCalendar(
+              //           locale: 'en_US', calendarController: calenderController,
+              //           onDaySelected: (DateTime day, List events, List holidays)
+              //           {
+              //
+              //
+              //           },
+              //         ),
+              //         SizedBox(height: height/40,),
+              //         SingleChildScrollView(
+              //           scrollDirection: Axis.horizontal,
+              //           child: DataTable(
+              //
+              //             sortColumnIndex: 0,
+              //             columnSpacing: width / 20,
+              //             columns: [
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text(
+              //                           "Order No",
+              //                           softWrap: true,
+              //                           style: TextStyle(fontSize: 12),
+              //                           textAlign: TextAlign.center,
+              //                         ),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text("Name",
+              //                             softWrap: true,
+              //                             style: TextStyle(fontSize: 12),
+              //                             textAlign: TextAlign.center),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text("GST No",
+              //                             softWrap: true,
+              //                             style: TextStyle(fontSize: 12),
+              //                             textAlign: TextAlign.center),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text("Bill Date",
+              //                             softWrap: true,
+              //                             style: TextStyle(fontSize: 12),
+              //                             textAlign: TextAlign.center),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text("Bill Amount",
+              //                             softWrap: true,
+              //                             style: TextStyle(fontSize: 12),
+              //                             textAlign: TextAlign.center),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text("Advance",
+              //                             softWrap: true,
+              //                             style: TextStyle(fontSize: 12),
+              //                             textAlign: TextAlign.center),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text("Discount",
+              //                             softWrap: true,
+              //                             style: TextStyle(fontSize: 12),
+              //                             textAlign: TextAlign.center),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //               DataColumn(
+              //                 label: Center(
+              //                     child: Wrap(
+              //                       direction: Axis.vertical, //default
+              //                       alignment: WrapAlignment.center,
+              //                       children: [
+              //                         Text("Balance Receivable",
+              //                             softWrap: true,
+              //                             style: TextStyle(fontSize: 12),
+              //                             textAlign: TextAlign.center),
+              //                       ],
+              //                     )),
+              //                 numeric: false,
+              //
+              //                 // onSort: (columnIndex, ascending) {
+              //                 //   onSortColum(columnIndex, ascending);
+              //                 //   setState(() {
+              //                 //     sort = !sort;
+              //                 //   });
+              //                 // }
+              //               ),
+              //
+              //             ],
+              //             rows: li10.details
+              //                 .map(
+              //                   (list) => DataRow(cells: [
+              //                 DataCell(Center(
+              //                     child: Center(
+              //                       child: Wrap(
+              //                           direction: Axis.vertical, //default
+              //                           alignment: WrapAlignment.center,
+              //                           children: [
+              //                             Text(
+              //                               list.orderNo.toString(),
+              //                               textAlign: TextAlign.center,
+              //                             )
+              //                           ]),
+              //                     ))),
+              //                 DataCell(Center(
+              //                     child: Center(
+              //                       child: Wrap(
+              //                           direction: Axis.vertical, //default
+              //                           alignment: WrapAlignment.center,
+              //                           children: [
+              //                             Text(
+              //                               list.name.toString(),
+              //                               textAlign: TextAlign.center,
+              //                             )
+              //                           ]),
+              //                     ))),
+              //                 DataCell(Center(
+              //                     child: Center(
+              //                       child: Wrap(
+              //                           direction: Axis.vertical, //default
+              //                           alignment: WrapAlignment.center,
+              //                           children: [
+              //                             Text(
+              //                                 list.invNo.toString() ,
+              //                                 textAlign: TextAlign.center)
+              //                           ]),
+              //                     ))),
+              //                 DataCell(
+              //                   Center(
+              //                       child: Center(
+              //                           child: Wrap(
+              //                               direction: Axis.vertical, //default
+              //                               alignment: WrapAlignment.center,
+              //                               children: [
+              //                                 Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+              //                                     textAlign: TextAlign.center)
+              //                               ]))),
+              //                 ),
+              //
+              //                 DataCell(
+              //                   Center(
+              //                       child: Center(
+              //                           child: Wrap(
+              //                               direction: Axis.vertical, //default
+              //                               alignment: WrapAlignment.center,
+              //                               children: [
+              //                                 Text(list.orderPrice.toString(),
+              //                                     textAlign: TextAlign.center)
+              //                               ]))),
+              //                 ),
+              //
+              //                 DataCell(
+              //                   Center(
+              //                       child: Center(
+              //                           child: Wrap(
+              //                               direction: Axis.vertical, //default
+              //                               alignment: WrapAlignment.center,
+              //                               children: [
+              //                                 Text("${list.advanceAmount}",
+              //                                     textAlign: TextAlign.center)
+              //                               ]))),
+              //                 ),
+              //                 DataCell(
+              //                   Center(
+              //                       child: Center(
+              //                           child: Wrap(
+              //                               direction: Axis.vertical, //default
+              //                               alignment: WrapAlignment.center,
+              //                               children: [
+              //                                 Text("${list.disAmount}",
+              //                                     textAlign: TextAlign.center)
+              //                               ]))),
+              //                 ),
+              //                 DataCell(
+              //                   Center(
+              //                       child: Center(
+              //                           child: Wrap(
+              //                               direction: Axis.vertical, //default
+              //                               alignment: WrapAlignment.center,
+              //                               children: [
+              //                                 Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
+              //                                     textAlign: TextAlign.center)
+              //                               ]))),
+              //                 ),
+              //
+              //               ]),
+              //             )
+              //                 .toList(),
+              //           ),
+              //         ),
+              //
+              //
+              //       ],
+              //     ),
+              //   ),
+              //
+              // ),
+            ]),
+            appBar: AppBar(
+                title: Text("Reports"),
+                bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(50),
+                    child: Material(
+                        color: Colors.white,
+                        // Set the background color of the tab here
+                        child: TabBar(
+                          indicatorColor: String_Values.primarycolor,
+                          indicatorWeight: 5,
+                          isScrollable: true,
 
-                    },
-                        icon: Icon(Icons.download_outlined),
-                        backgroundColor: String_Values.primarycolor,
-                        label: Text("Download"))
-                ),
-                // Scaffold(
-                //   body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
-                //     child: Column(
-                //       children: [
-                //
-                //         SizedBox(height: height/30,),
-                //         TableCalendar(
-                //           locale: 'en_US', calendarController: calenderController,
-                //           onDaySelected: (DateTime day, List events, List holidays)
-                //           {
-                //
-                //
-                //           },
-                //         ),
-                //         SizedBox(height: height/40,),
-                //         SingleChildScrollView(
-                //           scrollDirection: Axis.horizontal,
-                //           child: DataTable(
-                //
-                //             sortColumnIndex: 0,
-                //             columnSpacing: width / 20,
-                //             columns: [
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text(
-                //                           "Order No",
-                //                           softWrap: true,
-                //                           style: TextStyle(fontSize: 12),
-                //                           textAlign: TextAlign.center,
-                //                         ),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text("Name",
-                //                             softWrap: true,
-                //                             style: TextStyle(fontSize: 12),
-                //                             textAlign: TextAlign.center),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text("GST No",
-                //                             softWrap: true,
-                //                             style: TextStyle(fontSize: 12),
-                //                             textAlign: TextAlign.center),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text("Bill Date",
-                //                             softWrap: true,
-                //                             style: TextStyle(fontSize: 12),
-                //                             textAlign: TextAlign.center),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text("Bill Amount",
-                //                             softWrap: true,
-                //                             style: TextStyle(fontSize: 12),
-                //                             textAlign: TextAlign.center),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text("Advance",
-                //                             softWrap: true,
-                //                             style: TextStyle(fontSize: 12),
-                //                             textAlign: TextAlign.center),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text("Discount",
-                //                             softWrap: true,
-                //                             style: TextStyle(fontSize: 12),
-                //                             textAlign: TextAlign.center),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //               DataColumn(
-                //                 label: Center(
-                //                     child: Wrap(
-                //                       direction: Axis.vertical, //default
-                //                       alignment: WrapAlignment.center,
-                //                       children: [
-                //                         Text("Balance Receivable",
-                //                             softWrap: true,
-                //                             style: TextStyle(fontSize: 12),
-                //                             textAlign: TextAlign.center),
-                //                       ],
-                //                     )),
-                //                 numeric: false,
-                //
-                //                 // onSort: (columnIndex, ascending) {
-                //                 //   onSortColum(columnIndex, ascending);
-                //                 //   setState(() {
-                //                 //     sort = !sort;
-                //                 //   });
-                //                 // }
-                //               ),
-                //
-                //             ],
-                //             rows: li10.details
-                //                 .map(
-                //                   (list) => DataRow(cells: [
-                //                 DataCell(Center(
-                //                     child: Center(
-                //                       child: Wrap(
-                //                           direction: Axis.vertical, //default
-                //                           alignment: WrapAlignment.center,
-                //                           children: [
-                //                             Text(
-                //                               list.orderNo.toString(),
-                //                               textAlign: TextAlign.center,
-                //                             )
-                //                           ]),
-                //                     ))),
-                //                 DataCell(Center(
-                //                     child: Center(
-                //                       child: Wrap(
-                //                           direction: Axis.vertical, //default
-                //                           alignment: WrapAlignment.center,
-                //                           children: [
-                //                             Text(
-                //                               list.name.toString(),
-                //                               textAlign: TextAlign.center,
-                //                             )
-                //                           ]),
-                //                     ))),
-                //                 DataCell(Center(
-                //                     child: Center(
-                //                       child: Wrap(
-                //                           direction: Axis.vertical, //default
-                //                           alignment: WrapAlignment.center,
-                //                           children: [
-                //                             Text(
-                //                                 list.invNo.toString() ,
-                //                                 textAlign: TextAlign.center)
-                //                           ]),
-                //                     ))),
-                //                 DataCell(
-                //                   Center(
-                //                       child: Center(
-                //                           child: Wrap(
-                //                               direction: Axis.vertical, //default
-                //                               alignment: WrapAlignment.center,
-                //                               children: [
-                //                                 Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                //                                     textAlign: TextAlign.center)
-                //                               ]))),
-                //                 ),
-                //
-                //                 DataCell(
-                //                   Center(
-                //                       child: Center(
-                //                           child: Wrap(
-                //                               direction: Axis.vertical, //default
-                //                               alignment: WrapAlignment.center,
-                //                               children: [
-                //                                 Text(list.orderPrice.toString(),
-                //                                     textAlign: TextAlign.center)
-                //                               ]))),
-                //                 ),
-                //
-                //                 DataCell(
-                //                   Center(
-                //                       child: Center(
-                //                           child: Wrap(
-                //                               direction: Axis.vertical, //default
-                //                               alignment: WrapAlignment.center,
-                //                               children: [
-                //                                 Text("${list.advanceAmount}",
-                //                                     textAlign: TextAlign.center)
-                //                               ]))),
-                //                 ),
-                //                 DataCell(
-                //                   Center(
-                //                       child: Center(
-                //                           child: Wrap(
-                //                               direction: Axis.vertical, //default
-                //                               alignment: WrapAlignment.center,
-                //                               children: [
-                //                                 Text("${list.disAmount}",
-                //                                     textAlign: TextAlign.center)
-                //                               ]))),
-                //                 ),
-                //                 DataCell(
-                //                   Center(
-                //                       child: Center(
-                //                           child: Wrap(
-                //                               direction: Axis.vertical, //default
-                //                               alignment: WrapAlignment.center,
-                //                               children: [
-                //                                 Text("${list.orderPrice-list.advanceAmount-list.disAmount}",
-                //                                     textAlign: TextAlign.center)
-                //                               ]))),
-                //                 ),
-                //
-                //               ]),
-                //             )
-                //                 .toList(),
-                //           ),
-                //         ),
-                //
-                //
-                //       ],
-                //     ),
-                //   ),
-                //
-                // ),
-
-              ]
-
-          ),
-        appBar: AppBar(title:Text("Reports"),
-    bottom: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-
-        child: Material(
-          color: Colors.white,
-        // Set the background color of the tab here
-        child:TabBar(
-          indicatorColor: String_Values.primarycolor,
-        indicatorWeight: 5,
-        isScrollable: true,
-
-        // indicator: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(5), // Creates border
-        //     color: Colors.deepOrange),
-    tabs: [
-      Tab(child: Text("Sales Report",style: TextStyle(color: String_Values.primarycolor),)), Tab(child: Text("Cash Settlement Sheet",style: TextStyle(color: String_Values.primarycolor)),),Tab(child: Text("Receivables",style: TextStyle(color: String_Values.primarycolor),)),Tab(child: Text("Discount Report",style: TextStyle(color: String_Values.primarycolor),)),Tab(child: Text("Order Report",style: TextStyle(color: String_Values.primarycolor),)),],
-    ))))));
+                          // indicator: BoxDecoration(
+                          //     borderRadius: BorderRadius.circular(5), // Creates border
+                          //     color: Colors.deepOrange),
+                          tabs: [
+                            Tab(
+                                child: Text(
+                              "Sales Report",
+                              style:
+                                  TextStyle(color: String_Values.primarycolor),
+                            )),
+                            Tab(
+                              child: Text("Cash Settlement Sheet",
+                                  style: TextStyle(
+                                      color: String_Values.primarycolor)),
+                            ),
+                            Tab(
+                                child: Text(
+                              "Receivables",
+                              style:
+                                  TextStyle(color: String_Values.primarycolor),
+                            )),
+                            Tab(
+                                child: Text(
+                              "Discount Report",
+                              style:
+                                  TextStyle(color: String_Values.primarycolor),
+                            )),
+                            Tab(
+                                child: Text(
+                              "Order Report",
+                              style:
+                                  TextStyle(color: String_Values.primarycolor),
+                            )),
+                          ],
+                        ))))));
   }
-
 }
-
