@@ -83,7 +83,6 @@ class _OrderSummaryState extends State<OrderSummary> {
                                 style: pw.TextStyle(fontSize: 12)),
                             pw.SizedBox(width: 10, height: 10),
                           ]),
-                      pw.SizedBox(width: 10, height: 10),
                     ])),
             pw.Container(
                 padding: pw.EdgeInsets.only(top:10),
@@ -973,7 +972,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                       pw.Expanded(
                           flex: 1,
                           child: pw.Text(
-                            "Rs.${OrderDetailsState.li8.details[0].advanceAmount.toStringAsFixed(2) }",
+                            "Rs.${double.parse(OrderDetailsState.li8.details[0].advanceAmount.toStringAsFixed(2))+double.parse(AdvanceController.text) }",
                             textAlign: pw.TextAlign.center,
                           )),
                     ],
@@ -1047,7 +1046,7 @@ class _OrderSummaryState extends State<OrderSummary> {
               child: pw.Row(
                 children: [
                   pw.Expanded(flex:4,child: pw.Text("Amount Receivable",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
-                  pw.Expanded(flex:1,child: pw.Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)-(OrderDetailsState.li8.details[0].advanceAmount)).toStringAsFixed(2) }",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
+                  pw.Expanded(flex:1,child: pw.Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)-(OrderDetailsState.li8.details[0].advanceAmount+double.parse(AdvanceController.text))).toStringAsFixed(2) }",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
 
                 ],
               ),
@@ -1057,7 +1056,7 @@ class _OrderSummaryState extends State<OrderSummary> {
               child: pw.Row(
                 children: [
                   pw.Expanded(flex:4,child: pw.Text("Amount Receivable",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
-                  pw. Expanded(flex:1,child: pw.Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-(OrderDetailsState.li8.details[0].advanceAmount)).toStringAsFixed(2) }",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
+                  pw. Expanded(flex:1,child: pw.Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-(OrderDetailsState.li8.details[0].advanceAmount+double.parse(AdvanceController.text))).toStringAsFixed(2) }",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
 
                 ],
               ),

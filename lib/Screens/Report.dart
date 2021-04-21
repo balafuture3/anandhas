@@ -418,12 +418,13 @@ class _ReportsState extends State<Reports> {
                 pw.TableRow(children: [
                   pw.Text(""),
                 ]),
+
                 for (int i = 0; i < li6.details.length; i++)
                   pw.TableRow(children: [
                     pw.Text(li6.details[i].orderNo),
                     pw.Text(li6.details[i].name),
                     pw.Text(li6.details[i].invNo),
-                    pw.Text(li6.details[i].docDate),
+                    pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li6.details[i].orderPrice.toString()),
                     pw.Text(li6.details[i].advanceAmount.toString()),
                     pw.Text(li6.details[i].disAmount.toString()),
@@ -436,10 +437,13 @@ class _ReportsState extends State<Reports> {
           // Center
         })); // Pa
     Directory tempDir; // g
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid)
+      {
       tempDir = await getExternalStorageDirectory();
       // Android-specific code
-    } else {
+    }
+    else
+      {
       tempDir = await getApplicationDocumentsDirectory();
       // iOS-specific code
     }
@@ -1039,7 +1043,7 @@ class _ReportsState extends State<Reports> {
                     pw.Text(li10.details[i].orderNo),
                     pw.Text(li10.details[i].name),
                     pw.Text(li10.details[i].invNo),
-                    pw.Text(li10.details[i].docDate),
+                    pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li10.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li10.details[i].orderPrice.toString()),
                     pw.Text(li10.details[i].advanceAmount.toString()),
                     pw.Text(li10.details[i].disAmount.toString()),
@@ -1182,7 +1186,7 @@ class _ReportsState extends State<Reports> {
                     pw.Text(li12.details[i].orderNo),
                     pw.Text(li12.details[i].name),
                     pw.Text(li12.details[i].invNo),
-                    pw.Text(li12.details[i].docDate),
+                    pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li12.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li12.details[i].orderPrice.toString()),
                     pw.Text(li12.details[i].advanceAmount.toString()),
                     pw.Text(li12.details[i].disAmount.toString()),
