@@ -4857,7 +4857,7 @@ if(newValue=="Full/Balance Amount") {
                           (((Order3State.total * 5) / 100) +
                               Order3State.total))) -
                       OrderDetailsState.li8.details[0].advanceAmount))
-                postRequest().then((value) => generateInvoice1()).then((value)
+                postRequest().then((value)
                 {
                   NewOrderState.datefromcontroller.text="";
                   Order4State.Mobilecontroller.text="";
