@@ -368,7 +368,7 @@ class _ReportsState extends State<Reports> {
                         fontWeight: pw.FontWeight.bold,
                         fontSize: 16))),
             pw.SizedBox(width: 10, height: 10),
-            pw.Table(
+            li6.details.length!=0?pw.Table(
               children: [
                 pw.TableRow(
                     decoration:
@@ -432,7 +432,7 @@ class _ReportsState extends State<Reports> {
                         "${li6.details[i].orderPrice - (li6.details[i].advanceAmount + li6.details[i].disAmount)}"),
                   ])
               ],
-            )
+            ):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details"))
           ];
           // Center
         })); // Pa
@@ -519,7 +519,7 @@ class _ReportsState extends State<Reports> {
                 style:
                     pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
-            pw.Table(
+            li7.details.isNotEmpty?pw.Table(
               children: [
                 pw.TableRow(
                     decoration:
@@ -601,13 +601,13 @@ class _ReportsState extends State<Reports> {
                         "${li7.details[i].orderPrice - (li7.details[i].advanceAmount + li7.details[i].disAmount)}"),
                   ])
               ],
-            ),
+            ):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details")),
             pw.SizedBox(width: 10, height: 10),
             pw.Text("PO-Fully Settlement as Advance",
                 style:
                     pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
-            pw.Table(
+            li8.details.isNotEmpty?pw.Table(
               children: [
                 pw.TableRow(
                     decoration:
@@ -689,13 +689,13 @@ class _ReportsState extends State<Reports> {
                         "${li8.details[i].orderPrice - (li8.details[i].advanceAmount + li8.details[i].disAmount)}"),
                   ])
               ],
-            ),
+            ):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details")),
             pw.SizedBox(width: 10, height: 10),
             pw.Text("PO-Balance Amount Received",
                 style:
                     pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
-            pw.Table(
+            li9.details.isNotEmpty?pw.Table(
               children: [
                 pw.TableRow(
                     decoration:
@@ -777,13 +777,13 @@ class _ReportsState extends State<Reports> {
                         "${li9.details[i].orderPrice - (li9.details[i].advanceAmount + li9.details[i].disAmount)}"),
                   ])
               ],
-            ),
+            ):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details")),
             pw.SizedBox(width: 10, height: 10),
             pw.Text("PO-Ondate Sales and Settlement",
                 style:
                     pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.SizedBox(width: 10, height: 10),
-            pw.Table(
+            li11.details.isNotEmpty?pw.Table(
               children: [
                 pw.TableRow(
                     decoration:
@@ -865,7 +865,7 @@ class _ReportsState extends State<Reports> {
                         "${li11.details[i].orderPrice - (li11.details[i].advanceAmount + li11.details[i].disAmount)}"),
                   ])
               ],
-            ),
+            ):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details")),
             pw.SizedBox(
               height: 20,
             ),
@@ -988,7 +988,7 @@ class _ReportsState extends State<Reports> {
                         fontWeight: pw.FontWeight.bold,
                         fontSize: 16))),
             pw.SizedBox(width: 10, height: 10),
-            pw.Table(
+           li10.details.isNotEmpty? pw.Table(
               children: [
                 pw.TableRow(
                     decoration:
@@ -1051,7 +1051,7 @@ class _ReportsState extends State<Reports> {
                         "${li10.details[i].orderPrice - (li10.details[i].advanceAmount + li10.details[i].disAmount)}"),
                   ])
               ],
-            )
+            ):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details"))
           ];
           // Center
         })); // Pa
@@ -1133,7 +1133,7 @@ class _ReportsState extends State<Reports> {
             pw.SizedBox(width: 10, height: 10),
             pw.Table(
               children: [
-                pw.TableRow(
+                li12.details.isNotEmpty?pw.TableRow(
                     decoration:
                         pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
@@ -1177,7 +1177,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                    ]),
+                    ]):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details")),
                 pw.TableRow(children: [
                   pw.Text(""),
                 ]),
@@ -2263,7 +2263,7 @@ class _ReportsState extends State<Reports> {
                               SizedBox(
                                 height: height / 40,
                               ),
-                              SingleChildScrollView(
+                              li6.details.length!=0?SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
@@ -2559,6 +2559,9 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
+                              ):Padding(
+                                padding: const EdgeInsets.only(top:20.0),
+                                child: Center(child: Text("No details")),
                               ),
                             ],
                           ),
@@ -2977,14 +2980,14 @@ class _ReportsState extends State<Reports> {
                               ),
                               Container(
                                 width: width,
-                                color: String_Values.primarycolor,
+                                color: Colors.purple,
                                 padding: EdgeInsets.all(10),
                                 child: Text(
                                   "PO-Advance",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SingleChildScrollView(
+                              li7.details.length!=0?SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
@@ -2999,7 +3002,7 @@ class _ReportsState extends State<Reports> {
                                           Text(
                                             "Order No",
                                             softWrap: true,
-                                            style: TextStyle(fontSize: 12),
+                                            style: TextStyle(fontSize: 12,color: Colors.purple),
                                             textAlign: TextAlign.center,
                                           ),
                                         ],
@@ -3021,7 +3024,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Name",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3042,7 +3045,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("GST No",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3063,7 +3066,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Delivery Date",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3084,7 +3087,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Bill Amount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3105,7 +3108,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Cash",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3126,7 +3129,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Card",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3147,7 +3150,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Advance",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3168,7 +3171,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Discount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3189,7 +3192,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Balance Receivable",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.purple),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3364,20 +3367,23 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
+                              ):Padding(
+                                padding: const EdgeInsets.only(top:20.0),
+                                child: Center(child: Text("No details")),
                               ),
                               SizedBox(
                                 height: height / 40,
                               ),
                               Container(
                                 width: width,
-                                color: String_Values.primarycolor,
+                                color: Colors.deepOrange,
                                 padding: EdgeInsets.all(10),
                                 child: Text(
                                   "PO-Fully Settlement as Advance",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SingleChildScrollView(
+                              li8.details.length!=0?SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
@@ -3392,7 +3398,7 @@ class _ReportsState extends State<Reports> {
                                           Text(
                                             "Order No",
                                             softWrap: true,
-                                            style: TextStyle(fontSize: 12),
+                                            style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                             textAlign: TextAlign.center,
                                           ),
                                         ],
@@ -3414,7 +3420,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Name",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3435,7 +3441,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("GST No",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3456,7 +3462,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Delivery Date",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3477,7 +3483,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Bill Amount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3498,7 +3504,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Cash",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3519,7 +3525,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Card",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3540,7 +3546,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Advance",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3561,7 +3567,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Discount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3582,7 +3588,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Balance Receivable",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3755,20 +3761,23 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
+                              ):Padding(
+                                padding: const EdgeInsets.only(top:20.0),
+                                child: Center(child: Text("No details")),
                               ),
                               SizedBox(
                                 height: height / 40,
                               ),
                               Container(
                                 width: width,
-                                color: String_Values.primarycolor,
+                                color: Colors.blue,
                                 padding: EdgeInsets.all(10),
                                 child: Text(
                                   "PO-Balance Amount Received",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SingleChildScrollView(
+    li9.details.length!=0?SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
@@ -3783,7 +3792,7 @@ class _ReportsState extends State<Reports> {
                                           Text(
                                             "Order No",
                                             softWrap: true,
-                                            style: TextStyle(fontSize: 12),
+                                            style: TextStyle(fontSize: 12,color:Colors.blue,),
                                             textAlign: TextAlign.center,
                                           ),
                                         ],
@@ -3805,7 +3814,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Name",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3826,7 +3835,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("GST No",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3847,7 +3856,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Delivery Date",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3868,7 +3877,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Bill Amount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3889,7 +3898,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Cash",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3910,7 +3919,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Card",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3931,7 +3940,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Advance",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3952,7 +3961,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Discount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -3973,7 +3982,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Balance Receivable",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4146,26 +4155,30 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
-                              ),
+                              ):Padding(
+    padding: const EdgeInsets.only(top:20.0),
+    child: Center(child: Text("No details")),
+    ),
                               SizedBox(
                                 height: height / 40,
                               ),
                               Container(
                                 width: width,
-                                color: String_Values.primarycolor,
+                                color:  Colors.pinkAccent,
                                 padding: EdgeInsets.all(10),
                                 child: Text(
                                   "PO-Ondate Sales and Settlement",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SingleChildScrollView(
+                              li11.details.length!=0?SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
                                   columnSpacing: width / 20,
                                   columns: [
                                     DataColumn(
+
                                       label: Center(
                                           child: Wrap(
                                         direction: Axis.vertical, //default
@@ -4174,7 +4187,7 @@ class _ReportsState extends State<Reports> {
                                           Text(
                                             "Order No",
                                             softWrap: true,
-                                            style: TextStyle(fontSize: 12),
+                                            style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                             textAlign: TextAlign.center,
                                           ),
                                         ],
@@ -4196,7 +4209,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Name",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4217,7 +4230,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("GST No",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4238,7 +4251,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Delivery Date",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4259,7 +4272,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Bill Amount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4280,7 +4293,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Cash",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4301,7 +4314,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Card",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4322,7 +4335,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Advance",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4343,7 +4356,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Discount",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4364,7 +4377,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text("Balance Receivable",
                                               softWrap: true,
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
                                               textAlign: TextAlign.center),
                                         ],
                                       )),
@@ -4537,7 +4550,10 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
-                              ),
+                              ):Padding(
+    padding: const EdgeInsets.only(top:20.0),
+    child: Center(child: Text("No details")),
+    ),
                               SizedBox(
                                 height: height / 40,
                               ),
@@ -4823,7 +4839,7 @@ class _ReportsState extends State<Reports> {
                               SizedBox(
                                 height: height / 40,
                               ),
-                              SingleChildScrollView(
+                              li10.details.length!=0?SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
@@ -5119,6 +5135,9 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
+                              ):Padding(
+                                padding: const EdgeInsets.only(top:20.0),
+                                child: Center(child: Text("No details")),
                               ),
                             ],
                           ),
@@ -5353,7 +5372,7 @@ class _ReportsState extends State<Reports> {
                               SizedBox(
                                 height: height / 40,
                               ),
-                              SingleChildScrollView(
+                              li12.details.length!=0? SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
@@ -5649,6 +5668,9 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
+                              ):Padding(
+                                padding: const EdgeInsets.only(top:20.0),
+                                child: Center(child: Text("No details")),
                               ),
                             ],
                           ),
@@ -5883,7 +5905,7 @@ class _ReportsState extends State<Reports> {
                               SizedBox(
                                 height: height / 40,
                               ),
-                              SingleChildScrollView(
+                              li13.details.length!=0?SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   sortColumnIndex: 0,
@@ -6199,7 +6221,10 @@ class _ReportsState extends State<Reports> {
                                       )
                                       .toList(),
                                 ),
-                              ),
+                              ):Padding(
+    padding: const EdgeInsets.only(top:20.0),
+    child: Center(child: Text("No details")),
+    ),
                             ],
                           ),
                         ),
