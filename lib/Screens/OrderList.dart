@@ -448,7 +448,7 @@ class OrderListState extends State<OrderList> {
                                   //   ),
                                   leading: Icon(Icons.fastfood,color: String_Values.primarycolor,),
                                   title:!widget.gst? Text(
-                                    "ORDRNO${li2[i].orderno.padLeft(3, "0")}",
+                                    "ORDRNO${li2[i].orderno}",
                                     style: TextStyle(
                                         color: String_Values.primarycolor,
                                         fontWeight: FontWeight.w800),

@@ -733,7 +733,7 @@ class OrderListGSTState extends State<OrderListGST> {
       setState(() {
 
           for (int i = 0; i < li7.details.length; i++)
-            li2.add(FilterList(li7.details[i].Invoice,li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+            li2.add(FilterList("ORDRNO${li7.details[i].orderNum}-${li7.details[i].Invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
 
 
       });
@@ -813,10 +813,13 @@ class OrderListGSTState extends State<OrderListGST> {
                             if (li7.details[i].Invoice.toString()
                                 .toLowerCase()
                                 .contains(searchController.text
+                                .toLowerCase())||li7.details[i].orderNum.toString()
+                                .toLowerCase()
+                                .contains(searchController.text
                                 .toLowerCase()) ) {
                               setState(() {
                                 li2.add(
-                                    FilterList(li7.details[i].Invoice,li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+                                    FilterList("ORDRNO${li7.details[i].orderNum}-${li7.details[i].Invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
                               });
                             }
                         },

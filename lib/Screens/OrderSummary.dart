@@ -1039,7 +1039,22 @@ class _OrderSummaryState extends State<OrderSummary> {
 
                       ],
                     ),
-                  )]):
+
+                  ),
+                  pw.Container(
+
+                    padding: const pw.EdgeInsets.only(right:16.0),
+                    child: pw.Row(
+                      children: [
+                        pw.Expanded(flex:4,child:pw.Text("Amount Receivable",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
+                        pw.Expanded(flex:1,child: pw.Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))-double.parse(AdvanceController.text)).toStringAsFixed(2) }",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
+
+                      ],
+                    ),
+
+                  )
+
+                ]):
             widget.payment!=0?pw.Container(
 
               padding: const pw.EdgeInsets.only(right:16.0),
