@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 
 import 'OrderList.dart';
 import 'OrderListGST.dart';
@@ -103,6 +104,26 @@ decoration: BoxDecoration(
                         scrollDirection: Axis.horizontal,
                       )),
                   SizedBox(height: height/50,),
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.all(5),
+                    height: 30,
+                    width: width,
+                    child: Marquee(
+                      text: '10% offer on Desert Items    20% offer on Meals on order above Rs.5000',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      scrollAxis: Axis.horizontal,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      blankSpace: 50.0,
+                      velocity: 100.0,
+                      // pauseAfterRound: Duration(seconds: 1),
+                      startPadding: 10.0,
+                      // accelerationDuration: Duration(seconds: 1),
+                      accelerationCurve: Curves.linear,
+                      // decelerationDuration: Duration(milliseconds: 500),
+                      decelerationCurve: Curves.easeOut,
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: imgList.map((url) {

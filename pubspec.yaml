@@ -66,7 +66,7 @@ dependencies:
   excel: ^2.0.0-null-safety
   syncfusion_flutter_xlsio: ^19.1.56-beta
   razorpay_flutter: ^1.2.5
-
+  marquee: ^2.1.0
 
 
 
