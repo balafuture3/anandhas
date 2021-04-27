@@ -164,24 +164,26 @@ decoration: BoxDecoration(
                                             height: height / 30,
                                           ),
                                           SizedBox(height: height/50,),
-                                          Container(
-                                              margin: EdgeInsets.only(left:16,right: 16),
+                                          FlatButton(
+                                            onPressed: () {
+                                                Navigator.pop(context);
+                                                Navigator.push(context,MaterialPageRoute(builder: (context)=>NewOrder()));
+                                              },
+                                            child: Container(
+                                              height: 50,
+                                              // margin: EdgeInsets.only(left:16,right: 16),
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(50))),
-                                              child: FlatButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>NewOrder()));
-                                                },
-                                                child: Text(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(50))),
+                                              child: Text(
                                                   "New Order",
                                                   style: TextStyle(
                                                       color: String_Values.primarycolor),
                                                 ),
-                                              )),
+                                            ),
+                                          ),
                                           SizedBox(
                                             height: height / 50,
                                           ),
@@ -190,65 +192,68 @@ decoration: BoxDecoration(
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Container(
-                                                margin: EdgeInsets.only(left:16,right: 16),
+                                              FlatButton(
+                                                onPressed: () {
+                                                    Navigator.pop(context);
+                                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderList(gst:false)));
+                                                    // Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => Dashboard()));
+
+                                                  },
+                                                child: Container(
+                                                  height: 50,
                                                   alignment: Alignment.center,
                                                   decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(50))),
-                                                  child: FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderList(gst:false)));
-                                                      // Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => Dashboard()));
-
-                                                    },
-                                                    child: Text(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(50))),
+                                                  child: Text(
                                                       "Existing Order",
                                                       style: TextStyle(
 
                                                           color: String_Values.primarycolor),
                                                     ),
-                                                  )),
+                                                ),
+                                              ),
                                               SizedBox(height: height/50,),
-                                              Container(
-                                                  margin: EdgeInsets.only(left:16,right: 16),
+                                              FlatButton(
+                                                onPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderListGST(gst: true,)));
+                                                  },
+                                                child: Container(
+                                                  height: 50,
                                                   alignment: Alignment.center,
                                                   decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(50))),
-                                                  child: FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OrderListGST(gst: true,)));
-                                                    },
-                                                    child: Text(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(50))),
+                                                  child: Text(
                                                       "GST Invoice",
                                                       style: TextStyle(
                                                           color: String_Values.primarycolor),
                                                     ),
-                                                  )),
+                                                ),
+                                              ),
                                               SizedBox(height: height/50,),
-                                              Container(
-                                                  margin: EdgeInsets.only(left:16,right: 16),
+                                              FlatButton(
+                                                onPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>Reports()));
+                                                  },
+                                                child: Container(
+                                                  height: 50,
                                                   alignment: Alignment.center,
                                                   decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(50))),
-                                                  child: FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>Reports()));
-                                                    },
-                                                    child: Text(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(50))),
+                                                  child: Text(
                                                       "Reports",
                                                       style: TextStyle(
                                                           color: String_Values.primarycolor),
                                                     ),
-                                                  )),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                           SizedBox(

@@ -1312,8 +1312,10 @@ class _ReportsState extends State<Reports> {
                     : pw.Container()
                     : pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.start,
-                    children:[ pw.Text(
-                        "Additional Order ${li14.details[index].docNo}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,color: PdfColor.fromHex("800080")))])
+                    children:[
+                      if(li14.details[index].orderFlagNo!=li14.details[index-1].orderFlagNo)
+                      pw.Text(
+                        "Additional Order ${li14.details[index].orderFlagNo}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,color: PdfColor.fromHex("800080")))])
                     : pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.start,
                     children:[pw.Text(
@@ -6413,8 +6415,10 @@ class _ReportsState extends State<Reports> {
                                                                       : Container()
                                                                   : Row(
                                                           mainAxisAlignment: MainAxisAlignment.start,
-                                                          children:[ Text(
-                                                                          "Additional Order ${li14.details[index].docNo}",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.purple,fontSize: 12))])
+                                                          children:[
+if(li14.details[index].orderFlagNo!=li14.details[index-1].orderFlagNo)
+                                                            Text(
+                                                                          "Additional Order ${li14.details[index].orderFlagNo}",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.purple,fontSize: 12))])
                                                               : Row(
                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                               children:[Text(

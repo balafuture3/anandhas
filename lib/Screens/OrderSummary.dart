@@ -91,7 +91,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                     children: [
                       pw.Expanded(
                           flex: 1,
-                          child: pw.Text("Order No : ${widget.edit!=0?li8.details[0].orderNo:li11.oRDERNO}")),
+                          child: pw.Text("Order No : ORDNO${widget.edit!=0?li8.details[0].orderNo:li11.oRDERNO}")),
                       pw.Expanded(
                         flex: 1,
                         child: pw.Container(

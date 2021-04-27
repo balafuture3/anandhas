@@ -84,6 +84,7 @@ class OrderDetailsState extends State<OrderDetails> {
   SaveResponse li11;
 
   SaveModel li18;
+  int discount=0;
 
 
   Future<void> generateInvoice() async {
@@ -136,9 +137,14 @@ class OrderDetailsState extends State<OrderDetails> {
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
+                      li8.details[0].inVoiceNo==""?
                       pw.Expanded(
                           flex: 1,
-                          child: pw.Text("Invoice No : ${widget.invoice}")),
+                          child: pw.Text("Invoice No : ORDNO${widget.orderid}/${li6.sTATUSMSG}"))
+                      :pw.Expanded(
+                          flex: 1,
+                          child: pw.Text("Invoice No : ${widget.invoice}"))
+                      ,
                       pw.Expanded(
                         flex: 1,
                         child: pw.Container(
@@ -897,9 +903,11 @@ class OrderDetailsState extends State<OrderDetails> {
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
+
                       pw.Expanded(
                           flex: 1,
-                          child: pw.Text("Invoice No : ${li8.details[0].inVoiceNo}")),
+                          child: pw.Text("Invoice No : ${widget.invoice}"))
+                      ,
                       pw.Expanded(
                         flex: 1,
                         child: pw.Container(
@@ -1573,7 +1581,742 @@ class OrderDetailsState extends State<OrderDetails> {
     //
     //   build: (format) => pdf.save(),
     // );
-    await Printing.sharePdf(bytes: await pdf.save(), filename: 'Discount ${li8.details[0].inVoiceNo}.pdf');
+    await Printing.sharePdf(bytes: await pdf.save(), filename: 'Discount ${widget.invoice}.pdf');
+    // await Printing.layoutPdf(
+    //   format: PdfPageFormat.a4,
+    //   onLayout: (PdfPageFormat format) async => pdf.save(),
+    //
+    // );
+  }
+  Future<void> shareInvoiceCancel() async {
+    final pdf = pw.Document();
+
+    var data = await rootBundle.load("open-sans.ttf");
+
+    final ttf = pw.Font.ttf(data.buffer.asByteData());
+    const imageProvider = const AssetImage('logo.png');
+    final image = await flutterImageProvider(imageProvider);
+    // final image = await imageFromAssetBundle('logo.png');
+    pdf.addPage(pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return  [
+            pw.Header(
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Column(
+                          mainAxisAlignment: pw.MainAxisAlignment.end,
+                          crossAxisAlignment: pw.CrossAxisAlignment.end,
+                          children: [
+
+                            pw.Image(image, width: 150),
+                            pw.Text("Taste of Life",
+                                style: pw.TextStyle(fontSize: 10),
+                                textAlign: pw.TextAlign.right),
+                            pw.SizedBox(width: 10, height: 10),
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.end,
+                          children: [
+                            pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                                style: pw.TextStyle(
+                                    fontSize: 14,
+                                    color: PdfColor.fromHex("339B6F"))),
+                            pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                                style: pw.TextStyle(fontSize: 12)),
+                            pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                                style: pw.TextStyle(fontSize: 12)),
+                            pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                                style: pw.TextStyle(fontSize: 12)),
+                            pw.SizedBox(width: 10, height: 10),
+                          ]),
+                      pw.SizedBox(width: 10, height: 10),
+                    ])),
+            pw.Container(
+                padding: pw.EdgeInsets.only(top:10),
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+
+                      pw.Expanded(
+                          flex: 1,
+                          child: pw.Text("Invoice No : ${widget.invoice}"))
+                      ,
+                      pw.Expanded(
+                        flex: 1,
+                        child: pw.Container(
+                          color: PdfColor.fromHex("339B6F"),
+                          child: pw.Row(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Text("Cancel Order",
+                                    style: pw.TextStyle(
+                                        color: PdfColor.fromHex("FFFFFF")),
+                                    textAlign: pw.TextAlign.center)
+                              ]),
+                        ),
+                      ),
+                      pw.Expanded(
+                          flex: 1,
+                          child: pw.Container())
+                    ])),
+            pw.Row(),
+            pw.Row(children: [
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(
+
+                  top: 10,
+                ),
+                child: pw.Text(
+                  "Name: ${li8.details[0].name.toString()}",
+                  softWrap: true,
+
+                ),
+              ),
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(
+
+                  top: 10,
+                ),
+                child: pw.Text(
+                  "Delivery Date: ${datefromcontroller.text}",
+                  softWrap: true,
+
+                ),
+              ),
+
+            ],
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween),
+            pw.Row(children: [
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(
+
+                  top: 10,
+                ),
+                child: pw.Text(
+                  "Mobile: ${li8.details[0].mobile.toString()}",
+                  softWrap: true,
+
+                ),
+              ),
+
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(
+
+                  top: 10,
+                ),
+                child: pw.Text(
+                  "Delivery Time:  ${timecontroller.text}",
+                  softWrap: true,
+
+                ),
+              ),
+
+            ], mainAxisAlignment: pw.MainAxisAlignment.spaceBetween),
+            pw.Divider(thickness: 0.5),
+            pw.Container(
+              padding: pw.EdgeInsets.all(10),
+              child:   pw.Text("Order Details",style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            ),
+
+
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(
+                  left: 24, right: 24, top: 8.0, bottom: 8),
+              child: pw.Row(
+                mainAxisAlignment:
+                pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Expanded(
+                      flex: 3,
+                      child: pw.Text(
+                        "Item",
+                        textAlign: pw.TextAlign.center,
+                      )),
+                  pw.Expanded(
+                      flex: 1,
+                      child: pw.Text(
+                        "Qty",
+                        textAlign: pw.TextAlign.center,
+                      )),
+                  pw.Expanded(
+                      flex: 1,
+                      child: pw.Text(
+                        "Amount",
+                        textAlign: pw.TextAlign.center,
+                      )),
+                ],
+              ),
+            ),
+            pw.Divider(
+              thickness: 0.5,
+            ),
+            for (int j = 0;
+            j <= OrderListState.orderflagno;
+            j++)
+              pw.Column(
+                children: [
+                  // if(OrderListState.orderflagno!=0)
+                  //   Divider(thickness: 2,),
+                  if (OrderListState.orderflagno != 0 && j != 0)
+                    pw.Column(
+                      children: [
+                        pw.SizedBox(
+                          height: 50,
+                        ),
+                        pw.Text("Additional Order $j",
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold)),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.only(
+                              left: 24,
+                              right: 24,
+                              top: 8.0,
+                              bottom: 8),
+                          child: pw.Row(
+                            mainAxisAlignment:
+                            pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.Expanded(
+                                  flex: 3,
+                                  child: pw.Text(
+                                    "Item",
+                                    textAlign: pw.TextAlign.center,
+                                  )),
+                              pw.Expanded(
+                                  flex: 1,
+                                  child: pw.Text(
+                                    "Qty",
+                                    textAlign: pw.TextAlign.center,
+                                  )),
+                              pw.Expanded(
+                                  flex: 1,
+                                  child: pw.Text(
+                                    "Amount",
+                                    textAlign: pw.TextAlign.center,
+                                  )),
+                            ],
+                          ),
+                        ),
+                        pw.Divider(
+                          thickness: 0.5,
+                        ),
+                      ],
+                    ),
+
+                  for (int i = 0; i < li9.details.length; i++)
+                    if (li9.details[i].orderFlagNo == j)
+                      pw.Column(
+                        children: [
+                          pw.Padding(
+                            padding: const pw.EdgeInsets.only(
+                                left: 24,
+                                right: 24,
+                                top: 8.0,
+                                bottom: 8),
+                            child: pw.Column(
+                              children: [
+                                pw.Row(
+                                  mainAxisAlignment:
+                                  pw.MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
+                                    pw.Expanded(
+                                        flex: 3,
+                                        child: pw.Text(
+                                          li9.details[i]
+                                              .itemName,
+                                          textAlign:
+                                          pw.TextAlign.center,
+                                        )),
+                                    pw.Expanded(
+                                        flex: 1,
+                                        child: pw.Text(
+                                          li9.details[i].qty
+                                              .round()
+                                              .toString(),
+                                          textAlign:
+                                          pw.TextAlign.center,
+                                        )),
+                                    pw.Expanded(
+                                        flex: 1,
+                                        child: pw.Text(
+                                          "Rs.${(li9.details[i].price).toString()}",
+                                          textAlign:
+                                          pw.TextAlign.center,
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                ],
+              ),
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(
+                  left: 24, right: 24, top: 8.0, bottom: 8),
+              child: pw.Column(
+                children: [
+                  pw.Row(
+                    mainAxisAlignment:
+                    pw. MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Expanded(
+                        flex: 1,
+                        child: pw.Container(),
+                      ),
+                      pw.Expanded(
+                          flex: 3,
+                          child: pw.Text(
+                            "Subtotal",
+                            textAlign: pw.TextAlign.center,
+                          )),
+                      pw.Expanded(
+                          flex: 1,
+                          child: pw.Text(
+                            "Rs.${total}",
+                            textAlign: pw.TextAlign.center,
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(
+                  left: 24, right: 24, top: 8.0, bottom: 8),
+              child: pw.Column(
+                children: [
+                  pw.Row(
+                    mainAxisAlignment:
+                    pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Expanded(flex: 1, child: pw.Container()),
+                      pw.Expanded(
+                          flex: 3,
+                          child: pw.Text(
+                            "GST ( 2.5% CGST + 2.5% SGST )",
+                            textAlign: pw.TextAlign.center,
+                          )),
+                      pw.Expanded(
+                          flex: 1,
+                          child: pw.Text(
+                            "Rs.${(total * 5) / 100}",
+                            textAlign: pw.TextAlign.center,
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(
+                  left: 24, right: 24, top: 8.0, bottom: 8),
+              child: pw.Column(
+                children: [
+                  pw.Row(
+                    mainAxisAlignment:
+                    pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Expanded(flex: 1, child: pw.Container()),
+                      pw.Expanded(
+                          flex: 3,
+                          child: pw.Text(
+                            "Item Total",
+                            textAlign: pw.TextAlign.center,
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold),
+                          )),
+                      pw.Expanded(
+                          flex: 1,
+                          child: pw.Text(
+                            "Rs.${((total * 5) / 100) + total}",
+                            textAlign: pw.TextAlign.center,
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold),
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            if(li8.details[0].cateringService == "Y")
+
+              pw.Column(
+                children: [
+                  pw.Container(
+                    margin: pw.EdgeInsets.only(right: 16),
+                    child: pw.Row(
+                      children: [
+                        pw.Expanded(
+                          flex: 4,
+                          child: pw.Text(
+                            "Catering Service",
+                            style: pw.TextStyle(
+                              color: PdfColor.fromHex("339B6F"),
+                            ),
+                          ),
+                        ),
+                        pw.Expanded(
+                            flex: 1,
+                            child: pw.Container()),
+                      ],
+                    ),
+                  ),
+                  // Padding(
+                  //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                  //     child: Column(
+                  //       children: [
+                  //         // Row(
+                  //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         //     children: [
+                  //         //       Expanded(flex:4,child: Container()),
+                  //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                  //         //     ]),
+                  //         // SizedBox(height: 10,),
+                  //         Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //             children: [
+                  //
+                  //               Expanded(flex:4,child: Container(),),
+                  //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                  //
+                  //             ]),
+                  //       ],
+                  //     ))
+
+
+
+                  pw.Padding(
+                      padding: const pw.EdgeInsets.only(
+                          left: 24,
+                          right: 24,
+                          top: 8.0,
+                          bottom: 8),
+                      child: pw.Column(
+                        children: [
+                          pw.Row(
+                              mainAxisAlignment:
+                              pw.MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                pw.Expanded(
+                                    flex: 4,
+                                    child: pw.Text(
+                                      "Persons",
+                                      textAlign:
+                                      pw.TextAlign.center,
+                                    )),
+                                pw.Expanded(
+                                    flex: 1,
+                                    child: pw.Text(
+                                      "Amount".toString(),
+                                      textAlign:
+                                      pw.TextAlign.center,
+                                    )),
+                              ]),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                          pw.Row(
+                              mainAxisAlignment:
+                              pw.MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                pw.Expanded(
+                                    flex: 4,
+                                    child: pw.Text(
+                                      "${li8.details[0].cateringAmount / 100}",
+                                      textAlign:
+                                      pw.TextAlign.center,
+                                    )),
+                                pw.Expanded(
+                                    flex: 1,
+                                    child: pw.Text(
+                                      "Rs.${li8.details[0].cateringAmount}",
+                                      textAlign:
+                                      pw.TextAlign.center,
+                                    )),
+                              ]),
+                        ],
+                      ))
+                ],
+              ),
+            if(li8.details[0].vesselSet == "Y")
+              pw.Column(
+                children: [
+                  pw.Container(
+                    margin: pw.EdgeInsets.only(right: 16,top: 10),
+                    child: pw.Row(
+                      children: [
+                        pw.Expanded(
+                          flex: 4,
+                          child: pw.Text(
+                            "Vessel Set",
+                            style: pw.TextStyle(
+                              color: PdfColor.fromHex("339B6F"),
+                            ),
+                          ),
+                        ),
+                        pw.Expanded(
+                            flex: 1,
+                            child: pw.Text(
+                              "Rs.${(li8.details[0].vesselSetAmount)}",
+                              textAlign: pw.TextAlign.center,
+                            )),
+                      ],
+                    ),
+                  ),
+                  // Padding(
+                  //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                  //     child: Column(
+                  //       children: [
+                  //         // Row(
+                  //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         //     children: [
+                  //         //       Expanded(flex:4,child: Container()),
+                  //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                  //         //     ]),
+                  //         // SizedBox(height: 10,),
+                  //         Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //
+                  //               Expanded(flex:4,child: Container(),),
+                  //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                  //
+                  //             ]),
+                  //       ],
+                  //     ))
+                ],
+              ),
+            if(li8.details[0].vehicle == "Y")
+              pw.Column(
+                children: [
+                  pw.Container(
+                    margin: pw.EdgeInsets.only(right: 16,top:10),
+                    child: pw.Row(
+                      children: [
+                        pw.Expanded(
+                          flex: 4,
+                          child:pw. Text(
+                            "Vehicle Drop",
+                            style: pw.TextStyle(
+                              color: PdfColor.fromHex("339B6F"),
+                            ),
+                          ),
+                        ),
+                        pw.Expanded(
+                            flex: 1,
+                            child: pw.Text(
+                              "Rs.${(li8.details[0].vehicleAmount)}",
+                              textAlign: pw.TextAlign.center,
+                            )),
+                      ],
+                    ),
+                  ),
+
+                  pw.Column(
+                    children: [
+                      pw.Container(
+                        margin: pw.EdgeInsets.only(right: 16,top:10),
+                        child: pw.Row(
+                          children: [
+                            pw.Expanded(
+                              flex: 4,
+                              child:  pw.Text(
+                                "Payment Mode",
+                                style: pw.TextStyle(
+                                    color: PdfColor.fromHex("339B6F")),
+                              ),
+                            ),
+                            pw.Expanded(
+                                flex: 1,
+                                child: pw.Text(
+                                  "${(li8.details[0].paymentType)}",
+                                  textAlign: pw.TextAlign.center,
+                                )),
+                          ],
+                        ),
+                      ),
+
+                      // Padding(
+                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                      //     child: Column(
+                      //       children: [
+                      //         // Row(
+                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         //     children: [
+                      //         //       Expanded(flex:4,child: Container()),
+                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                      //         //     ]),
+                      //         // SizedBox(height: 10,),
+                      //         Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //
+                      //               Expanded(flex:4,child: Container(),),
+                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                      //
+                      //             ]),
+                      //       ],
+                      //     ))
+                    ],
+                  ),
+
+
+                  // Padding(
+                  //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                  //     child: Column(
+                  //       children: [
+                  //         // Row(
+                  //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         //     children: [
+                  //         //       Expanded(flex:4,child: Container()),
+                  //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                  //         //     ]),
+                  //         // SizedBox(height: 10,),
+                  //         Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //
+                  //               Expanded(flex:4,child: Container(),),
+                  //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                  //
+                  //             ]),
+                  //       ],
+                  //     ))
+                ],
+              )
+            ,
+
+            pw.Divider(
+              thickness: 0.1,
+            ),
+            pw.Text("Advance Details"),
+            for (int i = 0; i < li10.details.length; i++)
+              pw.Container(
+                margin: pw.EdgeInsets.only(right: 16),
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 4,
+                      child:  pw.Text(
+                          "Advance ${i + 1} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li10.details[i].date.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})"),
+                    ),
+                    pw.Expanded(
+                        flex: 1,
+                        child: pw.Text(
+                          "Rs.${(li10.details[i].advanceAmount)}",
+                          textAlign: pw.TextAlign.left,
+                        )),
+                  ],
+                ),
+              ),
+
+            pw.Container(
+              padding: const pw.EdgeInsets.only(right: 16.0),
+              child: pw.Row(
+                children: [
+                  pw.Expanded(
+                      flex: 4,
+                      child:  pw.Text(
+                        "Discount Amount",
+                        style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            color: PdfColor.fromHex("339B6F")),
+                      )),
+                  pw.Expanded(
+                      flex: 1,
+                      child: pw.Text(
+                        "Rs.${(discountcontroller.text)}",
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,),
+                      )),
+                ],
+              ),
+            ),
+            pw.Divider(
+              thickness: 0.5,
+            ),
+            pw.Container(
+              child:
+              pw.Container(
+                padding: pw.EdgeInsets.only(right:16),
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 4,
+                      child: pw. Text(
+                        "Total Amount",
+                        style: pw. TextStyle(
+                            color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),
+                      ),
+                    ),
+                    pw.Expanded(
+                        flex: 1,
+                        child: pw.Text(
+                          "Rs.${(li8.details[0].orderPrice)}",
+                          style: pw. TextStyle(
+                              color: PdfColor.fromHex("339B6F"),fontWeight: pw.FontWeight.bold),
+                          textAlign: pw.TextAlign.center,
+                        )),
+                  ],
+                ),
+              ),
+              // Padding(
+              //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+              //     child: Column(
+              //       children: [
+              //         // Row(
+              //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         //     children: [
+              //         //       Expanded(flex:4,child: Container()),
+              //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+              //         //     ]),
+              //         // SizedBox(height: 10,),
+              //         Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //
+              //               Expanded(flex:4,child: Container(),),
+              //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+              //
+              //             ]),
+              //       ],
+              //     ))
+
+            ),
+
+
+          ];
+          // Center
+        })); // Pa
+    Directory tempDir; // g
+    if (Platform.isAndroid) {
+      tempDir = await getExternalStorageDirectory();
+      // Android-specific code
+    } else {
+      tempDir = await getApplicationDocumentsDirectory();
+      // iOS-specific code
+    }
+
+    String tempPath = tempDir.path;
+    print(tempPath);
+    File file = File('$tempPath/example.pdf');
+    // await Printing.sharePdf(
+    //     bytes: await pdf.save(), filename: 'my-document.pdf');
+    // PdfPreview(
+    //   initialPageFormat: PdfPageFormat.a4,
+    //
+    //   build: (format) => pdf.save(),
+    // );
+    await Printing.sharePdf(bytes: await pdf.save(), filename: 'Cancel Order ${widget.invoice}.pdf');
     // await Printing.layoutPdf(
     //   format: PdfPageFormat.a4,
     //   onLayout: (PdfPageFormat format) async => pdf.save(),
@@ -1582,7 +2325,7 @@ class OrderDetailsState extends State<OrderDetails> {
   }
 
   Future<http.Response> DiscountRequest() async {
-    int discount=0;
+    discount=0;
     if(double.parse(discountcontroller.text)==(li8.details[0].orderPrice - li8.details[0].advanceAmount)) {
       discount = 0;
     }
@@ -2118,7 +2861,84 @@ print(envelope);
     // print("response: ${response.body}");
     return response;
   }
+  Future<http.Response> InvoiceUpdate() async {
+    setState(() {
+      loading = true;
+    });
+    var envelope = '''
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <IN_MOB_GET_ORDER_NO xmlns="http://tempuri.org/">
+      <OrderNo>${widget.orderid}</OrderNo>
+       <FormId>5</FormId>
+       <BranchID>${LoginPageState.branchid}</BranchID>
+    </IN_MOB_GET_ORDER_NO>
+  </soap:Body>
+</soap:Envelope>
+''';
+    print(envelope);
+    var url =
+        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_GET_ORDER_NO';
+    // Map data = {
+    //   "username": EmailController.text,
+    //   "password": PasswordController.text
+    // };
+//    print("data: ${data}");
+//    print(String_values.base_url);
 
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+        },
+        body: envelope);
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+      print(parsedXml.text);
+      final decoded = json.decode(parsedXml.text);
+      li6 = SaveResponse.fromJson(decoded[0]);
+      print(li6.sTATUSID);
+
+      // if ("li2.name" != null) {
+      //   Fluttertoast.showToast(
+      //       msg:"",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else
+      //   Fluttertoast.showToast(
+      //       msg: "Please check your login details,No users found",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.SNACKBAR,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: String_Values.primarycolor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Http error!, Response code ${response.statusCode}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: String_Values.primarycolor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        loading = false;
+      });
+      print("Retry");
+    }
+    // print("response: ${response.statusCode}");
+    // print("response: ${response.body}");
+    return response;
+  }
   Future<http.Response> OrderItemRequest() async {
     setState(() {
       loading = true;
@@ -3440,7 +4260,9 @@ print(envelope);
                                         borderRadius:
                                             BorderRadius.circular(25.0),
                                       ),
-                                      onPressed: () {
+                                      onPressed: ()
+                                      {
+
                                         showDialog<void>(
                                             context: context,
                                             barrierDismissible: true,
@@ -3603,10 +4425,16 @@ print(envelope);
                                                                         Radius.circular(50))),
                                                                 child: FlatButton(
                                                                   onPressed: () {
+
                                                                     Navigator.pop(
                                                                         context);
-                                                                    updateDeliveryDate().then((value) =>  generateInvoice())
-                                                                   ;
+
+                                                                    if(li8.details[0].inVoiceNo!="")
+                                                                    updateDeliveryDate().then((value) =>  generateInvoice());
+                                                                    else
+                                                                      InvoiceUpdate().then((value) {
+                                                                        // li8.details[0].inVoiceNo=li6.sTATUSMSG;
+                                                                      updateDeliveryDate().then((value) =>  generateInvoice());});
                                                                   },
                                                                   child: Text(
                                                                     "Confirm",
@@ -4220,6 +5048,7 @@ print(envelope);
 
                                                                 Navigator.pop(context);
                                                                 CancelRequest();
+                                                                shareInvoiceCancel();
                                                               },
                                                               child: Text(
                                                                 "Yes",
