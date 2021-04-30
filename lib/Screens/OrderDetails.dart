@@ -2316,7 +2316,7 @@ class OrderDetailsState extends State<OrderDetails> {
     //
     //   build: (format) => pdf.save(),
     // );
-    await Printing.sharePdf(bytes: await pdf.save(), filename: 'Cancel Order ${widget.invoice}.pdf');
+    await Printing.sharePdf(bytes: await pdf.save(), filename: 'Cancelled Order.pdf');
     // await Printing.layoutPdf(
     //   format: PdfPageFormat.a4,
     //   onLayout: (PdfPageFormat format) async => pdf.save(),
