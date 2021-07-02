@@ -2920,6 +2920,13 @@ if(newValue=="Full/Balance Amount") {
                 onChanged: (String newValue) {
                   setState(() {
                     dropdownValue2 = newValue;
+                    if(dropdownValue2=="Receive Later")
+                      {
+                        AdvanceController.text="0";
+                        dropdownValue1= "Advance";
+                        advenable=false;
+
+                      }
 
 
 

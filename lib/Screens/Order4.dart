@@ -181,6 +181,8 @@ Namecontroller.text="";
     
                     enabled: true,
                     controller: Namecontroller,
+                    textCapitalization:
+                    TextCapitalization.sentences,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       labelText: 'Name',
@@ -347,7 +349,10 @@ minLines: 3,
                     maxLines: 25,
                     enabled: true,
                     controller: Addresscontroller,
+                    textCapitalization:
+                    TextCapitalization.sentences,
                     decoration: InputDecoration(
+
                       prefixIcon: Icon(Icons.place),
                       labelText: 'Address *',
                       hintStyle: TextStyle(
@@ -401,7 +406,8 @@ minLines: 3,
               Padding(
                   padding: const EdgeInsets.only(left: 24, right: 24),
                   child: TextField(
-
+                    textCapitalization:
+                    TextCapitalization.characters,
                     enabled: true,
                     controller: GSTcontroller,
                     decoration: InputDecoration(

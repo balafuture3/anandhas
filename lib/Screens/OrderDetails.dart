@@ -4303,114 +4303,114 @@ print(envelope);
                                                         SizedBox(
                                                           height: height / 30,
                                                         ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(16.0),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              Text("Confirm Delivery Date",style: TextStyle(fontSize: 12),),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                            padding: const EdgeInsets.only(left: 24, right: 24),
-                                                            child: TextField(
-                                                              onTap: () async {
-                                                                DateTime date = DateTime(1900);
-                                                                FocusScope.of(context).requestFocus(new FocusNode());
-
-                                                                date = await showDatePicker(
-                                                                    context: context,
-                                                                    initialDate: DateTime.now(),
-                                                                    firstDate:
-                                                                    DateTime.now(),
-                                                                    lastDate: DateTime.now().add(
-                                                                        new Duration(days: 365)));
-                                                                dateupload=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0");
-
-                                                                datefromcontroller.text =
-                                                                    date.day.toString().padLeft(2, "0") +
-                                                                        '-' +
-                                                                        date.month.toString().padLeft(2, "0") +
-                                                                        '-' +
-                                                                        date.year.toString();
-                                                              },
-                                                              enabled: true,
-                                                              controller: datefromcontroller,
-                                                              decoration: InputDecoration(
-                                                                prefixIcon: Icon(Icons.calendar_today_outlined),
-                                                                labelText: 'Date',
-                                                                hintStyle: TextStyle(
-                                                                  color: Colors.grey,
-                                                                  fontSize: 16.0,
-                                                                ),
-                                                                border: OutlineInputBorder(
-                                                                  borderRadius: BorderRadius.circular(25.0),
-                                                                ),
-                                                              ),
-                                                            )),
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(16.0),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              Text("Confirm Delivery Time",style: TextStyle(fontSize: 12),),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                            padding: const EdgeInsets.only(left: 24, right: 24),
-                                                            child: TextField(
-                                                              onTap: () async {
-                                                                DateTime date = DateTime(1900);
-                                                                FocusScope.of(context).requestFocus(new FocusNode());
-
-                                                                time = await showCustomTimePicker(
-                                                                  context: context, initialTime: TimeOfDay.now(),);
-
-                                                                // context: context;,
-                                                                // initialDate: DateTime.now(),
-                                                                // firstDate:
-                                                                // DateTime.now().subtract(new Duration(days: 23725)),
-                                                                // lastDate: DateTime.now().add(new Duration(days: 365)));
-
-                                                                if (time.hour >= 12) {
-                                                                  hour = time.hour - 12;
-                                                                  amrpm = 'PM';
-                                                                  if (time.hour == 12) {
-                                                                    hour = time.hour;
-                                                                  }
-                                                                } else {
-                                                                  if (time.hour != 0) {
-                                                                    hour = time.hour;
-                                                                    amrpm = 'AM';
-                                                                  } else {
-                                                                    hour = 12;
-                                                                    amrpm = 'AM';
-                                                                  }
-                                                                }
-                                                                timeupload = time.hour.toString().padLeft(2, '0') + ':' +
-                                                                    time.minute.toString().padLeft(2, "0")+':00';
-                                                                timecontroller.text = hour.toString().padLeft(2, '0') +
-                                                                    ':' +
-                                                                    time.minute.toString().padLeft(2, '0') +
-                                                                    ' ' +
-                                                                    amrpm;
-                                                              },
-                                                              enabled: true,
-                                                              controller: timecontroller,
-                                                              decoration: InputDecoration(
-                                                                prefixIcon: Icon(Icons.calendar_today_outlined),
-                                                                labelText: 'Time',
-                                                                hintStyle: TextStyle(
-                                                                  color: Colors.grey,
-                                                                  fontSize: 16.0,
-                                                                ),
-                                                                border: OutlineInputBorder(
-                                                                  borderRadius: BorderRadius.circular(25.0),
-                                                                ),
-                                                              ),
-                                                            )),
+                                                        // Padding(
+                                                        //   padding: const EdgeInsets.all(16.0),
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment: MainAxisAlignment.start,
+                                                        //     children: [
+                                                        //       Text("Confirm Delivery Date",style: TextStyle(fontSize: 12),),
+                                                        //     ],
+                                                        //   ),
+                                                        // ),
+                                                        // Padding(
+                                                        //     padding: const EdgeInsets.only(left: 24, right: 24),
+                                                        //     child: TextField(
+                                                        //       onTap: () async {
+                                                        //         DateTime date = DateTime(1900);
+                                                        //         FocusScope.of(context).requestFocus(new FocusNode());
+                                                        //
+                                                        //         date = await showDatePicker(
+                                                        //             context: context,
+                                                        //             initialDate: DateTime.now(),
+                                                        //             firstDate:
+                                                        //             DateTime.now(),
+                                                        //             lastDate: DateTime.now().add(
+                                                        //                 new Duration(days: 365)));
+                                                        //         dateupload=date.year.toString()+'-'+date.month.toString().padLeft(2, "0")+'-'+date.day.toString().padLeft(2, "0");
+                                                        //
+                                                        //         datefromcontroller.text =
+                                                        //             date.day.toString().padLeft(2, "0") +
+                                                        //                 '-' +
+                                                        //                 date.month.toString().padLeft(2, "0") +
+                                                        //                 '-' +
+                                                        //                 date.year.toString();
+                                                        //       },
+                                                        //       enabled: true,
+                                                        //       controller: datefromcontroller,
+                                                        //       decoration: InputDecoration(
+                                                        //         prefixIcon: Icon(Icons.calendar_today_outlined),
+                                                        //         labelText: 'Date',
+                                                        //         hintStyle: TextStyle(
+                                                        //           color: Colors.grey,
+                                                        //           fontSize: 16.0,
+                                                        //         ),
+                                                        //         border: OutlineInputBorder(
+                                                        //           borderRadius: BorderRadius.circular(25.0),
+                                                        //         ),
+                                                        //       ),
+                                                        //     )),
+                                                        // Padding(
+                                                        //   padding: const EdgeInsets.all(16.0),
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment: MainAxisAlignment.start,
+                                                        //     children: [
+                                                        //       Text("Confirm Delivery Time",style: TextStyle(fontSize: 12),),
+                                                        //     ],
+                                                        //   ),
+                                                        // ),
+                                                        // Padding(
+                                                        //     padding: const EdgeInsets.only(left: 24, right: 24),
+                                                        //     child: TextField(
+                                                        //       onTap: () async {
+                                                        //         DateTime date = DateTime(1900);
+                                                        //         FocusScope.of(context).requestFocus(new FocusNode());
+                                                        //
+                                                        //         time = await showCustomTimePicker(
+                                                        //           context: context, initialTime: TimeOfDay.now(),);
+                                                        //
+                                                        //         // context: context;,
+                                                        //         // initialDate: DateTime.now(),
+                                                        //         // firstDate:
+                                                        //         // DateTime.now().subtract(new Duration(days: 23725)),
+                                                        //         // lastDate: DateTime.now().add(new Duration(days: 365)));
+                                                        //
+                                                        //         if (time.hour >= 12) {
+                                                        //           hour = time.hour - 12;
+                                                        //           amrpm = 'PM';
+                                                        //           if (time.hour == 12) {
+                                                        //             hour = time.hour;
+                                                        //           }
+                                                        //         } else {
+                                                        //           if (time.hour != 0) {
+                                                        //             hour = time.hour;
+                                                        //             amrpm = 'AM';
+                                                        //           } else {
+                                                        //             hour = 12;
+                                                        //             amrpm = 'AM';
+                                                        //           }
+                                                        //         }
+                                                        //         timeupload = time.hour.toString().padLeft(2, '0') + ':' +
+                                                        //             time.minute.toString().padLeft(2, "0")+':00';
+                                                        //         timecontroller.text = hour.toString().padLeft(2, '0') +
+                                                        //             ':' +
+                                                        //             time.minute.toString().padLeft(2, '0') +
+                                                        //             ' ' +
+                                                        //             amrpm;
+                                                        //       },
+                                                        //       enabled: true,
+                                                        //       controller: timecontroller,
+                                                        //       decoration: InputDecoration(
+                                                        //         prefixIcon: Icon(Icons.calendar_today_outlined),
+                                                        //         labelText: 'Time',
+                                                        //         hintStyle: TextStyle(
+                                                        //           color: Colors.grey,
+                                                        //           fontSize: 16.0,
+                                                        //         ),
+                                                        //         border: OutlineInputBorder(
+                                                        //           borderRadius: BorderRadius.circular(25.0),
+                                                        //         ),
+                                                        //       ),
+                                                        //     )),
                                                         SizedBox(height: height/50,),
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceAround,

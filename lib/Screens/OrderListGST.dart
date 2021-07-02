@@ -868,7 +868,8 @@ else
                                context,
                                MaterialPageRoute(
                                    builder: (context) =>
-                                       OrderDetails(orderid: li2[i].OrderNo,gst:widget.gst,invoice: li2[i].InvoiceNo)));},
+                                       OrderDetails(orderid: li2[i].OrderNo,gst:widget.gst,invoice: li2[i].InvoiceNo)));
+                           },
 
 
                         //   trailing:IconButton(icon: Icon(Icons.edit_outlined,color: String_Values.primarycolor,), onPressed: ()
