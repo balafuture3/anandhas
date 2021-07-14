@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'OrderList.dart';
 import 'OrderListGST.dart';
+import 'PendingPayments.dart';
 import 'Report.dart';
 
 class Dashboard extends StatefulWidget {
@@ -254,6 +255,26 @@ decoration: BoxDecoration(
                                                       style: TextStyle(
                                                           color: String_Values.primarycolor),
                                                     ),
+                                                ),
+                                              ),
+                                              SizedBox(height: height/50,),
+                                              FlatButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>PendingPayments(gst: true,)));
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(50))),
+                                                  child: Text(
+                                                    "Pending Payments",
+                                                    style: TextStyle(
+                                                        color: String_Values.primarycolor),
+                                                  ),
                                                 ),
                                               ),
                                               SizedBox(height: height/50,),

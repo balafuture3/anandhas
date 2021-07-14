@@ -12,6 +12,7 @@ import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/Screens/NewOrder.dart';
 import 'package:anandhasapp/Screens/Order2 .dart';
 import 'package:anandhasapp/Screens/Order3.dart';
+import 'package:anandhasapp/Screens/OrderListGST.dart';
 import 'package:anandhasapp/Screens/OrderSummary.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:flutter/material.dart';
@@ -649,57 +650,57 @@ class OrderDetailsState extends State<OrderDetails> {
               ],
             )
                ,
-            pw.Column(
-              children: [
-                pw.Container(
-                  margin: pw.EdgeInsets.only(right: 16,top:10),
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                        flex: 4,
-                        child:  pw.Text(
-                          "Payment Mode",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("339B6F")),
-                        ),
-                      ),
-                      pw.Expanded(
-                          flex: 1,
-                          child: pw.Text(
-                            "${(li8.details[0].paymentType)}",
-                            textAlign: pw.TextAlign.center,
-                          )),
-                    ],
-                  ),
-                ),
-
-                // Padding(
-                //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                //     child: Column(
-                //       children: [
-                //         // Row(
-                //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         //     children: [
-                //         //       Expanded(flex:4,child: Container()),
-                //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                //         //     ]),
-                //         // SizedBox(height: 10,),
-                //         Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: [
-                //
-                //               Expanded(flex:4,child: Container(),),
-                //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                //
-                //             ]),
-                //       ],
-                //     ))
-              ],
-            ),
-
-            pw.Divider(
-              thickness: 0.1,
-            ),
+            // pw.Column(
+            //   children: [
+            //     pw.Container(
+            //       margin: pw.EdgeInsets.only(right: 16,top:10),
+            //       child: pw.Row(
+            //         children: [
+            //           pw.Expanded(
+            //             flex: 4,
+            //             child:  pw.Text(
+            //               "Payment Mode",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("339B6F")),
+            //             ),
+            //           ),
+            //           pw.Expanded(
+            //               flex: 1,
+            //               child: pw.Text(
+            //                 "${(li8.details[0].paymentType)}",
+            //                 textAlign: pw.TextAlign.center,
+            //               )),
+            //         ],
+            //       ),
+            //     ),
+            //
+            //     // Padding(
+            //     //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+            //     //     child: Column(
+            //     //       children: [
+            //     //         // Row(
+            //     //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     //         //     children: [
+            //     //         //       Expanded(flex:4,child: Container()),
+            //     //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+            //     //         //     ]),
+            //     //         // SizedBox(height: 10,),
+            //     //         Row(
+            //     //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     //             children: [
+            //     //
+            //     //               Expanded(flex:4,child: Container(),),
+            //     //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+            //     //
+            //     //             ]),
+            //     //       ],
+            //     //     ))
+            //   ],
+            // ),
+            //
+            // pw.Divider(
+            //   thickness: 0.1,
+            // ),
             pw.Text("Advance Details"),
             for (int i = 0; i < li10.details.length; i++)
               pw.Container(
@@ -1386,53 +1387,53 @@ class OrderDetailsState extends State<OrderDetails> {
                     ),
                   ),
 
-                  pw.Column(
-                    children: [
-                      pw.Container(
-                        margin: pw.EdgeInsets.only(right: 16,top:10),
-                        child: pw.Row(
-                          children: [
-                            pw.Expanded(
-                              flex: 4,
-                              child:  pw.Text(
-                                "Payment Mode",
-                                style: pw.TextStyle(
-                                    color: PdfColor.fromHex("339B6F")),
-                              ),
-                            ),
-                            pw.Expanded(
-                                flex: 1,
-                                child: pw.Text(
-                                  "${(li8.details[0].paymentType)}",
-                                  textAlign: pw.TextAlign.center,
-                                )),
-                          ],
-                        ),
-                      ),
-
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
+                  // pw.Column(
+                  //   children: [
+                  //     pw.Container(
+                  //       margin: pw.EdgeInsets.only(right: 16,top:10),
+                  //       child: pw.Row(
+                  //         children: [
+                  //           pw.Expanded(
+                  //             flex: 4,
+                  //             child:  pw.Text(
+                  //               "Payment Mode",
+                  //               style: pw.TextStyle(
+                  //                   color: PdfColor.fromHex("339B6F")),
+                  //             ),
+                  //           ),
+                  //           pw.Expanded(
+                  //               flex: 1,
+                  //               child: pw.Text(
+                  //                 "${(li8.details[0].paymentType)}",
+                  //                 textAlign: pw.TextAlign.center,
+                  //               )),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //
+                  //     // Padding(
+                  //     //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                  //     //     child: Column(
+                  //     //       children: [
+                  //     //         // Row(
+                  //     //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     //         //     children: [
+                  //     //         //       Expanded(flex:4,child: Container()),
+                  //     //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                  //     //         //     ]),
+                  //     //         // SizedBox(height: 10,),
+                  //     //         Row(
+                  //     //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     //             children: [
+                  //     //
+                  //     //               Expanded(flex:4,child: Container(),),
+                  //     //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                  //     //
+                  //     //             ]),
+                  //     //       ],
+                  //     //     ))
+                  //   ],
+                  // ),
 
 
                   // Padding(
@@ -2121,53 +2122,53 @@ class OrderDetailsState extends State<OrderDetails> {
                     ),
                   ),
 
-                  pw.Column(
-                    children: [
-                      pw.Container(
-                        margin: pw.EdgeInsets.only(right: 16,top:10),
-                        child: pw.Row(
-                          children: [
-                            pw.Expanded(
-                              flex: 4,
-                              child:  pw.Text(
-                                "Payment Mode",
-                                style: pw.TextStyle(
-                                    color: PdfColor.fromHex("339B6F")),
-                              ),
-                            ),
-                            pw.Expanded(
-                                flex: 1,
-                                child: pw.Text(
-                                  "${(li8.details[0].paymentType)}",
-                                  textAlign: pw.TextAlign.center,
-                                )),
-                          ],
-                        ),
-                      ),
-
-                      // Padding(
-                      //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
-                      //     child: Column(
-                      //       children: [
-                      //         // Row(
-                      //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         //     children: [
-                      //         //       Expanded(flex:4,child: Container()),
-                      //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
-                      //         //     ]),
-                      //         // SizedBox(height: 10,),
-                      //         Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //
-                      //               Expanded(flex:4,child: Container(),),
-                      //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
-                      //
-                      //             ]),
-                      //       ],
-                      //     ))
-                    ],
-                  ),
+                  // pw.Column(
+                  //   children: [
+                  //     pw.Container(
+                  //       margin: pw.EdgeInsets.only(right: 16,top:10),
+                  //       child: pw.Row(
+                  //         children: [
+                  //           pw.Expanded(
+                  //             flex: 4,
+                  //             child:  pw.Text(
+                  //               "Payment Mode",
+                  //               style: pw.TextStyle(
+                  //                   color: PdfColor.fromHex("339B6F")),
+                  //             ),
+                  //           ),
+                  //           pw.Expanded(
+                  //               flex: 1,
+                  //               child: pw.Text(
+                  //                 "${(li8.details[0].paymentType)}",
+                  //                 textAlign: pw.TextAlign.center,
+                  //               )),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //
+                  //     // Padding(
+                  //     //     padding: const EdgeInsets.only(left:24,right:24,top:8.0,bottom: 8),
+                  //     //     child: Column(
+                  //     //       children: [
+                  //     //         // Row(
+                  //     //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     //         //     children: [
+                  //     //         //       Expanded(flex:4,child: Container()),
+                  //     //         //       Expanded(flex:1,child: Text("Amount".toString(),textAlign: TextAlign.start,)),
+                  //     //         //     ]),
+                  //     //         // SizedBox(height: 10,),
+                  //     //         Row(
+                  //     //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     //             children: [
+                  //     //
+                  //     //               Expanded(flex:4,child: Container(),),
+                  //     //               Expanded(flex:1,child: Text((int.parse(Order2State.vescontroller.text)).toString(),textAlign: TextAlign.start,)),
+                  //     //
+                  //     //             ]),
+                  //     //       ],
+                  //     //     ))
+                  //   ],
+                  // ),
 
 
                   // Padding(
@@ -4426,15 +4427,21 @@ print(envelope);
                                                                 child: FlatButton(
                                                                   onPressed: () {
 
-                                                                    Navigator.pop(
-                                                                        context);
+
 
                                                                     if(li8.details[0].inVoiceNo!="")
-                                                                    updateDeliveryDate().then((value) =>  generateInvoice());
+                                                                    updateDeliveryDate().then((value) =>  generateInvoice().then((value) {
+                                                                      Navigator.pushReplacement(
+                                                                          context,MaterialPageRoute(builder: (builder)=>OrderListGST(gst: true,)));
+                                                                    }));
                                                                     else
                                                                       InvoiceUpdate().then((value) {
                                                                         // li8.details[0].inVoiceNo=li6.sTATUSMSG;
-                                                                      updateDeliveryDate().then((value) =>  generateInvoice());});
+                                                                      updateDeliveryDate().then((value) =>  generateInvoice().then((value)
+                                                                      {
+                                                                        Navigator.pushReplacement(
+                                                                            context,MaterialPageRoute(builder: (builder)=>OrderListGST(gst: true,)));
+                                                                      }));});
                                                                   },
                                                                   child: Text(
                                                                     "Confirm",
