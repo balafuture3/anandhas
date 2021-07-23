@@ -254,7 +254,8 @@ for(int i=0;i<li5.details.length;i++)
                                           ),
                                         ),
                                         textAlign: TextAlign.center,
-                                        onSubmitted: (value)
+                                        keyboardType: TextInputType.number,
+                                        onChanged: (value)
                                         {
                                           setState(() {
                                             cnt[i]=int.parse(controllers[i].text);
