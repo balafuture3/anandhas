@@ -4426,6 +4426,8 @@ print(envelope);
                                                                         Radius.circular(50))),
                                                                 child: FlatButton(
                                                                   onPressed: () {
+Navigator.pop(context);
+Navigator.pop(context);
 
 
 
