@@ -1,7 +1,6 @@
 import 'dart:convert';
-
 import 'package:anandhasapp/Models/Category.dart';
-import 'package:anandhasapp/Screens/Order2 .dart';
+import 'package:anandhasapp/Screens/NewOrderItemChoose .dart';
 import 'package:anandhasapp/Screens/Order4.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -11,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:time_picker_widget/time_picker_widget.dart';
 
-import 'Order3.dart';
+import 'NewOrderChooseCatering.dart';
 import 'package:http/http.dart'as http;
 import 'package:xml/xml.dart' as xml;
 class NewOrder extends StatefulWidget {
@@ -21,16 +20,10 @@ class NewOrder extends StatefulWidget {
 
 class NewOrderState extends State<NewOrder> {
   bool loading = false;
-
   CategoryModelList li4;
-
   static int categoryid;
-
   static String timeupload;
-
   static String dateupload;
-
-
   Future<http.Response> categoryRequest() async {
     setState(() {
       loading = true;
@@ -113,17 +106,12 @@ class NewOrderState extends State<NewOrder> {
     // print("response: ${response.body}");
     return response;
   }
-
-
   int _current = 0;
-
   static TextEditingController datefromcontroller = new TextEditingController();
   static TextEditingController timecontroller = new TextEditingController();
   var dropdownValue = "Select Category";
   var dropdownValue1 = "Select Category";
   var stringlist = ["Select Category", "Coimbatore", "Chennai"];
-
-
   TimeOfDay time;
 
   int hour;

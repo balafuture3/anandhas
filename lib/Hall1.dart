@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'Screens/Order2 .dart';
+import 'Screens/NewOrderItemChoose .dart';
 
 class Hall1 extends StatefulWidget {
   Hall1({Key key, this.title});

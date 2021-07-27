@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:anandhasapp/Models/Category.dart';
 import 'package:anandhasapp/Models/ItemModel.dart';
-import 'package:anandhasapp/Screens/Order3.dart';
+import 'package:anandhasapp/Screens/NewOrderChooseCatering.dart';
 import 'package:anandhasapp/Screens/OrderSummary.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -32,6 +32,8 @@ class Order3State extends State<Order3> {
   static var cnt=[0,0,0];
 
   static var total;
+
+  // var itemtotal;
   Future<http.Response> itemRequest() async {
     setState(() {
       loading = true;
@@ -79,6 +81,7 @@ class Order3State extends State<Order3> {
           cnt.clear();
           for (int i = 0; i < li5.details.length; i++) {
             cnt.add(0);
+            itemtotal.add(0);
             controllers.add(new TextEditingController());
             controllers[i].text = "0";
           }
@@ -161,7 +164,7 @@ print(cnt[0]);
   TextEditingController cnt2controller = new TextEditingController();
   TextEditingController cnt3controller = new TextEditingController();
   static List<TextEditingController> controllers = List();
-
+  List<double> itemtotal = List();
   var dropdownValue = "Select";
   var dropdownValue1 = "Select";
   var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
@@ -202,7 +205,7 @@ for(int i=0;i<li5.details.length;i++)
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(flex: 2, child: Image.asset("logo.png")),
+                    // Expanded(flex: 2, child: Image.asset("logo.png")),
                     Expanded(
                       flex: 3,
                       child: Column(
@@ -233,6 +236,7 @@ for(int i=0;i<li5.details.length;i++)
                                         print(cnt[i]);
                                         if(cnt[i]!=0)
                                         cnt[i]--;
+                                        itemtotal[i]=(li5.details[i].price)*cnt[i];
                                         controllers[i].text=cnt[i].toString();
                                         print(cnt[i]);
                                         total=0;
@@ -258,6 +262,7 @@ for(int i=0;i<li5.details.length;i++)
                                         onChanged: (value)
                                         {
                                           setState(() {
+                                            itemtotal[i]=(li5.details[i].price)*cnt[i];
                                             cnt[i]=int.parse(controllers[i].text);
                                             total=0;
                                             for(int j=0;j<li5.details.length;j++)
@@ -280,7 +285,7 @@ for(int i=0;i<li5.details.length;i++)
                                         cnt[i]++;
                                         controllers[i].text=cnt[i].toString();
                                         print(cnt[i]);
-
+                                        itemtotal[i]=(li5.details[i].price)*cnt[i];
                                         total=0;
                                         for(int j=0;j<li5.details.length;j++)
                                           total=total+(cnt[j]*li5.details[j].price);
@@ -297,6 +302,8 @@ for(int i=0;i<li5.details.length;i++)
                           ]
                       ),
                     ),
+                    Expanded(flex: 3, child: Text("Rs. ${itemtotal[i]}",textAlign: TextAlign.center,)),
+
                   ],
                 )),
           ) ,

@@ -12,9 +12,9 @@ import 'package:intl/intl.dart';
 import 'package:xml/xml.dart' as xml;
 
 import 'LoginPage.dart';
-import 'NewOrder.dart';
-import 'Order2 .dart';
-import 'Order3.dart';
+import 'NewOrder_SelectDate.dart';
+import 'NewOrderItemChoose .dart';
+import 'NewOrderChooseCatering.dart';
 
 class OrderListGST extends StatefulWidget {
   OrderListGST({Key key, this.gst});
@@ -484,9 +484,9 @@ import 'package:intl/intl.dart';
 import 'package:xml/xml.dart' as xml;
 
 import 'LoginPage.dart';
-import 'NewOrder.dart';
-import 'Order2 .dart';
-import 'Order3.dart';
+import 'NewOrder_SelectDate.dart';
+import 'NewOrderItemChoose .dart';
+import 'NewOrderChooseCatering.dart';
 import 'PendingPaymentDetails.dart';
 
 class PendingPayments extends StatefulWidget {
