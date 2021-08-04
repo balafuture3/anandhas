@@ -2952,7 +2952,7 @@ class OrderSummary1State extends State<OrderSummary1> {
               //   height: height / 50,
               // ),
               ExpansionTile(
-                title: Text("Order Summary"),
+                title: Text("Order Confirmation"),
                 initiallyExpanded: true,
                 children: [
                   // widget.edit!=0?
@@ -4705,7 +4705,7 @@ class OrderSummary1State extends State<OrderSummary1> {
           )),
       appBar: AppBar(
           title: Text(
-            "Order Summary",
+            "Order Confirmation",
           )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

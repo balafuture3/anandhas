@@ -12,7 +12,8 @@ class ExistingDeliveryOrder extends StatefulWidget {
   _ExistingDeliveryOrderState createState() => _ExistingDeliveryOrderState();
 }
 
-class _ExistingDeliveryOrderState extends State<ExistingDeliveryOrder> {
+class _ExistingDeliveryOrderState extends State<ExistingDeliveryOrder>
+{
   int _current = 0;
 
   @override

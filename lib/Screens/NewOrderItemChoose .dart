@@ -262,8 +262,9 @@ for(int i=0;i<li5.details.length;i++)
                                         onChanged: (value)
                                         {
                                           setState(() {
-                                            itemtotal[i]=(li5.details[i].price)*cnt[i];
                                             cnt[i]=int.parse(controllers[i].text);
+                                            itemtotal[i]=(li5.details[i].price)*cnt[i];
+
                                             total=0;
                                             for(int j=0;j<li5.details.length;j++)
                                               total=total+(cnt[j]*li5.details[j].price);

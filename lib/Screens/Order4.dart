@@ -441,7 +441,7 @@ minLines: 3,
               Mobilecontroller.text.length != 0 &&
               Addresscontroller.text.length != 0 &&
               Pincodecontroller.text.length != 0&&
-              GSTcontroller.text.length==15)
+              (GSTcontroller.text.length==0||GSTcontroller.text.length==15))
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => OrderSummary(edit: widget.edit,payment: 1,id:widget.id)));
           else if(Namecontroller.text.length==0)
@@ -482,7 +482,7 @@ minLines: 3,
                 fontSize: 16.0) ;
           else if(GSTcontroller.text.length!=15)
             Fluttertoast.showToast(
-                msg: "Gst number should be 15 charactor",
+                msg: "Gst number should be 15 character",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.SNACKBAR,
                 timeInSecForIosWeb: 1,

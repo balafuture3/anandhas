@@ -4427,13 +4427,15 @@ print(envelope);
                                                                         Radius.circular(50))),
                                                                 child: FlatButton(
                                                                   onPressed: () {
-Navigator.pop(context);
-Navigator.pop(context);
+// Navigator.pop(context);
+// Navigator.pop(context);
 
 
 
                                                                     if(li8.details[0].inVoiceNo!="")
                                                                     updateDeliveryDate().then((value) =>  generateInvoice().then((value) {
+                                                                      Navigator.pop(context);
+                                                                      Navigator.pop(context);
                                                                       Navigator.pushReplacement(
                                                                           context,MaterialPageRoute(builder: (builder)=>OrderListGST(gst: true,)));
                                                                     }));
@@ -4442,6 +4444,8 @@ Navigator.pop(context);
                                                                         // li8.details[0].inVoiceNo=li6.sTATUSMSG;
                                                                       updateDeliveryDate().then((value) =>  generateInvoice().then((value)
                                                                       {
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
                                                                         Navigator.pushReplacement(
                                                                             context,MaterialPageRoute(builder: (builder)=>OrderListGST(gst: true,)));
                                                                       }));});
