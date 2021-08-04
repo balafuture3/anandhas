@@ -58,7 +58,8 @@ class OrderDetailsState extends State<OrderDetails> {
   var stringlist = ["Advance Type", "Half Advance", "Full Advance"];
 
   var dropdownValue2 = "Payment Mode";
-  var stringlist2 = ["Payment Mode", "Cash", "Card", "Net Banking"];
+  var stringlist2=["Payment Mode","Cash","Card","Cheque","UPI","Receive Later"];
+  var stringlist3=["Payment Mode","Cash","Card","Cheque","UPI"];
 
   SaveResponse li6;
   static String timeupload;

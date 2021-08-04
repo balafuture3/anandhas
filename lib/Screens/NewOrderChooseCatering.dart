@@ -328,6 +328,7 @@ class Order2State extends State<Order2> {
               padding: const EdgeInsets.only(left: 24, right: 24),
               child: TextField(
                 enabled: true,
+                keyboardType: TextInputType.number,
                 controller: vescontroller,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.money),
@@ -385,6 +386,7 @@ class Order2State extends State<Order2> {
                   child: TextField(
                     enabled: true,
                     controller: vehkmcontroller,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.bike_scooter),
                       labelText: 'Enter KM',
@@ -405,6 +407,7 @@ class Order2State extends State<Order2> {
                   padding: const EdgeInsets.only(left: 24, right: 24),
                   child: TextField(
                     enabled: true,
+                    keyboardType: TextInputType.number,
                     controller: vehcostcontroller,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.money),

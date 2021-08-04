@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'Confirmation fooditems screen.dart';
 import 'NewOrderChooseCatering.dart';
 import 'package:http/http.dart'as http;
 import 'package:xml/xml.dart' as xml;
@@ -410,6 +411,7 @@ minLines: 3,
                     TextCapitalization.characters,
                     enabled: true,
                     controller: GSTcontroller,
+                    maxLength: 15,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.money),
                       labelText: 'GSTIN',
@@ -438,18 +440,55 @@ minLines: 3,
           if (Namecontroller.text.length != 0 &&
               Mobilecontroller.text.length != 0 &&
               Addresscontroller.text.length != 0 &&
-                Pincodecontroller.text.length != 0 )
+              Pincodecontroller.text.length != 0&&
+              GSTcontroller.text.length==15)
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => OrderSummary(edit: widget.edit,payment: 1,id:widget.id)));
-          else
+          else if(Namecontroller.text.length==0)
             Fluttertoast.showToast(
-                msg: "Please Enter Details",
+                msg: "Name should not be left empty",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.SNACKBAR,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.white,
-                fontSize: 16.0);
+                fontSize: 16.0) ;
+          else if(Mobilecontroller.text.length==0)
+            Fluttertoast.showToast(
+                msg: "Mobile number should not be left empty",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0) ;
+          else if(Addresscontroller.text.length==0)
+            Fluttertoast.showToast(
+                msg: "Address should not be left empty",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0) ;
+          else if(Pincodecontroller.text.length==0)
+            Fluttertoast.showToast(
+                msg: "Pincode should not be left empty",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0) ;
+          else if(GSTcontroller.text.length!=15)
+            Fluttertoast.showToast(
+                msg: "Gst number should be 15 charactor",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0) ;
         },
             icon: Icon(Icons.navigate_next),
             backgroundColor: String_Values.primarycolor,
