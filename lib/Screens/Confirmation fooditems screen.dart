@@ -2474,7 +2474,7 @@ class OrderSummary1State extends State<OrderSummary1> {
   <soap:Body>
     <IN_MOB_GETITEMMASTER xmlns="http://tempuri.org/">
       <BranchID>1</BranchID>
-      <CategoryID>${NewOrderState.categoryid}</CategoryID>
+      <CategoryID>0</CategoryID>
       <UserID>1</UserID>
     </IN_MOB_GETITEMMASTER>
   </soap:Body>

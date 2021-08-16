@@ -4816,7 +4816,7 @@ print(envelope);
                                                     .round()
                                                     .toString();
                                           }
-                                          itemRequest(li8.details[0].categoryID)
+                                          itemRequest(0)
                                               .then((value) {
                                             if (li5.details.length -
                                                     Order3State.cnt.length ==

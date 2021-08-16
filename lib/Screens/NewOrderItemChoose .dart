@@ -34,7 +34,7 @@ class Order3State extends State<Order3> {
   static var total;
 
   // var itemtotal;
-  Future<http.Response> itemRequest() async {
+  Future<http.Response> itemRequest(id) async {
     setState(() {
       loading = true;
     });
@@ -43,7 +43,7 @@ class Order3State extends State<Order3> {
   <soap:Body>
     <IN_MOB_GETITEMMASTER xmlns="http://tempuri.org/">
       <BranchID>1</BranchID>
-      <CategoryID>${widget.id}</CategoryID>
+      <CategoryID>${id}</CategoryID>
       <UserID>1</UserID>
     </IN_MOB_GETITEMMASTER>
   </soap:Body>
@@ -173,7 +173,7 @@ print(cnt[0]);
   @override
   void initState() {
 
-    itemRequest();
+    itemRequest(0);
     cnt1controller.text="0";
     cnt2controller.text="0";
     cnt3controller.text="0";

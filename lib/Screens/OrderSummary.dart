@@ -2474,7 +2474,7 @@ Future<http.Response> itemRequest() async {
   <soap:Body>
     <IN_MOB_GETITEMMASTER xmlns="http://tempuri.org/">
       <BranchID>1</BranchID>
-      <CategoryID>${NewOrderState.categoryid}</CategoryID>
+      <CategoryID>0</CategoryID>
       <UserID>1</UserID>
     </IN_MOB_GETITEMMASTER>
   </soap:Body>
@@ -2654,7 +2654,7 @@ print(bookingitem);
       <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
       <ItemDetailXMLID>${widget.payment}</ItemDetailXMLID>
       <UserID>1</UserID>
-      <CategoryID>${NewOrderState.categoryid}</CategoryID>
+      <CategoryID>0</CategoryID>
       <Name>${Order4State.Namecontroller.text}</Name>
       <Mobile>${Order4State.Mobilecontroller.text}</Mobile>
       <Email>${Order4State.Emailcontroller.text}</Email>
