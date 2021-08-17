@@ -76,11 +76,13 @@ class Order3State extends State<Order3> {
       final decoded = json.decode(parsedXml.text);
       li5 = ItemModelList.fromJson(decoded);
       print(li5.details[0].itemName);
+      print(li5.details.length);
       if(widget.edit==0) {
 
         setState(() {
           total=0;
           cnt.clear();
+          controllers.clear();
           for (int i = 0; i < li5.details.length; i++) {
             cnt.add(0);
             itemtotal.add(0);
@@ -95,17 +97,24 @@ class Order3State extends State<Order3> {
       else
         {
 
-          setState(() {
+
             total=0;
             cnt.clear();
+            li2.clear();
+            controllers.clear();
             for (int i = 0; i < li5.details.length; i++) {
               cnt.add(0);
+              itemtotal.add(0);
               controllers.add(new TextEditingController());
               controllers[i].text = "0";
               li2.add(
                   FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
 
             }
+            setState(() {
+              print(li2.length);
+              print(controllers.length);
+              print(cnt.length);
           });
           // setState(() {
           //   if(li5.details.length-cnt.length==0);
@@ -129,7 +138,7 @@ class Order3State extends State<Order3> {
 
 
         }
-print(cnt[0]);
+// print(cnt[0]);
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
       //       msg:"",
@@ -171,8 +180,8 @@ print(cnt[0]);
   TextEditingController cnt1controller = new TextEditingController();
   TextEditingController cnt2controller = new TextEditingController();
   TextEditingController cnt3controller = new TextEditingController();
-  static List<TextEditingController> controllers = List();
-  List<double> itemtotal = List();
+  static List<TextEditingController> controllers =new List();
+  List<double> itemtotal =new List();
   var dropdownValue = "Select";
   var dropdownValue1 = "Select";
   var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
@@ -180,11 +189,14 @@ print(cnt[0]);
 
   @override
   void initState() {
+    print(widget.edit);
+    print(widget.id);
 
     itemRequest(0);
-    cnt1controller.text="0";
-    cnt2controller.text="0";
-    cnt3controller.text="0";
+
+    // cnt1controller.text="0";
+    // cnt2controller.text="0";
+    // cnt3controller.text="0";
 
     // TODO: implement initState
     super.initState();
@@ -192,8 +204,8 @@ print(cnt[0]);
   @override
   Widget build(BuildContext context) {
 
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
 
     final List<String> imgList = [
       "https://www.shreeanandhaas.com/images/special-menu/2-in-1-Idiyappam.jpg",
@@ -413,7 +425,7 @@ for(int i=0;i<li2.length;i++)
               Order2State.vehcheck=false;
               Order2State.vescheck=false;
               Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                  OrderSummary( edit: widget.id,payment:1,id: widget.edit,)));
+                  OrderSummary( edit: widget.edit,payment:1,id: widget.id,)));
             }
               // Navigator.push(context, MaterialPageRoute(builder: (context) =>
               //     Order2(id: widget.id, edit: widget.edit,)));
