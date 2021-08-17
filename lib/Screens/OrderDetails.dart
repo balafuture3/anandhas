@@ -32,6 +32,7 @@ import 'package:printing/printing.dart';
 import 'package:time_picker_widget/time_picker_widget.dart';
 import 'package:xml/xml.dart' as xml;
 
+import 'NewOrderItemSearch.dart';
 import 'Order4.dart';
 import 'OrderList.dart';
 
@@ -2664,7 +2665,7 @@ print(envelope);
       print(parsedXml.text);
       final decoded = json.decode(parsedXml.text);
       li5 = ItemModelList.fromJson(decoded);
-      print(li5.details[0].itemName);
+      print("Item Request ${li5.details.length}");
 
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
@@ -4726,11 +4727,9 @@ print(envelope);
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) => Order3(
-                                                        id: int.parse(li8
-                                                            .details[0]
-                                                            .categoryID
-                                                            .toString()),
+                                                  builder: (context) => ItemSearch(
+                                                        id: 0,
+
                                                         edit: int.parse(
                                                             widget.orderid),
                                                       )));
@@ -4738,7 +4737,7 @@ print(envelope);
                                       },
                                       color: String_Values.primarycolor,
                                     ),
-                                    if((li8.details[0].orderPrice - li8.details[0].advanceAmount)>0)
+                                    if((li8.details[0].orderPrice - (li8.details[0].advanceAmount+li8.details[0].disAmount)>0))
                                     RaisedButton(
                                       child: Text(
                                         "Payment",
@@ -4816,8 +4815,10 @@ print(envelope);
                                                     .round()
                                                     .toString();
                                           }
+
                                           itemRequest(0)
                                               .then((value) {
+                                            print(Order3State.cnt.length);
                                             if (li5.details.length -
                                                     Order3State.cnt.length ==
                                                 0)
@@ -4826,18 +4827,19 @@ print(envelope);
                                               print("else");
                                               print(
                                                   "length ${li5.details.length - Order3State.cnt.length}");
-                                              for (int i = 0;
-                                                  i <=
-                                                      (li5.details.length -
-                                                          Order3State
-                                                              .cnt.length);
+                                              print(li5.details.length);
+                                              print(Order3State.cnt.length);
+                                              int a = li5.details.length-Order3State.cnt.length;
+                                              for (int  i = 0;
+                                                  i <=a;
                                                   i++) {
+                                                print(i);
                                                 Order3State.cnt.add(0);
-                                                Order3State.controllers.add(
-                                                    new TextEditingController(
-                                                        text: "0"));
+                                                // Order3State.controllers.add(
+                                                //     new TextEditingController(
+                                                //         text: "0"));
                                               }
-                                              print(Order3State.cnt);
+                                              print(Order3State.cnt.length);
                                             }
                                             Navigator.pushReplacement(
                                                 context,
@@ -4856,7 +4858,7 @@ print(envelope);
                                       color: String_Values.primarycolor,
                                     ),
                                     if(!((li8.details[0].disApplied.replaceAll(" ", "")=="Y")&&(li8.details[0].disApproval.replaceAll(" ", "")=="Y")))
-                                      if((li8.details[0].orderPrice - li8.details[0].advanceAmount)>0)
+                                      if((li8.details[0].orderPrice - li8.details[0].advanceAmount+li8.details[0].disAmount)>0)
                                     RaisedButton(
                                       child: Text(
                                         "Discount",
@@ -5119,7 +5121,7 @@ print(envelope);
             )),
       appBar: AppBar(
           title: Text(
-        !widget.gst ? "Order Summary" : "Invoice Detail",
+        !widget.gst ? "Order Details" : "Invoice Detail",
       )),
       // floatingActionButton: FloatingActionButton.extended(
       //   onPressed: () {

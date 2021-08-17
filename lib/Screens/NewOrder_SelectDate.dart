@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:anandhasapp/Models/Category.dart';
 import 'package:anandhasapp/Screens/NewOrderItemChoose .dart';
+import 'package:anandhasapp/Screens/NewOrderItemSearch.dart';
 import 'package:anandhasapp/Screens/Order4.dart';
 import 'package:anandhasapp/String_Values.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -363,7 +364,7 @@ class NewOrderState extends State<NewOrder> {
               timecontroller.text.length != 0 &&
               dropdownValue1 != "Select Category")
             Navigator.push(context, MaterialPageRoute(
-                builder: (context) => Order3(id: categoryid,edit: 0,)));
+                builder: (context) => ItemSearch(id: categoryid,edit: 0,)));
           else
             Fluttertoast.showToast(
                 msg: "Please fill Date, Time and Category",

@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
 import 'package:xml/xml.dart' as xml;
+
+import 'NewOrderItemSearch.dart';
 class Order3 extends StatefulWidget {
   Order3({Key key,this.id,this.edit});
   int id;
@@ -22,7 +24,7 @@ class Order3 extends StatefulWidget {
 
 class Order3State extends State<Order3> {
   int _current = 0;
-
+  List<FilterList> li2 = new List();
   bool loading=false;
 
   CategoryModelList li4;
@@ -84,6 +86,9 @@ class Order3State extends State<Order3> {
             itemtotal.add(0);
             controllers.add(new TextEditingController());
             controllers[i].text = "0";
+            li2.add(
+                FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
+
           }
         });
       }
@@ -97,6 +102,9 @@ class Order3State extends State<Order3> {
               cnt.add(0);
               controllers.add(new TextEditingController());
               controllers[i].text = "0";
+              li2.add(
+                  FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
+
             }
           });
           // setState(() {
@@ -159,7 +167,7 @@ print(cnt[0]);
     return response;
   }
   TextEditingController datefromcontroller = new TextEditingController();
-  TextEditingController cntcontroller = new TextEditingController();
+  TextEditingController searchController = new TextEditingController();
   TextEditingController cnt1controller = new TextEditingController();
   TextEditingController cnt2controller = new TextEditingController();
   TextEditingController cnt3controller = new TextEditingController();
@@ -177,7 +185,7 @@ print(cnt[0]);
     cnt1controller.text="0";
     cnt2controller.text="0";
     cnt3controller.text="0";
-    cntcontroller.text="0";
+
     // TODO: implement initState
     super.initState();
   }
@@ -198,7 +206,62 @@ print(cnt[0]);
       body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
 
         child: Column(children: [
-for(int i=0;i<li5.details.length;i++)
+          // Container(
+          //     height: 80,
+          //     child: Row(children: [
+          //       Flexible(
+          //         flex: 1,
+          //         child: Container(
+          //           margin: const EdgeInsets.only(
+          //               left: 24.0, right: 24),
+          //           decoration: BoxDecoration(
+          //             borderRadius: BorderRadius.circular(25.0),
+          //             color: Colors.white,
+          //           ),
+          //           child: TextField(
+          //             onChanged: (value) {
+          //               setState(() {
+          //                 li2.clear();
+          //               });
+          //               for (int i = 0; i < li5.details.length; i++)
+          //                 if (li5.details[i].itemName
+          //                     .toLowerCase()
+          //                     .contains(searchController.text
+          //                     .toLowerCase()) ||
+          //                     li5.details[i].itemCode
+          //                         .toLowerCase()
+          //                         .contains(searchController.text
+          //                         .toLowerCase())) {
+          //                   setState(() {
+          //                     li2.add(
+          //                         FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
+          //                   });
+          //                 }
+          //             },
+          //             controller: searchController,
+          //             style: TextStyle(color: Colors.black54),
+          //             decoration: InputDecoration(
+          //               suffixIcon: Icon(
+          //                 Icons.search,
+          //                 color: Colors.teal,
+          //               ),
+          //               hintText: 'Search item here.....',
+          //               hintStyle: TextStyle(
+          //                 color: Colors.teal,
+          //                 fontSize: 16.0,
+          //               ),
+          //               prefix: Text("    "),
+          //               suffix: Text("    "),
+          //               border: OutlineInputBorder(
+          //                 borderRadius: BorderRadius.circular(25.0),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ])),
+for(int i=0;i<li2.length;i++)
+  if(ItemSearchState.selecteditems.any((element) => element.contains(li2[i].itemName)))
           Card(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -210,9 +273,9 @@ for(int i=0;i<li5.details.length;i++)
                       flex: 3,
                       child: Column(
                         children: [
-                          Text(li5.details[i].itemName),
+                          Text(li2[i].itemName),
                           Text(
-                            li5.details[i].price.toString(),
+                            li2[i].price.toString(),
                             style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
                           )
                         ],
@@ -309,7 +372,7 @@ for(int i=0;i<li5.details.length;i++)
                 )),
           ) ,
 
-          SizedBox(height: height/30,),
+          SizedBox(height: height/4,),
       
 
 
@@ -370,4 +433,22 @@ for(int i=0;i<li5.details.length;i++)
       ),
     );
   }
+}
+class FilterList {
+
+  String itemCode;
+  String itemName;
+  double price;
+  String uOM;
+  double qty;
+
+  FilterList(
+
+        this.itemCode,
+        this.itemName,
+        this.price,
+
+        this.uOM,
+        this.qty,);
+
 }

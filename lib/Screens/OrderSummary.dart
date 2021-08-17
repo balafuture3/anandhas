@@ -2615,6 +2615,8 @@ else
   {
     orderflag="Y";
     orderflagNo=OrderListState.orderflagno+1;
+    print(Order3State.cnt.length);
+    print(li5.details.length);
     for (int i = 0; i < li5.details.length; i++)
       if (Order3State.cnt[i] != 0)
         bookingitem =
@@ -2772,7 +2774,7 @@ print(bookingitem);
 
     if(widget.edit!=0)
     {
-
+print("call");
       NewOrderState.datefromcontroller.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
       NewOrderState.timeupload=DateFormat("hh:mm").format(DateTime.now());
       NewOrderState.dateupload=DateFormat("yyyy-MM-dd").format(DateTime.now());
