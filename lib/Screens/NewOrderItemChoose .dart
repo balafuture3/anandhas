@@ -26,7 +26,9 @@ class Order3State extends State<Order3> {
   int _current = 0;
   List<FilterList> li2 = new List();
   bool loading=false;
-
+  var dropdownValue = "Select";
+  var dropdownValue1 = "All";
+  var stringlist = ["All"];
   CategoryModelList li4;
 
  static ItemModelList li5;
@@ -76,69 +78,72 @@ class Order3State extends State<Order3> {
       final decoded = json.decode(parsedXml.text);
       li5 = ItemModelList.fromJson(decoded);
       print(li5.details[0].itemName);
-      print(li5.details.length);
       if(widget.edit==0) {
 
         setState(() {
           total=0;
           cnt.clear();
-          controllers.clear();
+          stringlist.clear();
+          stringlist.add("All");
           for (int i = 0; i < li5.details.length; i++) {
+            cnt.add(0);
+            itemtotal.add(0);
+            if(!stringlist.contains(li5.details[i].itemCode))
+              stringlist.add(li5.details[i].itemCode);
+            controllers.add(new TextEditingController());
+            controllers[i].text = "0";
+            // checkvalue.add(CheckList(false,""));
+            // li2.add(
+            //     FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
+
+          }
+
+        });
+      }
+      else
+      {
+
+        setState(() {
+          total=0;
+          cnt.clear();
+          stringlist.clear();
+          stringlist.add("All");
+          for (int i = 0; i < li5.details.length; i++) {
+            if(!stringlist.contains(li5.details[i].itemCode))
+              stringlist.add(li5.details[i].itemCode);
             cnt.add(0);
             itemtotal.add(0);
             controllers.add(new TextEditingController());
             controllers[i].text = "0";
-            li2.add(
-                FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
+            // checkvalue.add(CheckList(false,""));
+            // li2.add(
+            //     FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
 
           }
         });
+        // setState(() {
+        //   if(li5.details.length-cnt.length==0);
+        //   else {
+        //     print("else");
+        //     print("length ${li5.details.length - cnt.length}");
+        //     for (int i = 0; i <= (li5.details.length - cnt.length); i++) {
+        //       cnt.add(0);
+        //       controllers.add(new TextEditingController(text: "0"));
+        //     }
+        //     print(cnt);
+        //   }
+        //   // total=0;
+        //   // cnt.clear();
+        //   // for (int i = 0; i < li5.details.length; i++) {
+        //   //   cnt.add();
+        //   //   controllers.add(new TextEditingController());
+        //   //   controllers[i].text = "0";
+        //   // }
+        // });
+
+
       }
-      else
-        {
-
-
-            total=0;
-            cnt.clear();
-            li2.clear();
-            controllers.clear();
-            for (int i = 0; i < li5.details.length; i++) {
-              cnt.add(0);
-              itemtotal.add(0);
-              controllers.add(new TextEditingController());
-              controllers[i].text = "0";
-              li2.add(
-                  FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
-
-            }
-            setState(() {
-              print(li2.length);
-              print(controllers.length);
-              print(cnt.length);
-          });
-          // setState(() {
-          //   if(li5.details.length-cnt.length==0);
-          //   else {
-          //     print("else");
-          //     print("length ${li5.details.length - cnt.length}");
-          //     for (int i = 0; i <= (li5.details.length - cnt.length); i++) {
-          //       cnt.add(0);
-          //       controllers.add(new TextEditingController(text: "0"));
-          //     }
-          //     print(cnt);
-          //   }
-          //   // total=0;
-          //   // cnt.clear();
-          //   // for (int i = 0; i < li5.details.length; i++) {
-          //   //   cnt.add();
-          //   //   controllers.add(new TextEditingController());
-          //   //   controllers[i].text = "0";
-          //   // }
-          // });
-
-
-        }
-// print(cnt[0]);
+      print(cnt[0]);
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(
       //       msg:"",
@@ -182,9 +187,9 @@ class Order3State extends State<Order3> {
   TextEditingController cnt3controller = new TextEditingController();
   static List<TextEditingController> controllers =new List();
   List<double> itemtotal =new List();
-  var dropdownValue = "Select";
-  var dropdownValue1 = "Select";
-  var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
+  // var dropdownValue = "Select";
+  // var dropdownValue1 = "Select";
+  // var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
 
 
   @override
@@ -218,6 +223,104 @@ class Order3State extends State<Order3> {
       body: loading?Center(child: CircularProgressIndicator()):SingleChildScrollView(
 
         child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(left:16,top:8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Select Category"),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 24.0, right: 24.0,top:10),
+            padding: const EdgeInsets.only(
+                left: 24, right: 24, top: 6, bottom: 6),
+            decoration: new BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                border: new Border.all(color: Colors.black38)),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValue1,
+                onChanged: (String newValue) {
+                  setState(() {
+                    dropdownValue1 = newValue;
+
+                  });
+                },
+                items: stringlist
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          Container(
+              height: 80,
+              child: Row(children: [
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                        left: 24.0, right: 24),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      color: Colors.white,
+                    ),
+                    child: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          li2.clear();
+                        });
+                        for (int i = 0; i < li5.details.length; i++)
+                          if (li5.details[i].itemName
+                              .toLowerCase()
+                              .contains(searchController.text
+                              .toLowerCase()) ||
+                              li5.details[i].itemCode
+                                  .toLowerCase()
+                                  .contains(searchController.text
+                                  .toLowerCase())) {
+                            setState(() {
+                              // checkvalue.add(CheckList(false,""));
+                              if(dropdownValue1=="All")
+                                li2.add(
+                                    FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
+                              else
+                              if(li5.details[i].itemCode==dropdownValue1)
+                                li2.add(
+                                    FilterList(li5.details[i].itemCode,li5.details[i].itemName,li5.details[i].price,li5.details[i].uOM,li5.details[i].qty));
+
+
+                            });
+                          }
+                      },
+                      controller: searchController,
+                      style: TextStyle(color: Colors.black54),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: Colors.teal,
+                        ),
+                        hintText: 'Search item here.....',
+                        hintStyle: TextStyle(
+                          color: Colors.teal,
+                          fontSize: 16.0,
+                        ),
+                        prefix: Text("    "),
+                        suffix: Text("    "),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ])),
           // Container(
           //     height: 80,
           //     child: Row(children: [
@@ -272,117 +375,264 @@ class Order3State extends State<Order3> {
           //         ),
           //       ),
           //     ])),
-for(int i=0;i<li2.length;i++)
-  if(ItemSearchState.selecteditems.any((element) => element.contains(li2[i].itemName)))
-          Card(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Expanded(flex: 2, child: Image.asset("logo.png")),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
+
+          for(int i=0;i<li5.details.length;i++)
+
+            if(dropdownValue1=="All")
+              if (li5.details[i].itemName
+                  .toLowerCase()
+                  .contains(searchController.text
+                  .toLowerCase()) ||
+                  li5.details[i].itemCode
+                      .toLowerCase()
+                      .contains(searchController.text
+                      .toLowerCase()))
+              // if(ItemSearchState.selecteditems.any((element) => element.contains(li2[i].itemName)))
+                Card(
+                  child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(li2[i].itemName),
-                          Text(
-                            li2[i].price.toString(),
-                            style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-
-                            Card(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                          // Expanded(flex: 2, child: Image.asset("logo.png")),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              children: [
+                                Text(li5.details[i].itemName),
+                                Text(
+                                  li5.details[i].price.toString(),
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(160, 27, 37, 1)),
+                                )
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
-                                    {
-                                      setState(() {
-                                        print(cnt[i]);
-                                        if(cnt[i]!=0)
-                                        cnt[i]--;
-                                        itemtotal[i]=(li5.details[i].price)*cnt[i];
-                                        controllers[i].text=cnt[i].toString();
-                                        print(cnt[i]);
-                                        total=0;
-                                        for(int j=0;j<li5.details.length;j++)
-                                          total=total+(cnt[j]*li5.details[j].price);
-                                      });
-                                    },),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      height: 30,
-                                      child: TextField(
-                                        decoration: InputDecoration
-                                          (
 
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(5.0),
+                                  Card(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(icon: Icon(
+                                            Icons.remove, color: Colors.red,),
+                                            onPressed: () {
+                                              setState(() {
+                                                print(cnt[i]);
+                                                if (cnt[i] != 0)
+                                                  cnt[i]--;
+                                                itemtotal[i] =
+                                                    (li5.details[i].price) *
+                                                        cnt[i];
+                                                controllers[i].text =
+                                                    cnt[i].toString();
+                                                print(cnt[i]);
+                                                total = 0;
+                                                for (int j = 0; j <
+                                                    li5.details.length; j++)
+                                                  total = total + (cnt[j] *
+                                                      li5.details[j].price);
+                                              });
+                                            },),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            height: 30,
+                                            child: TextField(
+                                              decoration: InputDecoration
+                                                (
+
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius
+                                                      .circular(5.0),
+                                                ),
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              keyboardType: TextInputType
+                                                  .number,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  cnt[i] = int.parse(
+                                                      controllers[i].text);
+                                                  itemtotal[i] =
+                                                      (li5.details[i].price) *
+                                                          cnt[i];
+
+                                                  total = 0;
+                                                  for (int j = 0; j <
+                                                      li5.details.length; j++)
+                                                    total = total + (cnt[j] *
+                                                        li5.details[j].price);
+                                                });
+                                              },
+                                              enabled: true,
+                                              controller: controllers[i],
+                                            ),
                                           ),
                                         ),
-                                        textAlign: TextAlign.center,
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (value)
-                                        {
-                                          setState(() {
-                                            cnt[i]=int.parse(controllers[i].text);
-                                            itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(icon: Icon(
+                                            Icons.add, color: Colors.teal,),
+                                            onPressed: () {
+                                              setState(() {
+                                                print(cnt[i]);
+                                                cnt[i]++;
+                                                controllers[i].text =
+                                                    cnt[i].toString();
+                                                print(cnt[i]);
+                                                itemtotal[i] =
+                                                    (li5.details[i].price) *
+                                                        cnt[i];
+                                                total = 0;
+                                                for (int j = 0; j <
+                                                    li5.details.length; j++)
+                                                  total = total + (cnt[j] *
+                                                      li5.details[j].price);
+                                              });
+                                            },),
+                                        ),
 
-                                            total=0;
-                                            for(int j=0;j<li5.details.length;j++)
-                                              total=total+(cnt[j]*li5.details[j].price);
-                                          });
+                                      ],
+                                    ),
+                                  )
+                                ]
+                            ),
+                          ),
+                          Expanded(flex: 3, child: Text("Rs. ${itemtotal[i]}",
+                            textAlign: TextAlign.center,)),
 
+                        ],
+                      )),
+                ) else Container()
+                else
+    if ((li5.details[i].itemName
+        .toLowerCase()
+        .contains(searchController.text
+        .toLowerCase()) ||
+        li5.details[i].itemCode
+            .toLowerCase()
+            .contains(searchController.text
+            .toLowerCase()))&&li5.details[i].itemCode==dropdownValue1)
+    // if(ItemSearchState.selecteditems.any((element) => element.contains(li2[i].itemName)))
+      Card(
+        child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Expanded(flex: 2, child: Image.asset("logo.png")),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Text(li5.details[i].itemName),
+                      Text(
+                        li5.details[i].price.toString(),
+                        style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
 
-                                        },
-                                        enabled:true,
-                                        controller: controllers[i],
+                        Card(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                {
+                                  setState(() {
+                                    print(cnt[i]);
+                                    if(cnt[i]!=0)
+                                      cnt[i]--;
+                                    itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                    controllers[i].text=cnt[i].toString();
+                                    print(cnt[i]);
+                                    total=0;
+                                    for(int j=0;j<li5.details.length;j++)
+                                      total=total+(cnt[j]*li5.details[j].price);
+                                  });
+                                },),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  height: 30,
+                                  child: TextField(
+                                    decoration: InputDecoration
+                                      (
+
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value)
                                     {
                                       setState(() {
-                                        print(cnt[i]);
-                                        cnt[i]++;
-                                        controllers[i].text=cnt[i].toString();
-                                        print(cnt[i]);
+                                        cnt[i]=int.parse(controllers[i].text);
                                         itemtotal[i]=(li5.details[i].price)*cnt[i];
+
                                         total=0;
                                         for(int j=0;j<li5.details.length;j++)
                                           total=total+(cnt[j]*li5.details[j].price);
-
-
                                       });
 
-                                    },),
+
+                                    },
+                                    enabled:true,
+                                    controller: controllers[i],
                                   ),
-
-                                ],
+                                ),
                               ),
-                            )
-                          ]
-                      ),
-                    ),
-                    Expanded(flex: 3, child: Text("Rs. ${itemtotal[i]}",textAlign: TextAlign.center,)),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                {
+                                  setState(() {
+                                    print(cnt[i]);
+                                    cnt[i]++;
+                                    controllers[i].text=cnt[i].toString();
+                                    print(cnt[i]);
+                                    itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                    total=0;
+                                    for(int j=0;j<li5.details.length;j++)
+                                      total=total+(cnt[j]*li5.details[j].price);
 
-                  ],
-                )),
-          ) ,
+
+                                  });
+
+                                },),
+                              ),
+
+                            ],
+                          ),
+                        )
+                      ]
+                  ),
+                ),
+                Expanded(flex: 3, child: Text("Rs. ${itemtotal[i]}",textAlign: TextAlign.center,)),
+
+              ],
+            )),
+      )
+          ,
 
           SizedBox(height: height/4,),
       

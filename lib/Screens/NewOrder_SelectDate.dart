@@ -364,7 +364,7 @@ class NewOrderState extends State<NewOrder> {
               timecontroller.text.length != 0 &&
               dropdownValue1 != "Select Category")
             Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ItemSearch(id: categoryid,edit: 0,)));
+                builder: (context) => Order3(id: categoryid,edit: 0,)));
           else
             Fluttertoast.showToast(
                 msg: "Please fill Date, Time and Category",
