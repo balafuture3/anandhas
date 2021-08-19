@@ -272,6 +272,7 @@ class Order3State extends State<Order3> {
                       color: Colors.white,
                     ),
                     child: TextField(
+                      autofocus: false,
                       onChanged: (value) {
                         setState(() {
                           li2.clear();
