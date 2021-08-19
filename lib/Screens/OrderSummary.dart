@@ -2941,7 +2941,7 @@ if(newValue=="Full/Balance Amount") {
                     value: value,
                     child: Text(value),
                   );
-                }).toList():stringlist3.map<DropdownMenuItem<String>>((String value) {
+                }).toList():stringlist2.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
