@@ -217,6 +217,7 @@ class Order2State extends State<Order2> {
                                       height: 30,
 
                                       child: TextField(
+                                        keyboardType: TextInputType.number,
                                         decoration: InputDecoration
                                           (
 
