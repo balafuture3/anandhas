@@ -2253,7 +2253,9 @@ class _OrderSummaryState extends State<OrderSummary> {
       final decoded = json.decode(parsedXml.text);
       li8 = OrderDetaillListModel.fromJson(decoded);
       // print(li5.details[0].itemName);
-      setState(() {});
+      setState(() {
+
+      });
 
       // if ("li2.name" != null) {
       //   Fluttertoast.showToast(

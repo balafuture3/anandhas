@@ -4723,15 +4723,15 @@ print(envelope);
                                           //   Order3State.controllers.add(new TextEditingController());
                                           //   Order3State.controllers[i].text=li9.details[i].qty.round().toString();
                                           // }
-
+print("orderid"+widget.orderid);
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) => Order3(
-                                                        id: 0,
-
-                                                        edit: int.parse(
+                                                        id: int.parse(
                                                             widget.orderid),
+
+                                                        edit: 1,
                                                       )));
                                         });
                                       },

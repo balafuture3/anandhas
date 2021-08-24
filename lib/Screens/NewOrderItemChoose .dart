@@ -590,13 +590,10 @@ class Order3State extends State<Order3> {
                                       setState(() {
                                         cnt[i]=int.parse(controllers[i].text);
                                         itemtotal[i]=(li5.details[i].price)*cnt[i];
-
                                         total=0;
                                         for(int j=0;j<li5.details.length;j++)
                                           total=total+(cnt[j]*li5.details[j].price);
                                       });
-
-
                                     },
                                     enabled:true,
                                     controller: controllers[i],
