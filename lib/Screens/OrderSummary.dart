@@ -411,33 +411,13 @@ class _OrderSummaryState extends State<OrderSummary> {
                   li8.details[0].cateringService == "Y"
                       ? pw.Column(
                     children: [
-                      pw.Text("Catering Service",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),),
-                      ),
+
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
                               left: 24, right: 24, top: 8.0, bottom: 8),
                           child: pw.Column(
                             children: [
-                              pw.Row(
-                                  mainAxisAlignment:
-                                  pw. MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    pw. Expanded(
-                                        flex: 4,
-                                        child: pw.Text(
-                                          "Persons",
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                    pw. Expanded(
-                                        flex: 1,
-                                        child: pw.Text(
-                                          "Amount".toString(),
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                  ]),
-                              pw.SizedBox(
-                                height: 10,
-                              ),
+
                               pw.Row(
                                   mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
@@ -445,7 +425,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                                     pw.Expanded(
                                         flex: 4,
                                         child: pw.Text(
-                                          "${li8.details[0].cateringAmount/100}",
+                                          "Catering Service",
                                           textAlign: pw.TextAlign.center,
                                         )),
                                     pw.Expanded(
@@ -810,13 +790,13 @@ class _OrderSummaryState extends State<OrderSummary> {
                   Order2State.catcheck == true
                       ? pw.Column(
                     children: [
-                      pw.Text("Catering Service",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
-                      ),
+
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
                               left: 24, right: 24, top: 8.0, bottom: 8),
                           child: pw.Column(
                             children: [
+
                               pw.Row(
                                   mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
@@ -824,27 +804,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                                     pw.Expanded(
                                         flex: 4,
                                         child: pw.Text(
-                                          "Persons",
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                    pw.Expanded(
-                                        flex: 1,
-                                        child: pw.Text(
-                                          "Amount".toString(),
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                  ]),
-                              pw.SizedBox(
-                                height: 10,
-                              ),
-                              pw.Row(
-                                  mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    pw.Expanded(
-                                        flex: 4,
-                                        child: pw.Text(
-                                          Order2State.cntcontroller.text,
+                                          "Catering Service",
                                           textAlign: pw.TextAlign.center,
                                         )),
                                     pw.Expanded(
@@ -1483,33 +1443,14 @@ class _OrderSummaryState extends State<OrderSummary> {
                   li8.details[0].cateringService == "Y"
                       ? pw.Column(
                     children: [
-                      pw.Text("Catering Service",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),),
-                      ),
+                      // pw.Text("Catering Service",style: pw.TextStyle(color: PdfColor.fromHex("339B6F"),),
+                      // ),
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
                               left: 24, right: 24, top: 8.0, bottom: 8),
                           child: pw.Column(
                             children: [
-                              pw.Row(
-                                  mainAxisAlignment:
-                                  pw. MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    pw. Expanded(
-                                        flex: 4,
-                                        child: pw.Text(
-                                          "Persons",
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                    pw. Expanded(
-                                        flex: 1,
-                                        child: pw.Text(
-                                          "Amount".toString(),
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                  ]),
-                              pw.SizedBox(
-                                height: 10,
-                              ),
+
                               pw.Row(
                                   mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
@@ -1517,7 +1458,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                                     pw.Expanded(
                                         flex: 4,
                                         child: pw.Text(
-                                          "${li8.details[0].cateringAmount/100}",
+                                          "Catering Service",
                                           textAlign: pw.TextAlign.center,
                                         )),
                                     pw.Expanded(
@@ -1882,13 +1823,13 @@ class _OrderSummaryState extends State<OrderSummary> {
                   Order2State.catcheck == true
                       ? pw.Column(
                     children: [
-          pw.Text("Catering Service",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
-                      ),
+
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
                               left: 24, right: 24, top: 8.0, bottom: 8),
                           child: pw.Column(
                             children: [
+
                               pw.Row(
                                   mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
@@ -1896,27 +1837,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                                     pw.Expanded(
                                         flex: 4,
                                         child: pw.Text(
-                                          "Persons",
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                    pw.Expanded(
-                                        flex: 1,
-                                        child: pw.Text(
-                                          "Amount".toString(),
-                                          textAlign: pw.TextAlign.center,
-                                        )),
-                                  ]),
-                              pw.SizedBox(
-                                height: 10,
-                              ),
-                              pw.Row(
-                                  mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    pw.Expanded(
-                                        flex: 4,
-                                        child: pw.Text(
-                                          Order2State.cntcontroller.text,
+                                          "Catering Service",
                                           textAlign: pw.TextAlign.center,
                                         )),
                                     pw.Expanded(
@@ -2811,7 +2732,7 @@ itemRequest();
       }
     if(Order2State.catcheck)
     {
-      cattot=(int.parse(Order2State.cntcontroller.text)*Order2State.personamt).toString() ;
+      cattot=(int.parse(Order2State.cntcontroller.text)*int.parse(Order2State.controller.text)).toString() ;
     }
     else
       {
@@ -4001,53 +3922,64 @@ if(newValue=="Full/Balance Amount") {
                         li8.details[0].cateringService == "Y"
                             ? Column(
                           children: [
-                            ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
-                              title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 24, right: 24, top: 8.0, bottom: 8),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                "Persons",
-                                                textAlign: TextAlign.start,
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                "Amount".toString(),
-                                                textAlign: TextAlign.start,
-                                              )),
-                                        ]),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                "${li8.details[0].cateringAmount/100}",
-                                                textAlign: TextAlign.start,
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                "Rs.${li8.details[0].cateringAmount}",
-                                                textAlign: TextAlign.start,
-                                              )),
-                                        ]),
-                                  ],
-                                ))
+                            Row(
+                              children: [
+                                Expanded(flex:4,child: ListTile(title: Text("Catering Service",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
+                                Expanded(flex:1,child: Text("Rs.${li8.details[0].cateringAmount}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
+
+                              ],
+                            )
+                            // ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
+                            //   title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
+                            // trailing:  Text(
+                            //   "Rs.${li8.details[0].cateringAmount}",
+                            //   textAlign: TextAlign.start,
+                            // ),
+                            // ),
+                            // Padding(
+                            //     padding: const EdgeInsets.only(
+                            //         left: 24, right: 24, top: 8.0, bottom: 8),
+                            //     child: Column(
+                            //       children: [
+                            //         Row(
+                            //             mainAxisAlignment:
+                            //             MainAxisAlignment.spaceBetween,
+                            //             children: [
+                            //               Expanded(
+                            //                   flex: 4,
+                            //                   child: Text(
+                            //                     "Persons",
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //               Expanded(
+                            //                   flex: 1,
+                            //                   child: Text(
+                            //                     "Amount".toString(),
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //             ]),
+                            //         SizedBox(
+                            //           height: 10,
+                            //         ),
+                            //         Row(
+                            //             mainAxisAlignment:
+                            //             MainAxisAlignment.spaceBetween,
+                            //             children: [
+                            //               Expanded(
+                            //                   flex: 4,
+                            //                   child: Text(
+                            //                     "${li8.details[0].cateringAmount/100}",
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //               Expanded(
+                            //                   flex: 1,
+                            //                   child: Text(
+                            //                     "Rs.${li8.details[0].cateringAmount}",
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //             ]),
+                            //       ],
+                            //     ))
                           ],
                         )
                             : Container(),
@@ -4406,53 +4338,64 @@ if(newValue=="Full/Balance Amount") {
                         Order2State.catcheck == true
                             ? Column(
                           children: [
-                            ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
-                              title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 24, right: 24, top: 8.0, bottom: 8),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                "Persons",
-                                                textAlign: TextAlign.start,
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                "Amount".toString(),
-                                                textAlign: TextAlign.start,
-                                              )),
-                                        ]),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                Order2State.cntcontroller.text,
-                                                textAlign: TextAlign.start,
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                "Rs.${(int.parse(Order2State.cntcontroller.text) * Order2State.personamt)}",
-                                                textAlign: TextAlign.start,
-                                              )),
-                                        ]),
-                                  ],
-                                ))
+                            Row(
+                              children: [
+                                Expanded(flex:4,child: ListTile(title: Text("Catering Service",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
+                                Expanded(flex:1,child: Text("Rs.${(int.parse(Order2State.cntcontroller.text) * int.parse(Order2State.controller.text))}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
+
+                              ],
+                            )
+                            // ListTile(leading: Icon(Icons.follow_the_signs,color: Colors.deepOrange,),
+                            //   title: Text("Catering Service",style: TextStyle(color: Colors.deepOrange,),),
+                            // trailing:  Text(
+                            //   "Rs.${(int.parse(Order2State.cntcontroller.text) * int.parse(Order2State.controller.text))}",
+                            //   textAlign: TextAlign.start,
+                            // ),
+                            // ),
+                            // Padding(
+                            //     padding: const EdgeInsets.only(
+                            //         left: 24, right: 24, top: 8.0, bottom: 8),
+                            //     child: Column(
+                            //       children: [
+                            //         Row(
+                            //             mainAxisAlignment:
+                            //             MainAxisAlignment.spaceBetween,
+                            //             children: [
+                            //               Expanded(
+                            //                   flex: 4,
+                            //                   child: Text(
+                            //                     "Persons",
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //               Expanded(
+                            //                   flex: 1,
+                            //                   child: Text(
+                            //                     "Amount".toString(),
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //             ]),
+                            //         SizedBox(
+                            //           height: 10,
+                            //         ),
+                            //         Row(
+                            //             mainAxisAlignment:
+                            //             MainAxisAlignment.spaceBetween,
+                            //             children: [
+                            //               Expanded(
+                            //                   flex: 4,
+                            //                   child: Text(
+                            //                     Order2State.cntcontroller.text,
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //               Expanded(
+                            //                   flex: 1,
+                            //                   child: Text(
+                            //                     "Rs.${(int.parse(Order2State.cntcontroller.text) * int.parse(Order2State.controller.text))}",
+                            //                     textAlign: TextAlign.start,
+                            //                   )),
+                            //             ]),
+                            //       ],
+                            //     ))
                           ],
                         )
                             : Container(),

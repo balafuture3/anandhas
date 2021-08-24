@@ -468,7 +468,11 @@ class OrderDetailsState extends State<OrderDetails> {
                           ),
                           pw.Expanded(
                               flex: 1,
-                              child: pw.Container()),
+                              child: pw.Text(
+                                "Rs.${li8.details[0].cateringAmount}",
+                                textAlign:
+                                pw.TextAlign.center,
+                              )),
                         ],
                       ),
                     ),
@@ -496,60 +500,60 @@ class OrderDetailsState extends State<OrderDetails> {
                     //     ))
 
 
-
-                pw.Padding(
-                    padding: const pw.EdgeInsets.only(
-                        left: 24,
-                        right: 24,
-                        top: 8.0,
-                        bottom: 8),
-                    child: pw.Column(
-                      children: [
-                        pw.Row(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment
-                                .spaceBetween,
-                            children: [
-                              pw.Expanded(
-                                  flex: 4,
-                                  child: pw.Text(
-                                    "Persons",
-                                    textAlign:
-                                    pw.TextAlign.center,
-                                  )),
-                              pw.Expanded(
-                                  flex: 1,
-                                  child: pw.Text(
-                                    "Amount".toString(),
-                                    textAlign:
-                                    pw.TextAlign.center,
-                                  )),
-                            ]),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment
-                                .spaceBetween,
-                            children: [
-                              pw.Expanded(
-                                  flex: 4,
-                                  child: pw.Text(
-                                    "${li8.details[0].cateringAmount / 100}",
-                                    textAlign:
-                                    pw.TextAlign.center,
-                                  )),
-                              pw.Expanded(
-                                  flex: 1,
-                                  child: pw.Text(
-                                    "Rs.${li8.details[0].cateringAmount}",
-                                    textAlign:
-                                    pw.TextAlign.center,
-                                  )),
-                            ]),
-                      ],
-                    ))
+                //
+                // pw.Padding(
+                //     padding: const pw.EdgeInsets.only(
+                //         left: 24,
+                //         right: 24,
+                //         top: 8.0,
+                //         bottom: 8),
+                //     child: pw.Column(
+                //       children: [
+                //         pw.Row(
+                //             mainAxisAlignment:
+                //             pw.MainAxisAlignment
+                //                 .spaceBetween,
+                //             children: [
+                //               pw.Expanded(
+                //                   flex: 4,
+                //                   child: pw.Text(
+                //                     "Persons",
+                //                     textAlign:
+                //                     pw.TextAlign.center,
+                //                   )),
+                //               pw.Expanded(
+                //                   flex: 1,
+                //                   child: pw.Text(
+                //                     "Amount".toString(),
+                //                     textAlign:
+                //                     pw.TextAlign.center,
+                //                   )),
+                //             ]),
+                //         pw.SizedBox(
+                //           height: 10,
+                //         ),
+                //         pw.Row(
+                //             mainAxisAlignment:
+                //             pw.MainAxisAlignment
+                //                 .spaceBetween,
+                //             children: [
+                //               pw.Expanded(
+                //                   flex: 4,
+                //                   child: pw.Text(
+                //                     "${li8.details[0].cateringAmount / 100}",
+                //                     textAlign:
+                //                     pw.TextAlign.center,
+                //                   )),
+                //               pw.Expanded(
+                //                   flex: 1,
+                //                   child: pw.Text(
+                //                     "Rs.${li8.details[0].cateringAmount}",
+                //                     textAlign:
+                //                     pw.TextAlign.center,
+                //                   )),
+                //             ]),
+                //       ],
+                //     ))
               ],
             ),
             if(li8.details[0].vesselSet == "Y")
@@ -3845,71 +3849,83 @@ print(envelope);
                             li8.details[0].cateringService == "Y"
                                 ? Column(
                                     children: [
-                                      ListTile(
-                                        leading: Icon(
-                                          Icons.follow_the_signs,
-                                          color: Colors.deepOrange,
-                                        ),
-                                        title: Text(
-                                          "Catering Service",
-                                          style: TextStyle(
-                                            color: Colors.deepOrange,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 24,
-                                              right: 24,
-                                              top: 8.0,
-                                              bottom: 8),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Expanded(
-                                                        flex: 4,
-                                                        child: Text(
-                                                          "Persons",
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        )),
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: Text(
-                                                          "Amount".toString(),
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        )),
-                                                  ]),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Expanded(
-                                                        flex: 4,
-                                                        child: Text(
-                                                          "${li8.details[0].cateringAmount / 100}",
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        )),
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: Text(
-                                                          "Rs.${li8.details[0].cateringAmount}",
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        )),
-                                                  ]),
-                                            ],
-                                          ))
+                                      Row(
+                                        children: [
+                                          Expanded(flex:4,child: ListTile(title: Text("Catering Service",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
+                                          Expanded(flex:1,child: Text("Rs.${li8.details[0].cateringAmount}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
+
+                                        ],
+                                      )
+                                      // ListTile(
+                                      //   leading: Icon(
+                                      //     Icons.follow_the_signs,
+                                      //     color: Colors.deepOrange,
+                                      //   ),
+                                      //   title: Text(
+                                      //     "Catering Service",
+                                      //     style: TextStyle(
+                                      //       color: Colors.deepOrange,
+                                      //     ),
+                                      //   ),
+                                      //   trailing: Text(
+                                      //     "Rs.${li8.details[0].cateringAmount}",
+                                      //     textAlign:
+                                      //     TextAlign.start,
+                                      //   ),
+                                      // ),
+                                      // Padding(
+                                      //     padding: const EdgeInsets.only(
+                                      //         left: 24,
+                                      //         right: 24,
+                                      //         top: 8.0,
+                                      //         bottom: 8),
+                                      //     child: Column(
+                                      //       children: [
+                                      //         Row(
+                                      //             mainAxisAlignment:
+                                      //                 MainAxisAlignment
+                                      //                     .spaceBetween,
+                                      //             children: [
+                                      //               Expanded(
+                                      //                   flex: 4,
+                                      //                   child: Text(
+                                      //                     "Persons",
+                                      //                     textAlign:
+                                      //                         TextAlign.start,
+                                      //                   )),
+                                      //               Expanded(
+                                      //                   flex: 1,
+                                      //                   child: Text(
+                                      //                     "Amount".toString(),
+                                      //                     textAlign:
+                                      //                         TextAlign.start,
+                                      //                   )),
+                                      //             ]),
+                                      //         SizedBox(
+                                      //           height: 10,
+                                      //         ),
+                                      //         Row(
+                                      //             mainAxisAlignment:
+                                      //                 MainAxisAlignment
+                                      //                     .spaceBetween,
+                                      //             children: [
+                                      //               Expanded(
+                                      //                   flex: 4,
+                                      //                   child: Text(
+                                      //                     "${li8.details[0].cateringAmount / 100}",
+                                      //                     textAlign:
+                                      //                         TextAlign.start,
+                                      //                   )),
+                                      //               Expanded(
+                                      //                   flex: 1,
+                                      //                   child: Text(
+                                      //                     "Rs.${li8.details[0].cateringAmount}",
+                                      //                     textAlign:
+                                      //                         TextAlign.start,
+                                      //                   )),
+                                      //             ]),
+                                      //       ],
+                                      //     ))
                                     ],
                                   )
                                 : Container(),

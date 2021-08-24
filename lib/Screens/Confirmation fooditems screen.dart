@@ -2807,8 +2807,9 @@ class OrderSummary1State extends State<OrderSummary1> {
     }
     if(Order2State.catcheck)
     {
-      cattot=(int.parse(Order2State.cntcontroller.text)*Order2State.personamt).toString() ;
-    }
+      cattot=(double.parse(Order2State.cntcontroller.text)*double.parse(Order2State.controller.text)).round().toString();
+
+    print(cattot);}
     else
     {
       cattot="0";
@@ -4444,7 +4445,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                                                 Expanded(
                                                     flex: 1,
                                                     child: Text(
-                                                      "Rs.${(int.parse(Order2State.cntcontroller.text) * Order2State.personamt)}",
+                                                      "Rs.${(int.parse(Order2State.cntcontroller.text) * int.parse(Order2State.controller.text))}",
                                                       textAlign: TextAlign.start,
                                                     )),
                                               ]),

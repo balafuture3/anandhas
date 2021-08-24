@@ -16,10 +16,6 @@ class OrderAdvanceHistoryList {
     return new OrderAdvanceHistoryList(details: details);
   }
 }
-
-
-
-
 class OrderAdvanceHistory {
   String orderNo;
   double advanceAmount;

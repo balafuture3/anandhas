@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
+import 'package:intl/intl.dart';
 import 'package:xml/xml.dart' as xml;
 import 'Confirmation fooditems screen.dart';
 import 'NewOrderItemChoose .dart';
@@ -108,6 +109,7 @@ class Order2State extends State<Order2> {
   int _current = 0;
   TextEditingController datefromcontroller = new TextEditingController();
   static TextEditingController vescontroller = new TextEditingController();
+  static TextEditingController controller = new TextEditingController(text: "0");
   static  TextEditingController vehkmcontroller = new TextEditingController();
   static TextEditingController vehcostcontroller = new TextEditingController();
   static TextEditingController cntcontroller = new TextEditingController();
@@ -182,83 +184,126 @@ class Order2State extends State<Order2> {
              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Flexible(flex: 3, child: Image.asset("logo.png")),
-                  Flexible(
-                    flex: 1,
+                  Expanded(
+                    flex: 2,
                     child: Column(
 
                         children: [
 
-                          Card(
+                          Column(
 
-                            child: Column(
-
-                              children: [
-                                Text("Persons"),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Flexible(
-                                      flex: 1,
-                                      child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                            children: [
+                              Container(child: Text("Persons"),height: 30,padding: EdgeInsets.only(top:4),),
+                              SizedBox(height: height/50,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: InkWell( child: Icon(Icons.remove,color: Colors.red,),onTap: ()
+                                    {
+                                      setState(()
                                       {
-                                        setState(() {
-                                          if(cnt!=0)
-                                          cnt--;
-                                          cntcontroller.text=cnt.toString();
-                                        });
-                                      },),
-                                    ),
-                                    Flexible(
-                                      flex: 2,
-                                      child: Container(
-                                        height: 30,
-                                        child: TextField(
-                                          decoration: InputDecoration
-                                            (
+                                        if(cnt!=0)
+                                        cnt--;
+                                        cntcontroller.text=cnt.toString();
+                                      }
+                                      );
+                                    },),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 30,
 
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(5.0),
-                                            ),
+                                      child: TextField(
+                                        decoration: InputDecoration
+                                          (
+
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
                                           ),
-                                          textAlign: TextAlign.center,
-                                          onSubmitted: (value)
-                                          {
-                                            cnt=int.parse(cntcontroller.text);
-                                          },
-                                          enabled:true,
-                                          controller: cntcontroller,
                                         ),
+                                        textAlign: TextAlign.center,
+                                        onChanged: (value){
+                                          setState(() {
+                                            cnt=int.parse(cntcontroller.text);
+                                          });
+                                        },
+                                        onSubmitted: (value)
+                                        {
+                                          setState(() {
+                                            cnt=int.parse(cntcontroller.text);
+                                          });
+                                        },
+                                        enabled:true,
+                                        controller: cntcontroller,
                                       ),
                                     ),
-                                    Flexible(
-                                      flex: 1,
-                                      child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
-                                      {
-                                        setState(() {
-                                          cnt++;
-                                          cntcontroller.text=cnt.toString();
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: InkWell( child: Icon(Icons.add,color: Colors.teal,),onTap: ()
+                                    {
+                                      setState(() {
+                                        cnt++;
+                                        cntcontroller.text=cnt.toString();
 
-                                        });
+                                      });
 
-                                      },),
-                                    ),
+                                    },),
+                                  ),
 
-                                  ],
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            ],
                           )
                         ]
                     ),
                   ),
-                  Flexible(
-                    flex: 1,
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text("Enter Amount"),
+                        SizedBox(height: height/30,),
+                        Container(
+                          height: 30,
+                          width: width/6,
+                          child: TextField(
+                            decoration: InputDecoration
+                              (
+
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius
+                                    .circular(5.0),
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType
+                                .number,
+                            onChanged: (value) {
+                              setState(() {
+
+                              });
+                            },
+                            enabled: true,
+                            controller: controller,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
                     child: Column(
                       children: [
                         Text("Amount"),
                         SizedBox(height: height/30,),
                         Text(
-                          "Rs.${(int.parse(cntcontroller.text)*personamt)}",
+                          "Rs.${(int.parse(cntcontroller.text)*double.parse(controller.text))}",
                           style: TextStyle(color: String_Values.primarycolor,fontWeight: FontWeight.w700,fontSize: 16),
                         )
                       ],
