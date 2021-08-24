@@ -532,6 +532,7 @@ class LoginPageState extends State<LoginPage> {
                               for(int i=0;i<li2.details.length;i++)
                                 if(li2.details[i].branchName==newValue)
                                 {
+                                  roleid=li2.details[i].docNo.toString();
                                  branchid=li2.details[i].branchID;
                                 }
 

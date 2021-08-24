@@ -2473,9 +2473,9 @@ class OrderSummary1State extends State<OrderSummary1> {
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <IN_MOB_GETITEMMASTER xmlns="http://tempuri.org/">
-      <BranchID>1</BranchID>
+      <BranchID>${LoginPageState.branchid}</BranchID>
       <CategoryID>0</CategoryID>
-      <UserID>1</UserID>
+      <UserID>${LoginPageState.roleid}</UserID>
     </IN_MOB_GETITEMMASTER>
   </soap:Body>
 </soap:Envelope>

@@ -125,7 +125,7 @@ class Order2State extends State<Order2> {
   @override
   void initState() {
 
-    itemRequest();
+    // itemRequest();
     if(widget.edit==0)
     cntcontroller.text="0";
     // TODO: implement initState

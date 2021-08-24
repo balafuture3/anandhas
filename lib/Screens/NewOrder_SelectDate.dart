@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:anandhasapp/Models/Category.dart';
+import 'package:anandhasapp/Screens/LoginPage.dart';
 import 'package:anandhasapp/Screens/NewOrderItemChoose .dart';
 import 'package:anandhasapp/Screens/NewOrderItemSearch.dart';
 import 'package:anandhasapp/Screens/Order4.dart';
@@ -25,7 +26,8 @@ class NewOrderState extends State<NewOrder> {
   static int categoryid;
   static String timeupload;
   static String dateupload;
-  Future<http.Response> categoryRequest() async {
+  Future<http.Response> categoryRequest() async
+  {
     setState(() {
       loading = true;
     });
@@ -33,8 +35,8 @@ class NewOrderState extends State<NewOrder> {
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <IN_MOB_CATEGORYMASTER xmlns="http://tempuri.org/">
-      <BranchID>1</BranchID>
-      <UserID>1</UserID>
+      <BranchID>${LoginPageState.branchid}</BranchID>
+      <UserID>${LoginPageState.roleid}</UserID>
     </IN_MOB_CATEGORYMASTER>
   </soap:Body>
 </soap:Envelope>
