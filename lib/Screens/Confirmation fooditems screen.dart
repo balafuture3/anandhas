@@ -4673,7 +4673,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                     child: Row(
                       children: [
                         Expanded(flex:4,child: ListTile(title: Text("Total Amount",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
-                        Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
+                        Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))).round() }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
 
                       ],
                     ),

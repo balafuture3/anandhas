@@ -282,7 +282,7 @@ class NewOrderState extends State<NewOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Select Category"),
+                    Text("Category"),
                   ],
                 ),
               ),

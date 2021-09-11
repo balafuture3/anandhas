@@ -302,6 +302,9 @@ class Order3State extends State<Order3> {
                           }
                       },
                       controller: searchController,
+                      onTap: (){
+                        searchController.text="";
+                      },
                       style: TextStyle(color: Colors.black54),
                       decoration: InputDecoration(
                         suffixIcon: Icon(
@@ -400,12 +403,16 @@ class Order3State extends State<Order3> {
                           Expanded(
                             flex: 3,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(li5.details[i].itemName),
-                                Text(
-                                  li5.details[i].price.toString(),
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(160, 27, 37, 1)),
+                                Text(li5.details[i].itemName,style: TextStyle(fontWeight: FontWeight.w500),),
+                                Padding(
+                                  padding: const EdgeInsets.only(top:8.0),
+                                  child: Text(
+                                    "\u{20B9} "+li5.details[i].price.toString(),
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(160, 27, 37, 1)),
+                                  ),
                                 )
                               ],
                             ),
@@ -420,6 +427,7 @@ class Order3State extends State<Order3> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment
                                           .center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Expanded(
                                           flex: 1,
@@ -447,11 +455,11 @@ class Order3State extends State<Order3> {
                                         Expanded(
                                           flex: 2,
                                           child: Container(
-                                            height: 30,
+                                          height: 40,
                                             child: TextField(
                                               decoration: InputDecoration
                                                 (
-
+contentPadding: EdgeInsets.all(2),
                                                 border: OutlineInputBorder(
                                                   borderRadius: BorderRadius
                                                       .circular(5.0),
@@ -509,8 +517,8 @@ class Order3State extends State<Order3> {
                                 ]
                             ),
                           ),
-                          Expanded(flex: 3, child: Text("Rs. ${itemtotal[i]}",
-                            textAlign: TextAlign.center,)),
+                          Expanded(flex: 3, child: Text("\u{20B9}  ${itemtotal[i]}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.teal),
+                            textAlign: TextAlign.right,)),
 
                         ],
                       )),
@@ -652,7 +660,7 @@ class Order3State extends State<Order3> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: total!=null?Text("Item Total :$total ",style: TextStyle(color: Colors.white),):Text("Item Total :0 ",style: TextStyle(color: Colors.white),),
+                child: total!=null?Text("Item Total :\u{20B9} $total ",style: TextStyle(color: Colors.white),):Text("Item Total :\u{20B9} 0 ",style: TextStyle(color: Colors.white),),
               ),
             ],
           ),

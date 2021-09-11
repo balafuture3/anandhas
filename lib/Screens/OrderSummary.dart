@@ -399,7 +399,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                             pw.Expanded(
                                 flex: 1,
                                 child: pw.Text(
-                                  "Rs.${((total*5)/100)+total}",
+                                  "Rs.${(((total*5)/100)+total)}",
                                   textAlign: pw.TextAlign.center,
                                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                                 )),
@@ -968,7 +968,7 @@ class _OrderSummaryState extends State<OrderSummary> {
               child: pw.Row(
                 children: [
                   pw. Expanded(flex:4,child: pw.Text("Grant Total",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
-                  pw.Expanded(flex:1,child: pw.Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)).toStringAsFixed(2) }",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
+                  pw.Expanded(flex:1,child: pw.Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)).round() }",style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex("339B6F")),)),
 
                 ],
               ),
@@ -4133,7 +4133,7 @@ if(newValue=="Full/Balance Amount") {
                                   Expanded(
                                       flex: 1,
                                       child: Text(
-                                        "Rs.${(li8.details[0].orderPrice)}",
+                                        "Rs.${(li8.details[0].orderPrice.round())}",
                                         textAlign: TextAlign.start,
                                       )),
                                 ],
@@ -4605,7 +4605,7 @@ if(newValue=="Full/Balance Amount") {
                 child: Row(
                   children: [
                     Expanded(flex:4,child: ListTile(title: Text("Grant Total",style: TextStyle(fontWeight: FontWeight.w800,color: String_Values.primarycolor),))),
-                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: String_Values.primarycolor),)),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total))+li8.details[0].orderPrice)).round() }",style: TextStyle(fontWeight: FontWeight.w800,color: String_Values.primarycolor),)),
 
                   ],
                 ),
@@ -4618,7 +4618,7 @@ if(newValue=="Full/Balance Amount") {
                 child: Row(
                   children: [
                     Expanded(flex:4,child: ListTile(title: Text("Total Amount",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),))),
-                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))).toStringAsFixed(2) }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
+                    Expanded(flex:1,child: Text("Rs.${((int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+(((Order3State.total*5)/100)+Order3State.total)))).round() }",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.purple),)),
 
                   ],
                 ),

@@ -113,8 +113,8 @@ class Order2State extends State<Order2> {
   static  TextEditingController vehkmcontroller = new TextEditingController();
   static TextEditingController vehcostcontroller = new TextEditingController();
   static TextEditingController cntcontroller = new TextEditingController();
-  var dropdownValue = "Select";
-  var dropdownValue1 = "Select";
+  var dropdownValue2 = "Select Delivery Type";
+  var dropdownValue1 = "Select Delivery Charge";
   var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
   static int cnt=0;
   static var catcheck = false;
@@ -160,7 +160,7 @@ class Order2State extends State<Order2> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text("Need Catering Service person"),
+                child: Text("Catering Service person"),
               ),
               Switch(
                 onChanged: (bool value) {
@@ -352,7 +352,7 @@ class Order2State extends State<Order2> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text("Need Vessel Set"),
+                child: Text("Vessel Set"),
               ),
               Switch(
                 onChanged: (bool value) {
@@ -398,7 +398,7 @@ class Order2State extends State<Order2> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Vehicle Section",style: TextStyle(color: Color.fromRGBO(51,155,111,1)),),
+                  Text("Transport Section",style: TextStyle(color: Color.fromRGBO(51,155,111,1)),),
                 ],
               ),
             ),
@@ -407,9 +407,10 @@ class Order2State extends State<Order2> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text("Need Vehicle Drop"),
+                    child: Text("Transport"),
                   ),
                   Switch(
                     onChanged: (bool value) {
@@ -429,25 +430,140 @@ class Order2State extends State<Order2> {
             Visibility(
               visible: vehcheck,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24),
-                  child: TextField(
-                    enabled: true,
-                    controller: vehkmcontroller,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.bike_scooter),
-                      labelText: 'Enter KM',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16.0,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                    ),
-                  )),
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Delivery Charge",style: TextStyle(color: Color.fromRGBO(51,155,111,1)),),
+                  ],
+                ),
+              ),
             ),
-            SizedBox(height: height/30,),
+            Visibility(
+              visible: vehcheck,
+              child: Container(
+                height: 80,
+                margin: const EdgeInsets.only(left: 24.0, right: 24.0,bottom: 24),
+                padding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 6, bottom: 6),
+                decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    border: new Border.all(color: Colors.black38)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: dropdownValue1,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue1 = newValue;
+                        //
+                        // for (int i = 0; i < li4.details.length; i++)
+                        //   if (li4.details[i].categoryName == newValue) {
+                        //     categoryid = li4.details[i].categoryID;
+                        //   }
+                      });
+                    },
+                    items: <String>["Select Delivery Charge","Free","Paid"]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ),
+            // Visibility(
+            //   visible: vehcheck,
+            //   child: Padding(
+            //       padding: const EdgeInsets.only(left: 24, right: 24),
+            //       child: TextField(
+            //         enabled: true,
+            //         controller: vehkmcontroller,
+            //         keyboardType: TextInputType.number,
+            //         decoration: InputDecoration(
+            //           prefixIcon: Icon(Icons.bike_scooter),
+            //           labelText: 'Enter KM',
+            //           hintStyle: TextStyle(
+            //             color: Colors.grey,
+            //             fontSize: 16.0,
+            //           ),
+            //           border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(25.0),
+            //           ),
+            //         ),
+            //       )),
+            // ),
+            Visibility(
+              visible: vehcheck,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Delivery Type",style: TextStyle(color: Color.fromRGBO(51,155,111,1)),),
+                  ],
+                ),
+              ),
+            ),
+            Visibility(
+              visible: vehcheck,
+              child: Container(
+                height: 80,
+                margin: const EdgeInsets.only(left: 24.0, right: 24.0,bottom: 24),
+                padding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 6, bottom: 6),
+                decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    border: new Border.all(color: Colors.black38)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: dropdownValue2,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue2 = newValue;
+                        //
+                        // for (int i = 0; i < li4.details.length; i++)
+                        //   if (li4.details[i].categoryName == newValue) {
+                        //     categoryid = li4.details[i].categoryID;
+                        //   }
+                      });
+                    },
+                    items: <String>["Select Delivery Type","Only Delivery","Delivery and Collection"]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ),
+            // Visibility(
+            //   visible: vehcheck,
+            //   child: Padding(
+            //       padding: const EdgeInsets.only(left: 24, right: 24),
+            //       child: TextField(
+            //         enabled: true,
+            //         controller: vehkmcontroller,
+            //         keyboardType: TextInputType.number,
+            //         decoration: InputDecoration(
+            //           prefixIcon: Icon(Icons.bike_scooter),
+            //           labelText: 'Enter KM',
+            //           hintStyle: TextStyle(
+            //             color: Colors.grey,
+            //             fontSize: 16.0,
+            //           ),
+            //           border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(25.0),
+            //           ),
+            //         ),
+            //       )),
+            // ),
+            // SizedBox(height: height/30,),
             Visibility(
               visible: vehcheck,
               child: Padding(
