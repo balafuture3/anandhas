@@ -576,9 +576,11 @@ class Order3State extends State<Order3> {
                                 child: Container(
                                   height: 30,
                                   child: TextField(
+                                    // enableInteractiveSelection:false,
                                     decoration: InputDecoration
                                       (
 
+// contentPadding: EdgeInsets.only(left:10,right: 10,),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
                                       ),

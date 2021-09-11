@@ -136,7 +136,7 @@ class _ReportsState extends State<Reports> {
                           ]),
                     ])),
             pw.Center(
-                child: pw.Text("Cancelled Orders Report",
+                child: pw.Text("Cancelled Orders Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -503,10 +503,12 @@ class _ReportsState extends State<Reports> {
                         pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
                             style: pw.TextStyle(fontSize: 12)),
                         pw.SizedBox(width: 10, height: 10),
+                        pw.Text("Created at (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                            style: pw.TextStyle(fontSize: 12)),
                       ]),
                 ])),
             pw.Center(
-                child: pw.Text("Sales Report",
+                child: pw.Text("Sales Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -653,7 +655,7 @@ class _ReportsState extends State<Reports> {
                       ]),
                 ])),
             pw.Center(
-                child: pw.Text("Cash settlement Report",
+                child: pw.Text("Cash settlement Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -1126,7 +1128,7 @@ class _ReportsState extends State<Reports> {
                       ]),
                 ])),
             pw.Center(
-                child: pw.Text("Receivables Report",
+                child: pw.Text("Receivables Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -1269,7 +1271,7 @@ class _ReportsState extends State<Reports> {
                       ]),
                 ])),
             pw.Center(
-                child: pw.Text("Discount Report",
+                child: pw.Text("Discount Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -1409,10 +1411,11 @@ class _ReportsState extends State<Reports> {
                             pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
                                 style: pw.TextStyle(fontSize: 12)),
                             pw.SizedBox(width: 10, height: 10),
+
                           ]),
                     ])),
             pw.Center(
-                child: pw.Text("Order Report",
+                child: pw.Text("Order Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,

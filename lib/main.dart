@@ -42,6 +42,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        textTheme: Theme.of(context).textTheme.apply(
+          fontSizeFactor: 1.1,
+          fontSizeDelta: 2.0,
+        ),
         primarySwatch: colorCustom,
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and

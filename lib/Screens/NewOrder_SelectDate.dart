@@ -114,7 +114,7 @@ class NewOrderState extends State<NewOrder> {
   static TextEditingController timecontroller = new TextEditingController();
   var dropdownValue = "Select Category";
   var dropdownValue1 = "Select Category";
-  var stringlist = ["Select Category", "Coimbatore", "Chennai"];
+  var stringlist = ["Select Category"];
   TimeOfDay time;
 
   int hour;
@@ -171,7 +171,7 @@ class NewOrderState extends State<NewOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Select Delivery Date"),
+                    Text("Delivery Date"),
                   ],
                 ),
               ),
@@ -217,7 +217,7 @@ class NewOrderState extends State<NewOrder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Select Delivery Time"),
+                    Text("Delivery Time"),
                   ],
                 ),
               ),
