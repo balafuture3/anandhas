@@ -173,11 +173,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
                       pw.Text("Status",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -195,7 +191,6 @@ class _ReportsState extends State<Reports> {
                     pw.Text(li16.details[i].invNo),
                     pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li16.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li16.details[i].orderPrice.toString()),
-                    pw.Text(li16.details[i].advanceAmount.toString()),
                     pw.Text("Cancelled"),
                                       ])
               ],
@@ -338,11 +333,7 @@ class _ReportsState extends State<Reports> {
           .getRangeByIndex(9 + i, 5)
           .setText(li6.details[i].orderPrice.toString());
 
-    sheet.getRangeByIndex(8, 6).setText('Advance');
-    for (int i = 0; i < li6.details.length; i++)
-      sheet
-          .getRangeByIndex(9 + i, 6)
-          .setText(li6.details[i].advanceAmount.toString());
+
 
     sheet.getRangeByIndex(8, 7).setText('Discount');
     for (int i = 0; i < li6.details.length; i++)
@@ -545,11 +536,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
                       pw.Text("Discount",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -572,7 +559,7 @@ class _ReportsState extends State<Reports> {
                     pw.Text(li6.details[i].invNo),
                     pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li6.details[i].orderPrice.toString()),
-                    pw.Text(li6.details[i].advanceAmount.toString()),
+
                     pw.Text(li6.details[i].disAmount.toString()),
                     pw.Text(
                         "${li6.details[i].orderPrice - (li6.details[i].advanceAmount + li6.details[i].disAmount)}"),
@@ -655,7 +642,7 @@ class _ReportsState extends State<Reports> {
                       ]),
                 ])),
             pw.Center(
-                child: pw.Text("Cash settlement Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                child: pw.Text("Daily Settlement Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -706,11 +693,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
                       pw.Text("Discount",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -741,7 +724,7 @@ class _ReportsState extends State<Reports> {
                         li7.details[i].paymentType1.toString().trim() == "Card"
                             ? li7.details[i].advanceAmount1.toString()
                             : ""),
-                    pw.Text(li7.details[i].advanceAmount.toString()),
+
                     pw.Text(li7.details[i].disAmount.toString()),
                     pw.Text(
                         "${li7.details[i].orderPrice - (li7.details[i].advanceAmount + li7.details[i].disAmount)}"),
@@ -794,11 +777,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
                       pw.Text("Discount",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -829,7 +808,7 @@ class _ReportsState extends State<Reports> {
                         li8.details[i].paymentType.toString().trim() == "Card"
                             ? li8.details[i].advanceAmount.toString()
                             : ""),
-                    pw.Text(li8.details[i].advanceAmount.toString()),
+
                     pw.Text(li8.details[i].disAmount.toString()),
                     pw.Text(
                         "${li8.details[i].orderPrice - (li8.details[i].advanceAmount + li8.details[i].disAmount)}"),
@@ -882,11 +861,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
                       pw.Text("Discount",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -917,7 +892,7 @@ class _ReportsState extends State<Reports> {
                         li9.details[i].paymentType.toString().trim() == "Card"
                             ? li9.details[i].advanceAmount.toString()
                             : ""),
-                    pw.Text(li9.details[i].advanceAmount.toString()),
+
                     pw.Text(li9.details[i].disAmount.toString()),
                     pw.Text(
                         "${li9.details[i].orderPrice - (li9.details[i].advanceAmount + li9.details[i].disAmount)}"),
@@ -965,16 +940,8 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Card",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
+
                       pw.Text("Discount",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -1005,7 +972,7 @@ class _ReportsState extends State<Reports> {
                         li11.details[i].paymentType.toString().trim() == "Card"
                             ? li11.details[i].advanceAmount.toString()
                             : ""),
-                    pw.Text(li11.details[i].advanceAmount.toString()),
+
                     pw.Text(li11.details[i].disAmount.toString()),
                     pw.Text(
                         "${li11.details[i].orderPrice - (li11.details[i].advanceAmount + li11.details[i].disAmount)}"),
@@ -1165,11 +1132,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
                       pw.Text("Discount",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -1191,7 +1154,6 @@ class _ReportsState extends State<Reports> {
                     pw.Text(li10.details[i].invNo),
                     pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li10.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li10.details[i].orderPrice.toString()),
-                    pw.Text(li10.details[i].advanceAmount.toString()),
                     pw.Text(li10.details[i].disAmount.toString()),
                     pw.Text(
                         "${li10.details[i].orderPrice - (li10.details[i].advanceAmount + li10.details[i].disAmount)}"),
@@ -1308,11 +1270,7 @@ class _ReportsState extends State<Reports> {
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Advance",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
+
                       pw.Text("Discount",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -1334,7 +1292,6 @@ class _ReportsState extends State<Reports> {
                     pw.Text(li12.details[i].invNo),
                     pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li12.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li12.details[i].orderPrice.toString()),
-                    pw.Text(li12.details[i].advanceAmount.toString()),
                     pw.Text(li12.details[i].disAmount.toString()),
                     pw.Text(
                         "${li12.details[i].orderPrice - (li12.details[i].advanceAmount + li12.details[i].disAmount)}"),
@@ -2332,7 +2289,9 @@ class _ReportsState extends State<Reports> {
     return DefaultTabController(
         length: 6,
         child: Scaffold(
-            body: TabBarView(children: [
+            body: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
               Scaffold(
                   body: loading
                       ? Center(child: CircularProgressIndicator())
@@ -2589,27 +2548,7 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
 
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
@@ -2725,20 +2664,7 @@ class _ReportsState extends State<Reports> {
                                                           TextAlign.center)
                                                 ]))),
                                           ),
-                                          DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
-                                          ),
+
                                           DataCell(
                                             Center(
                                                 child: Center(
@@ -3355,27 +3281,7 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12,color: Colors.purple),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
 
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
@@ -3533,20 +3439,7 @@ class _ReportsState extends State<Reports> {
                                                           TextAlign.center)
                                                 ]))),
                                           ),
-                                          DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.advanceAmount1}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
-                                          ),
+
                                           DataCell(
                                             Center(
                                                 child: Center(
@@ -3751,27 +3644,7 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12,color: Colors.deepOrange),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
 
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
@@ -3927,20 +3800,7 @@ class _ReportsState extends State<Reports> {
                                                           TextAlign.center)
                                                 ]))),
                                           ),
-                                          DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
-                                          ),
+
                                           DataCell(
                                             Center(
                                                 child: Center(
@@ -4151,27 +4011,6 @@ class _ReportsState extends State<Reports> {
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12,color:Colors.blue,),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
-
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
                                           Text("Discount",
                                               softWrap: true,
                                               style: TextStyle(fontSize: 12,color:Colors.blue,),
@@ -4321,20 +4160,7 @@ class _ReportsState extends State<Reports> {
                                                           TextAlign.center)
                                                 ]))),
                                           ),
-                                          DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
-                                          ),
+
                                           DataCell(
                                             Center(
                                                 child: Center(
@@ -4540,27 +4366,7 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12,color: Colors.pinkAccent),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
 
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
@@ -4716,20 +4522,7 @@ class _ReportsState extends State<Reports> {
                                                           TextAlign.center)
                                                 ]))),
                                           ),
-                                          DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
-                                          ),
+
                                           DataCell(
                                             Center(
                                                 child: Center(
@@ -5165,27 +4958,7 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
 
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
@@ -5301,20 +5074,7 @@ class _ReportsState extends State<Reports> {
                                                           TextAlign.center)
                                                 ]))),
                                           ),
-                                          DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
-                                          ),
+
                                           DataCell(
                                             Center(
                                                 child: Center(
@@ -5698,27 +5458,7 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
 
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
@@ -5834,20 +5574,7 @@ class _ReportsState extends State<Reports> {
                                                           TextAlign.center)
                                                 ]))),
                                           ),
-                                          DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.advanceAmount}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
-                                          ),
+
                                           DataCell(
                                             Center(
                                                 child: Center(
@@ -6231,27 +5958,7 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
-                                    DataColumn(
-                                      label: Center(
-                                          child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Advance",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
-                                      numeric: false,
 
-                                      // onSort: (columnIndex, ascending) {
-                                      //   onSortColum(columnIndex, ascending);
-                                      //   setState(() {
-                                      //     sort = !sort;
-                                      //   });
-                                      // }
-                                    ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
@@ -6387,20 +6094,7 @@ class _ReportsState extends State<Reports> {
                                                               TextAlign.center)
                                                     ]))),
                                               ),
-                                              DataCell(
-                                                Center(
-                                                    child: Center(
-                                                        child: Wrap(
-                                                            direction: Axis
-                                                                .vertical, //default
-                                                            alignment: WrapAlignment.center,
-                                                            children: [
-                                                      Text(
-                                                          "${list.advanceAmount}",
-                                                          textAlign:
-                                                              TextAlign.center)
-                                                    ]))),
-                                              ),
+
                                               DataCell(
                                                 Center(
                                                     child: Center(
@@ -7063,27 +6757,7 @@ if(li14.details[index].orderFlagNo!=li14.details[index-1].orderFlagNo)
                                 //   });
                                 // }
                               ),
-                              DataColumn(
-                                label: Center(
-                                    child: Wrap(
-                                      direction: Axis.vertical, //default
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        Text("Advance",
-                                            softWrap: true,
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center),
-                                      ],
-                                    )),
-                                numeric: false,
 
-                                // onSort: (columnIndex, ascending) {
-                                //   onSortColum(columnIndex, ascending);
-                                //   setState(() {
-                                //     sort = !sort;
-                                //   });
-                                // }
-                              ),
                               DataColumn(
                                 label: Center(
                                     child: Wrap(
@@ -7179,20 +6853,7 @@ if(li14.details[index].orderFlagNo!=li14.details[index-1].orderFlagNo)
                                                     TextAlign.center)
                                               ]))),
                                 ),
-                                DataCell(
-                                  Center(
-                                      child: Center(
-                                          child: Wrap(
-                                              direction: Axis
-                                                  .vertical, //default
-                                              alignment: WrapAlignment
-                                                  .center,
-                                              children: [
-                                                Text("${list.advanceAmount}",
-                                                    textAlign:
-                                                    TextAlign.center)
-                                              ]))),
-                                ),
+
                                 DataCell(
                                       Center(
                                           child: Center(
@@ -7634,7 +7295,7 @@ if(li14.details[index].orderFlagNo!=li14.details[index-1].orderFlagNo)
                                   TextStyle(color: String_Values.primarycolor),
                             )),
                             Tab(
-                              child: Text("Cash Settlement Sheet",
+                              child: Text("Daily Settlement Report",
                                   style: TextStyle(
                                       color: String_Values.primarycolor)),
                             ),

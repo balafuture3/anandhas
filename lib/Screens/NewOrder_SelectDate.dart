@@ -113,7 +113,7 @@ class NewOrderState extends State<NewOrder> {
   static TextEditingController datefromcontroller = new TextEditingController();
   static TextEditingController timecontroller = new TextEditingController();
   var dropdownValue = "Select Category";
-  var dropdownValue1 = "Select Category";
+  static var dropdownValue1 = "Select Category";
   var stringlist = ["Select Category"];
   TimeOfDay time;
 

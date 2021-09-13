@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:anandhasapp/Models/SaveModel.dart';
 import 'package:flutter/services.dart';
@@ -2591,11 +2592,14 @@ print(bookingitem);
       <DisApproval>N</DisApproval>
       <DisApplied>N</DisApplied>
       <DisApprovedBy>0</DisApprovedBy>
+      <VehicleDelType></VehicleDelType>
+      <VehicleDelCharType></VehicleDelCharType>
+      <CategoryName>${NewOrderState.dropdownValue1}</CategoryName> 
     </IN_MOB_INSERT_ORDER>
   </soap:Body>
 </soap:Envelope>
 ''';
-    print(envelope);
+    log(envelope);
     print(vehkm);
     print(NewOrderState.categoryid);
     print(vehkm);
@@ -2614,6 +2618,7 @@ print(bookingitem);
           "Content-Type": "text/xml; charset=utf-8",
         },
         body: envelope);
+    log(response.body);
     if (response.statusCode == 200) {
       setState(() {
         loading = false;

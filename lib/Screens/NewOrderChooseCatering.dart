@@ -594,18 +594,48 @@ class Order2State extends State<Order2> {
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehkmcontroller.text.length!=0)&&(vehcostcontroller.text.length!=0)))))
+if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehcostcontroller.text.length!=0)&&dropdownValue2!="Select Delivery Type"&&dropdownValue1!="Select Delivery Charge"))))
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => OrderSummary1 (edit: widget.edit,payment: 1,id:widget.id)));
 else {
-  Fluttertoast.showToast(
-      msg: "Please fill all details",
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.SNACKBAR,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0);
+  if(vehcheck) {
+    if (dropdownValue1 == "Select Delivery Charge")
+      Fluttertoast.showToast(
+          msg: "Please Select Delivery Charge",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    else if (dropdownValue2 == "Select Delivery Type")
+      Fluttertoast.showToast(
+          msg: "Please Select Delivery Type",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    else
+      Fluttertoast.showToast(
+          msg: "Please fill details",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+  }
+  else
+    Fluttertoast.showToast(
+        msg: "Please fill details",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
 }
         },
         icon: Icon(Icons.navigate_next),backgroundColor:String_Values.primarycolor,
