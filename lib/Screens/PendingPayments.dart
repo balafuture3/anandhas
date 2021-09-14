@@ -477,6 +477,7 @@ import 'package:anandhasapp/Models/OrderIdemDetailModel.dart';
 import 'package:anandhasapp/Models/OrderModelList.dart';
 import 'package:anandhasapp/Screens/OrderDetails.dart';
 import 'package:anandhasapp/String_Values.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -504,6 +505,10 @@ class PendingPaymentsState extends State<PendingPayments> {
   OrderListingslList li7;
   List<FilterList> li2 = new List();
   TextEditingController searchController = new TextEditingController();
+  TextEditingController EndDateController = new TextEditingController();
+  TextEditingController StartDateController = new TextEditingController();
+  String dateupload;
+  String dateupload1;
   OrderDetaillListModel li8;
 
   OrderItemDetailModelList li9;
@@ -687,6 +692,8 @@ class PendingPaymentsState extends State<PendingPayments> {
     <IN_MOB_OrderList xmlns="http://tempuri.org/">
       <ScreenID>3</ScreenID>
       <BranchID>${LoginPageState.branchid}</BranchID>
+        <FromDate>${dateupload}</FromDate> 
+  <ToDate>${dateupload1}</ToDate> 
     </IN_MOB_OrderList>
   </soap:Body>
 </soap:Envelope>
@@ -698,6 +705,8 @@ class PendingPaymentsState extends State<PendingPayments> {
     <IN_MOB_OrderList xmlns="http://tempuri.org/">
       <ScreenID>3</ScreenID>
       <BranchID>${LoginPageState.branchid}</BranchID>
+        <FromDate>${dateupload}</FromDate> 
+  <ToDate>${dateupload1}</ToDate> 
     </IN_MOB_OrderList>
   </soap:Body>
 </soap:Envelope>
@@ -734,10 +743,10 @@ class PendingPaymentsState extends State<PendingPayments> {
       setState(() {
 
         for (int i = 0; i < li7.details.length; i++)
-          if(li7.details[i].Invoice!="")
-            li2.add(FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].Invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+          if(li7.details[i].invoice!="")
+            li2.add(FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
           else
-            li2.add(FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+            li2.add(FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
 
 
 
@@ -782,6 +791,10 @@ class PendingPaymentsState extends State<PendingPayments> {
 
   @override
   void initState() {
+    dateupload = DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
+    dateupload1 = DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
+    StartDateController.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
+    EndDateController.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
     itemRequest();
     // TODO: implement initState
     super.initState();
@@ -797,6 +810,140 @@ class PendingPaymentsState extends State<PendingPayments> {
           : SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: height / 30,
+            ),
+            Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                    height: 55,
+                    width: width / 2.2,
+                    child: TextField(
+                      onTap: () async {
+                        DateTime date = DateTime(1900);
+                        FocusScope.of(context)
+                            .requestFocus(new FocusNode());
+
+                        date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now()
+                                .subtract(new Duration(
+                                days: 365 * 120)),
+                            lastDate: DateTime.now().add(
+                                new Duration(days: 365)));
+                        dateupload = date.year.toString() +
+                            '-' +
+                            date.month
+                                .toString()
+                                .padLeft(2, "0") +
+                            '-' +
+                            date.day
+                                .toString()
+                                .padLeft(2, "0") +
+                            " 00:00:00";
+
+                        StartDateController.text = date.day
+                            .toString()
+                            .padLeft(2, "0") +
+                            '-' +
+                            date.month
+                                .toString()
+                                .padLeft(2, "0") +
+                            '-' +
+                            date.year.toString();
+                        check().then((value) {
+                          if (value)
+                            itemRequest();
+                          else
+                            Fluttertoast.showToast(
+                                msg:
+                                "No Internet Connection");
+                        });
+                      },
+                      enabled: true,
+                      controller: StartDateController,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                            Icons.calendar_today_outlined),
+                        labelText: 'Start Date',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16.0,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(25.0),
+                        ),
+                      ),
+                    )),
+                Container(
+                    height: 55,
+                    width: width / 2.2,
+                    child: TextField(
+                      onTap: () async {
+                        DateTime date = DateTime(1900);
+                        FocusScope.of(context)
+                            .requestFocus(new FocusNode());
+
+                        date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now()
+                                .subtract(new Duration(
+                                days: 365 * 120)),
+                            lastDate: DateTime.now().add(
+                                new Duration(days: 365)));
+
+                        dateupload1 = date.year.toString() +
+                            '-' +
+                            date.month
+                                .toString()
+                                .padLeft(2, "0") +
+                            '-' +
+                            date.day
+                                .toString()
+                                .padLeft(2, "0") +
+                            ' 23:59:59';
+
+                        EndDateController.text = date.day
+                            .toString()
+                            .padLeft(2, "0") +
+                            '-' +
+                            date.month
+                                .toString()
+                                .padLeft(2, "0") +
+                            '-' +
+                            date.year.toString();
+                        check().then((value) {
+                          if (value)
+                            itemRequest();
+                          else
+                            Fluttertoast.showToast(
+                                msg:
+                                "No Internet Connection");
+                        });
+                      },
+                      enabled: true,
+                      controller: EndDateController,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                            Icons.calendar_today_outlined),
+                        labelText: 'End Date',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16.0,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(25.0),
+                        ),
+                      ),
+                    )),
+              ],
+            ),
             Container(
                 height: 80,
                 child: Row(children: [
@@ -815,18 +962,18 @@ class PendingPaymentsState extends State<PendingPayments> {
                             li2.clear();
                           });
                           for (int i = 0; i <= li7.details.length; i++)
-                            if (li7.details[i].Invoice.toString()
+                            if (li7.details[i].mobile.toString()
                                 .toLowerCase()
                                 .contains(searchController.text
-                                .toLowerCase())||li7.details[i].orderNum.toString()
+                                .toLowerCase())||li7.details[i].name.toString()
                                 .toLowerCase()
                                 .contains(searchController.text
                                 .toLowerCase()) ) {
                               setState(() {
-                                li7.details[i].Invoice!=""?
+                                li7.details[i].invoice!=""?
                                 li2.add(
-                                    FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].Invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }")):
-                                li2.add( FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].Date.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+                                    FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }")):
+                                li2.add( FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
                               });
                             }
                         },
@@ -943,6 +1090,15 @@ class PendingPaymentsState extends State<PendingPayments> {
         title: Text("Pending Payments"),
       ),
     );
+  }
+  Future<bool> check() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    }
+    return false;
   }
 }
 

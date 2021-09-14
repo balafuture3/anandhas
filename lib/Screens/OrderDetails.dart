@@ -66,6 +66,7 @@ class OrderDetailsState extends State<OrderDetails> {
   static String timeupload;
   static TextEditingController datefromcontroller = new TextEditingController();
   TextEditingController discountcontroller = new TextEditingController();
+  TextEditingController remarkscontroller = new TextEditingController();
   static TextEditingController timecontroller = new TextEditingController();
   static String dateupload;
   String vehtot;
@@ -2362,7 +2363,7 @@ class OrderDetailsState extends State<OrderDetails> {
       <PaymentType>Y</PaymentType>
       <OrderStatus>P</OrderStatus>
       <Branch>1</Branch>
-      <Remarks></Remarks>
+      <Remarks>${remarkscontroller.text}</Remarks>
       <ItemDetailXML><![CDATA[<NewDataSet><Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>Idly</ItemCode><ItemName>Idly</ItemName><Qty>5</Qty><UOM></UOM><Price>140.0</Price><OrderFlag>N</OrderFlag><OrderFlagNo>0</OrderFlagNo></Table1></NewDataSet>]]></ItemDetailXML>
       <ItemDetailXMLID>1</ItemDetailXMLID>
       <UserID>1</UserID>
@@ -2378,6 +2379,9 @@ class OrderDetailsState extends State<OrderDetails> {
       <DisApproval>Y</DisApproval>
       <DisApplied>Y</DisApplied>
       <DisApprovedBy>$discount</DisApprovedBy>
+       <VehicleDelType></VehicleDelType>
+      <VehicleDelCharType></VehicleDelCharType>
+      <CategoryName>${NewOrderState.dropdownValue1}</CategoryName> 
     </IN_MOB_INSERT_ORDER>
   </soap:Body>
 </soap:Envelope>
@@ -3037,123 +3041,124 @@ print(envelope);
     return response;
   }
 
-  Future<http.Response> postRequest() async {
-    bookingitem = "";
-    for (int i = 0; i < li5.details.length; i++)
-      if (Order3State.cnt[i] != 0)
-        bookingitem =
-            "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5.details[i].itemCode}</ItemCode><ItemName>${li5.details[i].itemName}</ItemName><Qty>${Order3State.cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) * (((li5.details[i].price * 10) / 100) + li5.details[i].price)).toString()}</Price></Table1>";
-
-    bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
-    print(bookingitem);
-    setState(() {
-      loading = true;
-    });
-    var envelope = '''
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <IN_MOB_INSERT_ORDER xmlns="http://tempuri.org/">
-      <DocNo>0</DocNo>
-      <OrderDate>${NewOrderState.datefromcontroller.text}</OrderDate>
-      <OrderTime>${NewOrderState.timeupload}</OrderTime>      
-      <CateringService>${Order2State.catcheck == true ? "Y" : "N"}</CateringService>
-      <CateringAmount>${double.parse(cattot)}</CateringAmount>
-      <VaselSet>${Order2State.vescheck == true ? "Y" : "N"}</VaselSet>
-      <VaselAmount>${double.parse(vestot)}</VaselAmount>
-      <Vehicle>${Order2State.vehcheck == true ? "Y" : "N"}</Vehicle>
-      <VechicleAmount>${double.parse(vehtot)}</VechicleAmount>
-      <OrderPrice>${(int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) + ((Order3State.total * 5) / 100) + Order3State.total))}</OrderPrice>
-      <AdvanceType>$dropdownValue1</AdvanceType>
-      <AdvanceAmount>0</AdvanceAmount>
-      <PaymentType>$dropdownValue2</PaymentType>
-      <OrderStatus>Pending</OrderStatus>
-      <Branch>${LoginPageState.branchid}</Branch>
-      <Remarks></Remarks>
-      <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
-      <ItemDetailXMLID>1</ItemDetailXMLID>
-      <UserID>1</UserID>
-    </IN_MOB_INSERT_ORDER>
-  </soap:Body>
-</soap:Envelope>
-''';
-    print(envelope);
-
-    var url =
-        'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_INSERT_ORDER';
-    // Map data = {
-    //   "username": EmailController.text,
-    //   "password": PasswordController.text
-    // };
-//    print("data: ${data}");
-//    print(String_values.base_url);
-
-    var response = await http.post(url,
-        headers: {
-          "Content-Type": "text/xml; charset=utf-8",
-        },
-        body: envelope);
-    if (response.statusCode == 200) {
-      setState(() {
-        loading = false;
-      });
-
-      xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
-      print(parsedXml.text);
-      if (parsedXml.text != "[]") {
-        final decoded = json.decode(parsedXml.text);
-        li6 = SaveResponse.fromJson(decoded[0]);
-        print(li6.sTATUSID);
-        if (li6.sTATUSID == 1) {
-          NewOrderState.datefromcontroller.text = "";
-          NewOrderState.categoryid = 0;
-          Order2State.cntcontroller.text = "";
-          Order2State.vescontroller.text = "";
-          Order2State.vehcostcontroller.text = "";
-          Order2State.vehkmcontroller.text = "";
-          Fluttertoast.showToast(
-              msg: "Order Placed Successfully",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.SNACKBAR,
-              timeInSecForIosWeb: 1,
-              backgroundColor: String_Values.primarycolor,
-              textColor: Colors.white,
-              fontSize: 16.0);
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Dashboard()),
-              (route) => false);
-        }
-      } else
-        Fluttertoast.showToast(
-            msg: "Please check your login details,No users found",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.SNACKBAR,
-            timeInSecForIosWeb: 1,
-            backgroundColor: String_Values.primarycolor,
-            textColor: Colors.white,
-            fontSize: 16.0);
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              "Http error!, Response code${response.statusCode}, ${response.body} ",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          backgroundColor: String_Values.primarycolor,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      setState(() {
-        loading = false;
-      });
-      print("Retry");
-    }
-    // print("response: ${response.statusCode}");
-    // print("response: ${response.body}");
-    return response;
-  }
+//   Future<http.Response> postRequest() async {
+//     bookingitem = "";
+//     for (int i = 0; i < li5.details.length; i++)
+//       if (Order3State.cnt[i] != 0)
+//         bookingitem =
+//             "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5.details[i].itemCode}</ItemCode><ItemName>${li5.details[i].itemName}</ItemName><Qty>${Order3State.cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) * (((li5.details[i].price * 10) / 100) + li5.details[i].price)).toString()}</Price></Table1>";
+//
+//     bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
+//     print(bookingitem);
+//     setState(() {
+//       loading = true;
+//     });
+//     var envelope = '''
+// <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//   <soap:Body>
+//     <IN_MOB_INSERT_ORDER xmlns="http://tempuri.org/">
+//       <DocNo>0</DocNo>
+//       <OrderDate>${NewOrderState.datefromcontroller.text}</OrderDate>
+//       <OrderTime>${NewOrderState.timeupload}</OrderTime>
+//       <CateringService>${Order2State.catcheck == true ? "Y" : "N"}</CateringService>
+//       <CateringAmount>${double.parse(cattot)}</CateringAmount>
+//       <VaselSet>${Order2State.vescheck == true ? "Y" : "N"}</VaselSet>
+//       <VaselAmount>${double.parse(vestot)}</VaselAmount>
+//       <Vehicle>${Order2State.vehcheck == true ? "Y" : "N"}</Vehicle>
+//       <VechicleAmount>${double.parse(vehtot)}</VechicleAmount>
+//       <OrderPrice>${(int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) + ((Order3State.total * 5) / 100) + Order3State.total))}</OrderPrice>
+//       <AdvanceType>$dropdownValue1</AdvanceType>
+//       <AdvanceAmount>0</AdvanceAmount>
+//       <PaymentType>$dropdownValue2</PaymentType>
+//       <OrderStatus>Pending</OrderStatus>
+//       <Branch>${LoginPageState.branchid}</Branch>
+//       <Remarks></Remarks>
+//       <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
+//       <ItemDetailXMLID>1</ItemDetailXMLID>
+//       <UserID>1</UserID>
+//     </IN_MOB_INSERT_ORDER>
+//   </soap:Body>
+// </soap:Envelope>
+// ''';
+//     print(envelope);
+//
+//     var url =
+//         'http://103.252.117.204:90/Aananadhaas/service.asmx?op=IN_MOB_INSERT_ORDER';
+//     // Map data = {
+//     //   "username": EmailController.text,
+//     //   "password": PasswordController.text
+//     // };
+// //    print("data: ${data}");
+// //    print(String_values.base_url);
+//
+//     var response = await http.post(url,
+//         headers: {
+//           "Content-Type": "text/xml; charset=utf-8",
+//         },
+//         body: envelope);
+//     if (response.statusCode == 200) {
+//       setState(() {
+//         loading = false;
+//       });
+//
+//       xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
+//       print(parsedXml.text);
+//       if (parsedXml.text != "[]") {
+//         final decoded = json.decode(parsedXml.text);
+//         li6 = SaveResponse.fromJson(decoded[0]);
+//         print(li6.sTATUSID);
+//         if (li6.sTATUSID == 1) {
+//           NewOrderState.datefromcontroller.text = "";
+//           NewOrderState.categoryid = 0;
+//           Order2State.cntcontroller.text = "";
+//           Order2State.vescontroller.text = "";
+//           Order2State.vehcostcontroller.text = "";
+//           Order2State.vehkmcontroller.text = "";
+//           Fluttertoast.showToast(
+//               msg: "Order Placed Successfully",
+//               toastLength: Toast.LENGTH_LONG,
+//               gravity: ToastGravity.SNACKBAR,
+//               timeInSecForIosWeb: 1,
+//               backgroundColor: String_Values.primarycolor,
+//               textColor: Colors.white,
+//               fontSize: 16.0);
+//           Navigator.pushAndRemoveUntil(
+//               context,
+//               MaterialPageRoute(builder: (context) => Dashboard()),
+//               (route) => false);
+//         }
+//       } else
+//         Fluttertoast.showToast(
+//             msg: "Please check your login details,No users found",
+//             toastLength: Toast.LENGTH_LONG,
+//             gravity: ToastGravity.SNACKBAR,
+//             timeInSecForIosWeb: 1,
+//             backgroundColor: String_Values.primarycolor,
+//             textColor: Colors.white,
+//             fontSize: 16.0);
+//     } else {
+//       Fluttertoast.showToast(
+//           msg:
+//               "Http error!, Response code${response.statusCode}, ${response.body} ",
+//           toastLength: Toast.LENGTH_LONG,
+//           gravity: ToastGravity.SNACKBAR,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: String_Values.primarycolor,
+//           textColor: Colors.white,
+//           fontSize: 16.0);
+//       setState(() {
+//         loading = false;
+//       });
+//       print("Retry");
+//     }
+//     // print("response: ${response.statusCode}");
+//     // print("response: ${response.body}");
+//     return response;
+//   }
 
   @override
   void initState() {
+    remarkscontroller.text="";
     OrderRequest()
         .then((value) => OrderItemRequest())
         .then((value) => AdvanceHistoryRequest());
@@ -4945,7 +4950,27 @@ print("orderid"+widget.orderid);
                                                                 ),
                                                               ),
                                                             )),
+                                                        SizedBox(
+                                                          height: height / 30,
+                                                        ),
+                                                        Padding(
+                                                            padding: const EdgeInsets.only(left: 24, right: 24),
+                                                            child: TextField(
 
+                                                              enabled: true,
+                                                              controller: remarkscontroller,
+                                                              decoration: InputDecoration(
+                                                                prefixIcon: Icon(Icons.calendar_today_outlined),
+                                                                labelText: 'Remarks',
+                                                                hintStyle: TextStyle(
+                                                                  color: Colors.grey,
+                                                                  fontSize: 16.0,
+                                                                ),
+                                                                border: OutlineInputBorder(
+                                                                  borderRadius: BorderRadius.circular(25.0),
+                                                                ),
+                                                              ),
+                                                            )),
                                                         SizedBox(height: height/50,),
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceAround,

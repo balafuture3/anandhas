@@ -19,30 +19,42 @@ class OrderListingslList {
 
 
 class OrderListModel {
-
   String orderNum;
-  String Date;
-  String Time;
-  String branchId;
-  String Invoice;
+  String bookingDate;
+  String bookingTime;
+  String branchID;
+  String invoice;
+  String name;
+  String mobile;
 
-  OrderListModel({this.orderNum});
+  OrderListModel(
+      {this.orderNum,
+        this.bookingDate,
+        this.bookingTime,
+        this.branchID,
+        this.invoice,
+        this.name,
+        this.mobile});
 
   OrderListModel.fromJson(Map<String, dynamic> json) {
     orderNum = json['OrderNum'];
-    Date = json['BookingDate'];
-    Time = json['BookingTime'];
-    branchId = json['BranchID'];
-    Invoice = json['Invoice'];
+    bookingDate = json['BookingDate'];
+    bookingTime = json['BookingTime'];
+    branchID = json['BranchID'];
+    invoice = json['Invoice'];
+    name = json['Name'];
+    mobile = json['Mobile'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['OrderNum'] = this.orderNum;
-    data['BookingDate'] = this.Date;
-    data['BookingTime'] = this.Time;
-    data['BranchID'] = this.branchId;
-    data['Invoice'] = this.Invoice;
+    data['BookingDate'] = this.bookingDate;
+    data['BookingTime'] = this.bookingTime;
+    data['BranchID'] = this.branchID;
+    data['Invoice'] = this.invoice;
+    data['Name'] = this.name;
+    data['Mobile'] = this.mobile;
     return data;
   }
 }

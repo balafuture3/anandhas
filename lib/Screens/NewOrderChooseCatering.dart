@@ -113,8 +113,8 @@ class Order2State extends State<Order2> {
   static  TextEditingController vehkmcontroller = new TextEditingController();
   static TextEditingController vehcostcontroller = new TextEditingController();
   static TextEditingController cntcontroller = new TextEditingController();
-  var dropdownValue2 = "Select Delivery Type";
-  var dropdownValue1 = "Select Delivery Charge";
+  static var dropdowntype = "Select Delivery Type";
+  static var dropdowndelcharge = "Select Delivery Charge";
   var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
   static int cnt=0;
   static var catcheck = false;
@@ -452,10 +452,14 @@ class Order2State extends State<Order2> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     isExpanded: true,
-                    value: dropdownValue1,
+                    value: dropdowndelcharge,
                     onChanged: (String newValue) {
                       setState(() {
-                        dropdownValue1 = newValue;
+                        dropdowndelcharge = newValue;
+                        if(newValue=="Free")
+                          vehcostcontroller.text="0";
+                        else
+                          vehcostcontroller.text="";
                         //
                         // for (int i = 0; i < li4.details.length; i++)
                         //   if (li4.details[i].categoryName == newValue) {
@@ -520,10 +524,10 @@ class Order2State extends State<Order2> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     isExpanded: true,
-                    value: dropdownValue2,
+                    value: dropdowntype,
                     onChanged: (String newValue) {
                       setState(() {
-                        dropdownValue2 = newValue;
+                        dropdowntype = newValue;
                         //
                         // for (int i = 0; i < li4.details.length; i++)
                         //   if (li4.details[i].categoryName == newValue) {
@@ -594,12 +598,12 @@ class Order2State extends State<Order2> {
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehcostcontroller.text.length!=0)&&dropdownValue2!="Select Delivery Type"&&dropdownValue1!="Select Delivery Charge"))))
+if((!catcheck||(cnt!=0))&&((!vescheck||vescontroller.text.length!=0)&&(!vehcheck||((vehcostcontroller.text.length!=0)&&dropdowntype!="Select Delivery Type"&&dropdowndelcharge!="Select Delivery Charge"))))
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => OrderSummary1 (edit: widget.edit,payment: 1,id:widget.id)));
 else {
   if(vehcheck) {
-    if (dropdownValue1 == "Select Delivery Charge")
+    if (dropdowndelcharge == "Select Delivery Charge")
       Fluttertoast.showToast(
           msg: "Please Select Delivery Charge",
           toastLength: Toast.LENGTH_LONG,
@@ -608,7 +612,7 @@ else {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    else if (dropdownValue2 == "Select Delivery Type")
+    else if (dropdowntype == "Select Delivery Type")
       Fluttertoast.showToast(
           msg: "Please Select Delivery Type",
           toastLength: Toast.LENGTH_LONG,

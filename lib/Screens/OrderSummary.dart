@@ -41,6 +41,8 @@ class OrderSummary extends StatefulWidget {
 
 class _OrderSummaryState extends State<OrderSummary> {
   SaveModel li11;
+
+
   Future<void> generateInvoice1() async {
     final pdf = pw.Document();
 
@@ -494,7 +496,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                           children: [
                             pw.Expanded(
                                 flex: 4,
-                                child: pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                                child: pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                                 )),
                             pw.Expanded(
                                 flex: 1,
@@ -867,7 +869,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                   Order2State.vehcheck == true
                       ? pw.Column(
                     children: [
-                      pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                      pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                       ),
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
@@ -1527,7 +1529,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                           children: [
                             pw.Expanded(
                                 flex: 4,
-                                child: pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                                child: pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                                 )),
                             pw.Expanded(
                                 flex: 1,
@@ -1900,7 +1902,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                   Order2State.vehcheck == true
                       ? pw.Column(
                     children: [
-                    pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                    pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                       ),
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
@@ -2095,6 +2097,7 @@ class _OrderSummaryState extends State<OrderSummary> {
 
   var dropdownValue1="Advance Type";
   TextEditingController AdvanceController = new TextEditingController();
+  TextEditingController remarkscontroller = new TextEditingController();
   var stringlist=["Advance Type","Advance","Full/Balance Amount"];
 
   var dropdownValue2="Payment Mode";
@@ -2469,6 +2472,8 @@ Future<http.Response> itemRequest() async {
   }
 
 Future<http.Response> postRequest() async {
+
+
 if(widget.edit==0)
   doc=0;
 else
@@ -2521,6 +2526,7 @@ else
     // else
     //   advanceamt=(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total));
 if(widget.edit==0) {
+
   orderflag="N";
 
   orderflagNo=0;
@@ -2576,7 +2582,7 @@ print(bookingitem);
       <PaymentType>$dropdownValue2</PaymentType>
       <OrderStatus>$status</OrderStatus>
       <Branch>${LoginPageState.branchid}</Branch>
-      <Remarks></Remarks>
+      <Remarks>${remarkscontroller.text}</Remarks>
       <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
       <ItemDetailXMLID>${widget.payment}</ItemDetailXMLID>
       <UserID>1</UserID>
@@ -2587,13 +2593,13 @@ print(bookingitem);
       <Address>${Order4State.Addresscontroller.text}</Address>
       <GST>${Order4State.GSTcontroller.text}</GST>
       <WhatsappNumber>${Order4State.Whatsappcontroller.text}</WhatsappNumber>
-      <Pincode>642005</Pincode>
+      <Pincode>${Order4State.Pincodecontroller.text}</Pincode>
       <DisAmount>0</DisAmount>
       <DisApproval>N</DisApproval>
       <DisApplied>N</DisApplied>
       <DisApprovedBy>0</DisApprovedBy>
-      <VehicleDelType></VehicleDelType>
-      <VehicleDelCharType></VehicleDelCharType>
+      <VehicleDelType>${Order2State.vehcheck?Order2State.dropdowntype:""}</VehicleDelType>
+      <VehicleDelCharType>${Order2State.vehcheck?Order2State.dropdowndelcharge:""}</VehicleDelCharType>
       <CategoryName>${NewOrderState.dropdownValue1}</CategoryName> 
     </IN_MOB_INSERT_ORDER>
   </soap:Body>
@@ -2855,6 +2861,123 @@ if(newValue=="Full/Balance Amount") {
                         AdvanceController.text="0";
                         dropdownValue1= "Advance";
                         advenable=false;
+
+                        showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white.withOpacity(0),
+                                title: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50))),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SizedBox(
+                                          height: height / 30,
+                                        ),
+                                        Container(
+
+                                          child: Image.asset(
+                                            "logo.png",width: width/2,
+
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: height / 30,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left:8.0,right:8.0),
+                                          child: Text(
+                                            "Are you Sure, Do you want to receive payment later ",
+                                            style: TextStyle(
+                                                color: Colors.amber, fontSize: 16),
+                                          ),
+                                        ),
+
+                                        SizedBox(
+                                          height: height / 30,
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.only(left: 24, right: 24),
+                                            child: TextField(
+
+                                              enabled: true,
+                                              controller: remarkscontroller,
+                                              decoration: InputDecoration(
+                                                prefixIcon: Icon(Icons.calendar_today_outlined),
+                                                labelText: 'Remarks',
+                                                hintStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 16.0,
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(25.0),
+                                                ),
+                                              ),
+                                            )),
+                                        SizedBox(height: height/50,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Container(
+                                                width: width/4,
+
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(50))),
+                                                child: FlatButton(
+                                                  onPressed: () {
+
+                                                    Navigator.pop(context);
+
+                                                  },
+                                                  child: Text(
+                                                    "Yes",
+                                                    style: TextStyle(
+                                                        color: String_Values.primarycolor),
+                                                  ),
+                                                )),
+                                            Container(
+                                                width: width/4,
+
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(50))),
+                                                child: FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+
+                                                  },
+                                                  child: Text(
+                                                    "No",
+                                                    style: TextStyle(
+                                                        color: String_Values.primarycolor),
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+
+
+
+                                        SizedBox(
+                                          height: height / 50,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
 
                       }
 
@@ -4045,7 +4168,7 @@ if(newValue=="Full/Balance Amount") {
                                       flex: 4,
                                       child: ListTile(
                                         leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
-                                        title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
+                                        title: Text("Transport",style: TextStyle(color: Colors.deepOrange,),),
                                       )),
                                   Expanded(
                                       flex: 1,
@@ -4451,58 +4574,24 @@ if(newValue=="Full/Balance Amount") {
                         )
                             : Container(),
                         Order2State.vehcheck == true
-                            ? Column(
-                          children: [
-                            ListTile(
-                              leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
-                              title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 24, right: 24, top: 8.0, bottom: 8),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                "Distance in Kms".toString(),
-                                                textAlign: TextAlign.start,
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                "Amount".toString(),
-                                                textAlign: TextAlign.start,
-                                              )),
-                                        ]),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                Order2State
-                                                    .vehkmcontroller.text,
-                                                textAlign: TextAlign.start,
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                "Rs.${Order2State.vehcostcontroller.text}",
-                                                textAlign: TextAlign.start,
-                                              )),
-                                        ]),
-                                  ],
-                                ))
-                          ],
+                            ? Container(
+                          margin: EdgeInsets.only(right: 16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 4,
+                                  child: ListTile(
+                                    leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
+                                    title: Text("Transport",style: TextStyle(color: Colors.deepOrange,),),
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "Rs.${Order2State.vehcostcontroller.text}",
+                                    textAlign: TextAlign.start,
+                                  )),
+                            ],
+                          ),
                         )
                             : Container(),
                       ],

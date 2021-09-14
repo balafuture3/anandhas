@@ -513,7 +513,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                           children: [
                             pw.Expanded(
                                 flex: 4,
-                                child: pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                                child: pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                                 )),
                             pw.Expanded(
                                 flex: 1,
@@ -906,7 +906,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                   Order2State.vehcheck == true
                       ? pw.Column(
                     children: [
-                      pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                      pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                       ),
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
@@ -1585,7 +1585,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                           children: [
                             pw.Expanded(
                                 flex: 4,
-                                child: pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                                child: pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                                 )),
                             pw.Expanded(
                                 flex: 1,
@@ -1978,7 +1978,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                   Order2State.vehcheck == true
                       ? pw.Column(
                     children: [
-                      pw.Text("Vehicle Drop",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
+                      pw.Text("Transport",style: pw.TextStyle( color: PdfColor.fromHex("339B6F")),
                       ),
                       pw.Padding(
                           padding: const pw.EdgeInsets.only(
@@ -4106,7 +4106,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                                             flex: 4,
                                             child: ListTile(
                                               leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
-                                              title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
+                                              title: Text("Transport",style: TextStyle(color: Colors.deepOrange,),),
                                             )),
                                         Expanded(
                                             flex: 1,
@@ -4501,59 +4501,81 @@ class OrderSummary1State extends State<OrderSummary1> {
                               )
                                   : Container(),
                               Order2State.vehcheck == true
-                                  ? Column(
-                                children: [
-                                  ListTile(
-                                    leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
-                                    title: Text("Vehicle Drop",style: TextStyle(color: Colors.deepOrange,),),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 24, right: 24, top: 8.0, bottom: 8),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                    flex: 4,
-                                                    child: Text(
-                                                      "Distance in Kms".toString(),
-                                                      textAlign: TextAlign.start,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      "Amount".toString(),
-                                                      textAlign: TextAlign.start,
-                                                    )),
-                                              ]),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                    flex: 4,
-                                                    child: Text(
-                                                      Order2State
-                                                          .vehkmcontroller.text,
-                                                      textAlign: TextAlign.start,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      "Rs.${Order2State.vehcostcontroller.text}",
-                                                      textAlign: TextAlign.start,
-                                                    )),
-                                              ]),
-                                        ],
-                                      ))
-                                ],
+                                  ? Container(
+                                margin: EdgeInsets.only(right: 16),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 4,
+                                        child: ListTile(
+                                          leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
+                                          title: Text("Transport",style: TextStyle(color: Colors.deepOrange,),),
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          "Rs.${Order2State.vehcostcontroller.text}",
+                                          textAlign: TextAlign.start,
+                                        )),
+                                  ],
+                                ),
                               )
+
+                              // Column(
+                              //   children: [
+                              //     ListTile(
+                              //       trailing: Text("Rs.${Order2State.vehcostcontroller.text}"),
+                              //       leading: Icon(Icons.motorcycle_sharp,color: Colors.deepOrange,),
+                              //       title: Text("Transport",style: TextStyle(color: Colors.deepOrange,),
+                              //       ),
+                              //     ),
+                              //     Padding(
+                              //         padding: const EdgeInsets.only(
+                              //             left: 24, right: 24, top: 8.0, bottom: 8),
+                              //         child: Column(
+                              //           children: [
+                              //             Row(
+                              //                 mainAxisAlignment:
+                              //                 MainAxisAlignment.spaceBetween,
+                              //                 children: [
+                              //                   Expanded(
+                              //                       flex: 4,
+                              //                       child: Text(
+                              //                         "Distance in Kms".toString(),
+                              //                         textAlign: TextAlign.start,
+                              //                       )),
+                              //                   Expanded(
+                              //                       flex: 1,
+                              //                       child: Text(
+                              //                         "Amount".toString(),
+                              //                         textAlign: TextAlign.start,
+                              //                       )),
+                              //                 ]),
+                              //             SizedBox(
+                              //               height: 10,
+                              //             ),
+                              //             Row(
+                              //                 mainAxisAlignment:
+                              //                 MainAxisAlignment.spaceBetween,
+                              //                 children: [
+                              //                   Expanded(
+                              //                       flex: 4,
+                              //                       child: Text(
+                              //                         Order2State
+                              //                             .vehkmcontroller.text,
+                              //                         textAlign: TextAlign.start,
+                              //                       )),
+                              //                   Expanded(
+                              //                       flex: 1,
+                              //                       child: Text(
+                              //                         "Rs.${Order2State.vehcostcontroller.text}",
+                              //                         textAlign: TextAlign.start,
+                              //                       )),
+                              //                 ]),
+                              //           ],
+                              //         ))
+                              //   ],
+                              // )
                                   : Container(),
                             ],
                           ),

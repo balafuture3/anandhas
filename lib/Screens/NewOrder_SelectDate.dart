@@ -122,6 +122,7 @@ class NewOrderState extends State<NewOrder> {
 
   @override
   void initState() {
+    dropdownValue1 = "Select Category";
     NewOrderState.datefromcontroller.text="";
     NewOrderState.categoryid=0;
     Order2State.cntcontroller.text="0";
