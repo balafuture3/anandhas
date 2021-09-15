@@ -511,6 +511,11 @@ class _ReportsState extends State<Reports> {
                     decoration:
                         pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
+                      pw.Text("SNo",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
                       pw.Text("Order No",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
@@ -2444,6 +2449,29 @@ class _ReportsState extends State<Reports> {
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
+                                            direction: Axis.vertical, //default
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Text(
+                                                "SNo",
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 12),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
@@ -2455,6 +2483,52 @@ class _ReportsState extends State<Reports> {
                                           ),
                                         ],
                                       )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                            direction: Axis.vertical, //default
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Inv No",
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 12),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                            direction: Axis.vertical, //default
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Inv Date",
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 12),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          )),
                                       numeric: false,
 
                                       // onSort: (columnIndex, ascending) {
@@ -2506,13 +2580,56 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
+                                    // DataColumn(
+                                    //   label: Center(
+                                    //       child: Wrap(
+                                    //     direction: Axis.vertical, //default
+                                    //     alignment: WrapAlignment.center,
+                                    //     children: [
+                                    //       Text("Bill Date",
+                                    //           softWrap: true,
+                                    //           style: TextStyle(fontSize: 12),
+                                    //           textAlign: TextAlign.center),
+                                    //     ],
+                                    //   )),
+                                    //   numeric: false,
+                                    //
+                                    //   // onSort: (columnIndex, ascending) {
+                                    //   //   onSortColum(columnIndex, ascending);
+                                    //   //   setState(() {
+                                    //   //     sort = !sort;
+                                    //   //   });
+                                    //   // }
+                                    // ),
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
-                                          Text("Bill Date",
+                                          Text("Food Value",
+                                              softWrap: true,
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center),
+                                        ],
+                                      )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                        direction: Axis.vertical, //default
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          Text("SGST",
                                               softWrap: true,
                                               style: TextStyle(fontSize: 12),
                                               textAlign: TextAlign.center),
@@ -2533,7 +2650,7 @@ class _ReportsState extends State<Reports> {
                                         direction: Axis.vertical, //default
                                         alignment: WrapAlignment.center,
                                         children: [
-                                          Text("Bill Amount",
+                                          Text("CGST",
                                               softWrap: true,
                                               style: TextStyle(fontSize: 12),
                                               textAlign: TextAlign.center),
@@ -2552,15 +2669,15 @@ class _ReportsState extends State<Reports> {
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Discount",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
+                                            direction: Axis.vertical, //default
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Text("MC",
+                                                  softWrap: true,
+                                                  style: TextStyle(fontSize: 12),
+                                                  textAlign: TextAlign.center),
+                                            ],
+                                          )),
                                       numeric: false,
 
                                       // onSort: (columnIndex, ascending) {
@@ -2573,15 +2690,15 @@ class _ReportsState extends State<Reports> {
                                     DataColumn(
                                       label: Center(
                                           child: Wrap(
-                                        direction: Axis.vertical, //default
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          Text("Balance Receivable",
-                                              softWrap: true,
-                                              style: TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center),
-                                        ],
-                                      )),
+                                            direction: Axis.vertical, //default
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Text("VC",
+                                                  softWrap: true,
+                                                  style: TextStyle(fontSize: 12),
+                                                  textAlign: TextAlign.center),
+                                            ],
+                                          )),
                                       numeric: false,
 
                                       // onSort: (columnIndex, ascending) {
@@ -2591,19 +2708,75 @@ class _ReportsState extends State<Reports> {
                                       //   });
                                       // }
                                     ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                            direction: Axis.vertical, //default
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Text("TC",
+                                                  softWrap: true,
+                                                  style: TextStyle(fontSize: 12),
+                                                  textAlign: TextAlign.center),
+                                            ],
+                                          )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                          child: Wrap(
+                                            direction: Axis.vertical, //default
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Text("Inv Value",
+                                                  softWrap: true,
+                                                  style: TextStyle(fontSize: 12),
+                                                  textAlign: TextAlign.center),
+                                            ],
+                                          )),
+                                      numeric: false,
+
+                                      // onSort: (columnIndex, ascending) {
+                                      //   onSortColum(columnIndex, ascending);
+                                      //   setState(() {
+                                      //     sort = !sort;
+                                      //   });
+                                      // }
+                                    ),
+
                                   ],
                                   rows: li6.details
                                       .map(
                                         (list) => DataRow(cells: [
                                           DataCell(Center(
                                               child: Center(
+                                                child: Wrap(
+                                                    direction:
+                                                    Axis.vertical, //default
+                                                    alignment: WrapAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        (li6.details.indexOf(list)+1).toString(),
+                                                        textAlign: TextAlign.center,
+                                                      )
+                                                    ]),
+                                              ))),
+                                          DataCell(Center(
+                                              child: Center(
                                             child: Wrap(
                                                 direction:
                                                     Axis.vertical, //default
                                                 alignment: WrapAlignment.center,
                                                 children: [
                                                   Text(
-                                                    list.orderNo.toString(),
+                                                    "ORDRNO"+list.orderNo.toString(),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ]),
@@ -2616,7 +2789,7 @@ class _ReportsState extends State<Reports> {
                                                 alignment: WrapAlignment.center,
                                                 children: [
                                                   Text(
-                                                    list.name.toString(),
+                                                    list.invNo.toString(),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ]),
@@ -2628,72 +2801,133 @@ class _ReportsState extends State<Reports> {
                                                     Axis.vertical, //default
                                                 alignment: WrapAlignment.center,
                                                 children: [
-                                                  Text(list.invNo.toString(),
+                                                  Text("${DateFormat("dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+
                                                       textAlign:
                                                           TextAlign.center)
                                                 ]),
                                           ))),
                                           DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text(
-                                                      "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                              Text(list.name
+                                              ,textAlign:
+                                                  TextAlign.start)
+                                            ]),
                                           ),
                                           DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text(
-                                                      list.orderPrice
-                                                          .toString(),
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                              Text(
+                                              list.invNo
+                                                  .toString(),
+                                              textAlign:
+                                                  TextAlign.start)
+                                            ]),
                                           ),
 
                                           DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text("${list.disAmount}",
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                                  Text(
+                                                      "${(list.orderPrice-list.cateringAmount-list.vehicleAmount-list.vesselSetAmount)-(((list.orderPrice-list.cateringAmount-list.vehicleAmount-list.vesselSetAmount)*5)/100)}",
                                                       textAlign:
-                                                          TextAlign.center)
-                                                ]))),
+                                                      TextAlign.start)
+                                                ]),
                                           ),
                                           DataCell(
-                                            Center(
-                                                child: Center(
-                                                    child: Wrap(
-                                                        direction: Axis
-                                                            .vertical, //default
-                                                        alignment: WrapAlignment
-                                                            .center,
-                                                        children: [
-                                                  Text(
-                                                      "${list.orderPrice - list.advanceAmount - list.disAmount}",
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                ]))),
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                              Text(
+                                              "${((list.orderPrice-list.cateringAmount-list.vehicleAmount-list.vesselSetAmount)*2.5)/100}",
+                                              textAlign:
+                                                  TextAlign.start)
+                                            ]),
                                           ),
+                                          DataCell(
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                              Text(
+                                              "${((list.orderPrice-list.cateringAmount-list.vehicleAmount-list.vesselSetAmount)*2.5)/100}",
+                                              textAlign:
+                                                  TextAlign.start)
+                                            ]),
+                                          ),
+                                          DataCell(
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                                  Text(
+                                                      "${list.cateringAmount}",
+                                                      textAlign:
+                                                      TextAlign.start)
+                                                ]),
+                                          ),
+                                          DataCell(
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                                  Text(
+                                                      "${list.vesselSetAmount}",
+                                                      textAlign:
+                                                      TextAlign.start)
+                                                ]),
+                                          ),
+                                          DataCell(
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                                  Text(
+                                                      "${list.vehicleAmount}",
+                                                      textAlign:
+                                                      TextAlign.start)
+                                                ]),
+                                          ),
+                                          DataCell(
+                                            Wrap(
+                                                direction: Axis
+                                                    .vertical, //default
+                                                alignment: WrapAlignment
+                                                    .center,
+                                                children: [
+                                                  Text(
+                                                      "${list.orderPrice}",
+                                                      textAlign:
+                                                      TextAlign.start)
+                                                ]),
+                                          ),
+
+
+
                                         ]),
                                       )
                                       .toList(),

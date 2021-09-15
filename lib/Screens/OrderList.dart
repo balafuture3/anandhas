@@ -270,12 +270,12 @@ class OrderListState extends State<OrderList> {
       setState(() {
         if(!widget.gst) {
           for (int i = 0; i < li7.details.length; i++)
-            li2.add(FilterList(li7.details[i].orderNum));
+            li2.add(FilterList(li7.details[i].orderNum,li7.details[i].name,li7.details[i].mobile));
         }
         else
         {
           for (int i = 0; i < li7.details.length; i++)
-            li2.add(FilterList((i+1).toString()));
+            li2.add(FilterList((i+1).toString(),li7.details[i].name,li7.details[i].mobile));
         }
 
       });
@@ -500,7 +500,7 @@ class OrderListState extends State<OrderList> {
                                             .toLowerCase())) {
                                   setState(() {
                                     li2.add(
-                                        FilterList(li7.details[i].orderNum));
+                                        FilterList(li7.details[i].orderNum,li7.details[i].name,li7.details[i].mobile));
                                   });
                                 }
                             },
@@ -595,11 +595,21 @@ class OrderListState extends State<OrderList> {
                                   //   },
                                   //   ),
                                   leading: Icon(Icons.fastfood,color: String_Values.primarycolor,),
-                                  title:!widget.gst? Text(
-                                    "ORDRNO${li2[i].orderno}",
-                                    style: TextStyle(
-                                        color: String_Values.primarycolor,
-                                        fontWeight: FontWeight.w800),
+                                  title:!widget.gst? Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${li2[i].name} (${li2[i].mobno})",
+                                        style: TextStyle(
+                                            color: String_Values.primarycolor,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                      Text(
+                                        "ORDRNO${li2[i].orderno}",
+                                        style: TextStyle(
+                                            color: Colors.black54,),
+                                      ),
+                                    ],
                                   ):Text(
                                       li7.details[i].branchID=="1"?"SPM-${(i+1).toString().padLeft(3, "0")}":Container(),
                                     style: TextStyle(
@@ -632,5 +642,7 @@ class OrderListState extends State<OrderList> {
 
 class FilterList {
   String orderno;
-  FilterList(this.orderno);
+  String name;
+  String mobno;
+  FilterList(this.orderno,this.name,this.mobno);
 }

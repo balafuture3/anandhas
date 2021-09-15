@@ -743,9 +743,9 @@ class OrderListGSTState extends State<OrderListGST> {
 
           for (int i = 0; i < li7.details.length; i++)
             if(li7.details[i].invoice!="")
-            li2.add(FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+            li2.add(FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }",li7.details[i].name,li7.details[i].mobile));
 else
-              li2.add(FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+              li2.add(FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }",li7.details[i].name,li7.details[i].mobile));
 
 
 
@@ -971,8 +971,8 @@ else
                               setState(() {
                                 li7.details[i].invoice!=""?
                                 li2.add(
-                                    FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }")):
-                                li2.add( FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }"));
+                                    FilterList("ORDRNO${li7.details[i].orderNum}/${li7.details[i].invoice}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }",li7.details[i].name,li7.details[i].mobile)):
+                                li2.add( FilterList("ORDRNO${li7.details[i].orderNum}",li7.details[i].orderNum,"${(DateFormat("hh:mm a , dd-MM-yyyy")).format(DateTime.fromMillisecondsSinceEpoch(int.parse(li7.details[i].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", "")))) }",li7.details[i].name,li7.details[i].mobile));
                               });
                             }
                         },
@@ -983,7 +983,7 @@ else
                             Icons.search,
                             color: Colors.white,
                           ),
-                          hintText: 'Search Order here.....',
+                          hintText: 'Search here.....',
                           hintStyle: TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
@@ -1068,16 +1068,45 @@ else
                         //   },
                         //   ),
                         leading: Icon(Icons.fastfood,color: String_Values.primarycolor,),
-                        title:!widget.gst? Text(
-                          "ORDRNO${li2[i].InvoiceNo.padLeft(3, "0")}",
-                          style: TextStyle(
-                              color: String_Values.primarycolor,
-                              fontWeight: FontWeight.w800),
-                        ):Text(
-                         li2[i].InvoiceNo,
-                          style: TextStyle(
-                              color: String_Values.primarycolor,
-                              fontWeight: FontWeight.w800),
+                        title:!widget.gst?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${li2[i].name} (${li2[i].mobno})",
+                              style: TextStyle(
+                                  color: String_Values.primarycolor,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                            Text(
+                              "ORDRNO${li2[i].InvoiceNo}",
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        )
+                        // Text(
+                        //   "ORDRNO${li2[i].InvoiceNo.padLeft(3, "0")}",
+                        //   style: TextStyle(
+                        //       color: String_Values.primarycolor,
+                        //       fontWeight: FontWeight.w800),
+                        // )
+                            :    Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${li2[i].name} (${li2[i].mobno})",
+                              style: TextStyle(
+                                  color: String_Values.primarycolor,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                            Text(
+                              "${li2[i].InvoiceNo}",
+                              style: TextStyle(
+                                  color: Colors.black54,),
+                            ),
+                          ],
                         ),
                       ),
                     );}),
@@ -1106,7 +1135,9 @@ class FilterList {
   String InvoiceNo;
   String OrderNo;
   String date;
-  FilterList(this.InvoiceNo,this.OrderNo,this.date);
+  String name;
+  String mobno;
+  FilterList(this.InvoiceNo,this.OrderNo,this.date,this.name,this.mobno);
 }
 
 
