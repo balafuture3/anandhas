@@ -511,43 +511,68 @@ class _ReportsState extends State<Reports> {
                     decoration:
                         pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
                     children: [
-                      pw.Text("SNo",
+                      pw.Text("SNo  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Order No",
+                      pw.Text("Order No  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Name",
+                      pw.Text("Inv No  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("GST No",
+                      pw.Text("Inv Date  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Bill Date",
+                      pw.Text("Name  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Bill Amount",
+                      pw.Text("GST No  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
 
-                      pw.Text("Discount",
+                      pw.Text("Food Value  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12)),
-                      pw.Text("Balance Receivable",
+                      pw.Text("SGST  ",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("CGST  ",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("MC  ",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("VC  ",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("TC  ",
+                          style: pw.TextStyle(
+                              color: PdfColor.fromHex("FFFFFF"),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 12)),
+                      pw.Text("Inv Value  ",
                           style: pw.TextStyle(
                               color: PdfColor.fromHex("FFFFFF"),
                               fontWeight: pw.FontWeight.bold,
@@ -559,15 +584,20 @@ class _ReportsState extends State<Reports> {
 
                 for (int i = 0; i < li6.details.length; i++)
                   pw.TableRow(children: [
-                    pw.Text(li6.details[i].orderNo),
-                    pw.Text(li6.details[i].name),
+                    pw.Text((i+1).toString()),
+                    pw.Text("Order No"+li6.details[i].orderNo),
                     pw.Text(li6.details[i].invNo),
-                    pw.Text("${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
-                    pw.Text(li6.details[i].orderPrice.toString()),
+                    pw.Text("${DateFormat("dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+                    pw.Text(li6.details[i].name),
+                    pw.Text(li6.details[i].invNo.toString()),
+                    pw.Text("${(li6.details[i].orderPrice-li6.details[i].cateringAmount-li6.details[i].vehicleAmount-li6.details[i].vesselSetAmount)-(((li6.details[i].orderPrice-li6.details[i].cateringAmount-li6.details[i].vehicleAmount-li6.details[i].vesselSetAmount)*5)/100)}",),
+                    pw.Text( "${(((li6.details[i].orderPrice-li6.details[i].cateringAmount-li6.details[i].vehicleAmount-li6.details[i].vesselSetAmount)*2.5)/100).roundToDouble()}",),
+                    pw.Text( "${(((li6.details[i].orderPrice-li6.details[i].cateringAmount-li6.details[i].vehicleAmount-li6.details[i].vesselSetAmount)*2.5)/100).roundToDouble()}",),
+                    pw.Text("${li6.details[i].cateringAmount}"),
+                    pw.Text("${li6.details[i].vesselSetAmount}"),
+                    pw.Text("${li6.details[i].vehicleAmount}"),
+                    pw.Text("${li6.details[i].orderPrice}"),
 
-                    pw.Text(li6.details[i].disAmount.toString()),
-                    pw.Text(
-                        "${li6.details[i].orderPrice - (li6.details[i].advanceAmount + li6.details[i].disAmount)}"),
                   ])
               ],
             ):pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Text("No details"))
@@ -2767,7 +2797,7 @@ class _ReportsState extends State<Reports> {
                                                         textAlign: TextAlign.center,
                                                       )
                                                     ]),
-                                              ))),
+                                              ))),//s.no
                                           DataCell(Center(
                                               child: Center(
                                             child: Wrap(
@@ -2780,7 +2810,7 @@ class _ReportsState extends State<Reports> {
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ]),
-                                          ))),
+                                          ))),//order no
                                           DataCell(Center(
                                               child: Center(
                                             child: Wrap(
@@ -2793,7 +2823,7 @@ class _ReportsState extends State<Reports> {
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ]),
-                                          ))),
+                                          ))),//inv no
                                           DataCell(Center(
                                               child: Center(
                                             child: Wrap(
@@ -2804,9 +2834,9 @@ class _ReportsState extends State<Reports> {
                                                   Text("${DateFormat("dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(list.docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
 
                                                       textAlign:
-                                                          TextAlign.center)
+                                                          TextAlign.center)//date
                                                 ]),
-                                          ))),
+                                          ))),//Inv Date
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2818,7 +2848,7 @@ class _ReportsState extends State<Reports> {
                                               ,textAlign:
                                                   TextAlign.start)
                                             ]),
-                                          ),
+                                          ),//name
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2832,7 +2862,7 @@ class _ReportsState extends State<Reports> {
                                               textAlign:
                                                   TextAlign.start)
                                             ]),
-                                          ),
+                                          ),//gstno
 
                                           DataCell(
                                             Wrap(
@@ -2846,7 +2876,7 @@ class _ReportsState extends State<Reports> {
                                                       textAlign:
                                                       TextAlign.start)
                                                 ]),
-                                          ),
+                                          ),//foodvalue
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2859,7 +2889,7 @@ class _ReportsState extends State<Reports> {
                                               textAlign:
                                                   TextAlign.start)
                                             ]),
-                                          ),
+                                          ),//sgst
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2872,7 +2902,7 @@ class _ReportsState extends State<Reports> {
                                               textAlign:
                                                   TextAlign.start)
                                             ]),
-                                          ),
+                                          ),//cgst
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2885,7 +2915,7 @@ class _ReportsState extends State<Reports> {
                                                       textAlign:
                                                       TextAlign.start)
                                                 ]),
-                                          ),
+                                          ),//mc
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2898,7 +2928,7 @@ class _ReportsState extends State<Reports> {
                                                       textAlign:
                                                       TextAlign.start)
                                                 ]),
-                                          ),
+                                          ),//vc
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2911,7 +2941,7 @@ class _ReportsState extends State<Reports> {
                                                       textAlign:
                                                       TextAlign.start)
                                                 ]),
-                                          ),
+                                          ),//tc
                                           DataCell(
                                             Wrap(
                                                 direction: Axis
@@ -2924,7 +2954,7 @@ class _ReportsState extends State<Reports> {
                                                       textAlign:
                                                       TextAlign.start)
                                                 ]),
-                                          ),
+                                          ),//Inv Value
 
 
 
