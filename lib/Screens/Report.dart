@@ -462,11 +462,14 @@ class _ReportsState extends State<Reports> {
     final image = await flutterImageProvider(imageProvider);
     // final image = await imageFromAssetBundle('logo.png');
     pdf.addPage(pw.MultiPage(
+
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
+
         build: (pw.Context context) {
           return [
             pw.Header(
+
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
@@ -583,8 +586,13 @@ class _ReportsState extends State<Reports> {
                 ]),
 
                 for (int i = 0; i < li6.details.length; i++)
-                  pw.TableRow(children: [
-                    pw.Text((i+1).toString()),
+                  pw.TableRow(
+
+                      decoration:pw.BoxDecoration(
+                        border:pw.TableBorder(bottom:pw.BorderSide(width: 0.5),right:pw.BorderSide(width: 0.2),left:pw.BorderSide(width: 0.2) )
+                      ),
+                      children: [
+          pw.Padding(padding: pw.EdgeInsets.only(left: 5),child: pw.Text((i+1).toString())),
                     pw.Text("Order No"+li6.details[i].orderNo),
                     pw.Text(li6.details[i].invNo),
                     pw.Text("${DateFormat("dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li6.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
