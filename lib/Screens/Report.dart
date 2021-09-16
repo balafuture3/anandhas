@@ -452,7 +452,7 @@ class _ReportsState extends State<Reports> {
     ;
   }
 
-  Future<void> generateSalesReport() async {
+  Future<void> generateSalesReport(context) async {
     final pdf = pw.Document();
 
     var data = await rootBundle.load("open-sans.ttf");
@@ -621,15 +621,19 @@ class _ReportsState extends State<Reports> {
     File file = File('$tempPath/example.pdf');
     // await Printing.sharePdf(
     //     bytes: await pdf.save(), filename: 'my-document.pdf');
-    // PdfPreview(
-    //   initialPageFormat: PdfPageFormat.a4,
+    showDialog(context: context, builder: (BuildContext context) {
+      return  PdfPreview(
+        initialPageFormat: PdfPageFormat.a4,
+
+        build: (format) => pdf.save(),
+      );
+    });
+
+    // await Printing.layoutPdf(
     //
-    //   build: (format) => pdf.save(),
+    //   format: PdfPageFormat.a4,
+    //   onLayout: (PdfPageFormat format) async => pdf.save(),
     // );
-    await Printing.layoutPdf(
-      format: PdfPageFormat.a4,
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
   }
 
   Future<void> generateCashSettlementReport() async {
@@ -2972,7 +2976,7 @@ class _ReportsState extends State<Reports> {
                   floatingActionButton: FloatingActionButton.extended(
                       onPressed: () async {
                         // generateExcel();
-                        generateSalesReport();
+                        generateSalesReport(context);
                         //                Excel excel;
                         //                 excel = Excel.createExcel();
                         //                Sheet sheetObject = excel['Sales Report'];
