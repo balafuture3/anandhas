@@ -4283,7 +4283,8 @@ class OrderSummary1State extends State<OrderSummary1> {
                                           Expanded(
                                               flex: 3,
                                               child: Text(
-                                                li5.details[i].itemName,
+                                                li5.details[i].docNo==136?Order3State.NameController1.text:li5.details[i].docNo==137?Order3State.NameController2.text:li5.details[i].docNo==138?Order3State.NameController3.text:li5.details[i].docNo==139?Order3State.NameController4.text:li5.details[i].docNo==140?Order3State.NameController5.text:li5.details[i].itemName,
+
                                                 textAlign: TextAlign.start,
                                               )),
                                           Expanded(
@@ -4295,7 +4296,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                                           Expanded(
                                               flex: 1,
                                               child: Text(
-                                                "Rs.${(Order3State.cnt[i] * li5.details[i].price).toString()}",
+                                                "Rs.${(Order3State.itemtotal[i]).toString()}",
                                                 textAlign: TextAlign.start,
                                               )),
                                         ],

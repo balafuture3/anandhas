@@ -182,12 +182,20 @@ class Order3State extends State<Order3> {
     return response;
   }
   TextEditingController datefromcontroller = new TextEditingController();
+  static TextEditingController NameController1 = new TextEditingController();
+  static TextEditingController NameController2 = new TextEditingController();
+  static TextEditingController NameController3 = new TextEditingController();
+  static TextEditingController NameController4 = new TextEditingController();
+  static TextEditingController NameController5 = new TextEditingController();
   TextEditingController searchController = new TextEditingController();
   TextEditingController cnt1controller = new TextEditingController();
   TextEditingController cnt2controller = new TextEditingController();
   TextEditingController cnt3controller = new TextEditingController();
+  TextEditingController cnt4controller = new TextEditingController();
+  TextEditingController cnt5controller = new TextEditingController();
+
   static List<TextEditingController> controllers =new List();
-  List<double> itemtotal =new List();
+  static List<double> itemtotal =new List();
   // var dropdownValue = "Select";
   // var dropdownValue1 = "Select";
   // var stringlist = ["Select", "7 AM", "8 AM", "9 AM"];
@@ -382,7 +390,6 @@ class Order3State extends State<Order3> {
           //     ])),
 
           for(int i=0;i<li5.details.length;i++)
-
             if(dropdownValue1=="All")
               if (li5.details[i].itemName
                   .toLowerCase()
@@ -403,17 +410,36 @@ class Order3State extends State<Order3> {
                           Expanded(
                             flex: 3,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(li5.details[i].itemName,style: TextStyle(fontWeight: FontWeight.w500),),
-                                Padding(
+                                li5.details[i].itemCode!="General"?Text(li5.details[i].itemName):TextField(
+
+                                  decoration:
+                                  InputDecoration(fillColor: String_Values.primarycolor,
+                                    hintText: "Item Name",
+                                    contentPadding: EdgeInsets.only(left:10),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),),
+                                  controller: li5.details[i].docNo==136?NameController1:li5.details[i].docNo==137?NameController2:li5.details[i].docNo==138?NameController3:li5.details[i].docNo==139?NameController4:NameController5,
+                                ),
+                                li5.details[i].itemCode!="General"?Text(
+                                  li5.details[i].price.toString(),
+                                  style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
+                                ):Padding(
                                   padding: const EdgeInsets.only(top:8.0),
-                                  child: Text(
-                                    "\u{20B9} "+li5.details[i].price.toString(),
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(160, 27, 37, 1)),
+                                  child: TextField(decoration:
+                                  InputDecoration(fillColor: String_Values.primarycolor,
+                                    contentPadding: EdgeInsets.only(left:10),
+                                    hintText: "Price",
+                                    prefix: Text("\u{20B9}"),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),),
+                                    keyboardType: TextInputType.number,
+                                    controller: li5.details[i].docNo==136?cnt1controller:li5.details[i].docNo==137?cnt2controller:li5.details[i].docNo==138?cnt3controller:li5.details[i].docNo==139?cnt4controller:cnt5controller,
+
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -425,90 +451,108 @@ class Order3State extends State<Order3> {
 
                                   Card(
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Expanded(
                                           flex: 1,
-                                          child: IconButton(icon: Icon(
-                                            Icons.remove, color: Colors.red,),
-                                            onPressed: () {
-                                              setState(() {
-                                                print(cnt[i]);
-                                                if (cnt[i] != 0)
-                                                  cnt[i]--;
-                                                itemtotal[i] =
-                                                    (li5.details[i].price) *
-                                                        cnt[i];
-                                                controllers[i].text =
-                                                    cnt[i].toString();
-                                                print(cnt[i]);
-                                                total = 0;
-                                                for (int j = 0; j <
-                                                    li5.details.length; j++)
-                                                  total = total + (cnt[j] *
-                                                      li5.details[j].price);
-                                              });
-                                            },),
+                                          child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
+                                          {
+
+                                            setState(() {
+                                              print(cnt[i]);
+                                              if(cnt[i]!=0)
+                                                cnt[i]--;
+                                              if(li5.details[i].docNo==136)
+                                                itemtotal[i]=(double.parse(cnt1controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==137)
+                                                itemtotal[i]=(double.parse(cnt2controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==138)
+                                                itemtotal[i]=(double.parse(cnt3controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==139)
+                                                itemtotal[i]=(double.parse(cnt4controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==140)
+                                                itemtotal[i]=(double.parse(cnt5controller.text))*cnt[i];
+                                              else
+                                                itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                              controllers[i].text=cnt[i].toString();
+                                              print(cnt[i]);
+                                              total=0;
+                                              for(int j=0;j<li5.details.length;j++)
+                                                total=total+(itemtotal[j]);
+                                            });
+                                          },),
                                         ),
                                         Expanded(
                                           flex: 2,
                                           child: Container(
-                                          height: 40,
+                                            height: 30,
                                             child: TextField(
+                                              // enableInteractiveSelection:false,
                                               decoration: InputDecoration
                                                 (
-contentPadding: EdgeInsets.all(2),
+
+// contentPadding: EdgeInsets.only(left:10,right: 10,),
                                                 border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius
-                                                      .circular(5.0),
+                                                  borderRadius: BorderRadius.circular(5.0),
                                                 ),
                                               ),
                                               textAlign: TextAlign.center,
-                                              keyboardType: TextInputType
-                                                  .number,
-                                              onChanged: (value) {
+                                              keyboardType: TextInputType.number,
+                                              onChanged: (value)
+                                              {
                                                 setState(() {
-                                                  cnt[i] = int.parse(
-                                                      controllers[i].text);
-                                                  itemtotal[i] =
-                                                      (li5.details[i].price) *
-                                                          cnt[i];
-
-                                                  total = 0;
-                                                  for (int j = 0; j <
-                                                      li5.details.length; j++)
-                                                    total = total + (cnt[j] *
-                                                        li5.details[j].price);
+                                                  cnt[i]=int.parse(controllers[i].text);
+                                                  if(li5.details[i].docNo==136)
+                                                    itemtotal[i]=(double.parse(cnt1controller.text))*cnt[i];
+                                                  else if(li5.details[i].docNo==137)
+                                                    itemtotal[i]=(double.parse(cnt2controller.text))*cnt[i];
+                                                  else if(li5.details[i].docNo==138)
+                                                    itemtotal[i]=(double.parse(cnt3controller.text))*cnt[i];
+                                                  else if(li5.details[i].docNo==139)
+                                                    itemtotal[i]=(double.parse(cnt4controller.text))*cnt[i];
+                                                  else if(li5.details[i].docNo==140)
+                                                    itemtotal[i]=(double.parse(cnt5controller.text))*cnt[i];
+                                                  else
+                                                    itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                                  total=0;
+                                                  for(int j=0;j<li5.details.length;j++)
+                                                    total=total+(itemtotal[j]);
                                                 });
                                               },
-                                              enabled: true,
+                                              enabled:true,
                                               controller: controllers[i],
                                             ),
                                           ),
                                         ),
                                         Expanded(
                                           flex: 1,
-                                          child: IconButton(icon: Icon(
-                                            Icons.add, color: Colors.teal,),
-                                            onPressed: () {
-                                              setState(() {
-                                                print(cnt[i]);
-                                                cnt[i]++;
-                                                controllers[i].text =
-                                                    cnt[i].toString();
-                                                print(cnt[i]);
-                                                itemtotal[i] =
-                                                    (li5.details[i].price) *
-                                                        cnt[i];
-                                                total = 0;
-                                                for (int j = 0; j <
-                                                    li5.details.length; j++)
-                                                  total = total + (cnt[j] *
-                                                      li5.details[j].price);
-                                              });
-                                            },),
+                                          child: IconButton( icon: Icon(Icons.add,color: Colors.teal,),onPressed: ()
+                                          {
+                                            setState(() {
+                                              print(cnt[i]);
+                                              cnt[i]++;
+                                              controllers[i].text=cnt[i].toString();
+                                              print(cnt[i]);
+                                              if(li5.details[i].docNo==136)
+                                                itemtotal[i]=(double.parse(cnt1controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==137)
+                                                itemtotal[i]=(double.parse(cnt2controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==138)
+                                                itemtotal[i]=(double.parse(cnt3controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==139)
+                                                itemtotal[i]=(double.parse(cnt4controller.text))*cnt[i];
+                                              else if(li5.details[i].docNo==140)
+                                                itemtotal[i]=(double.parse(cnt5controller.text))*cnt[i];
+                                              else
+                                                itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                              total=0;
+                                              for(int j=0;j<li5.details.length;j++)
+                                                total=total+(itemtotal[j]);
+
+
+                                            });
+
+                                          },),
                                         ),
 
                                       ],
@@ -517,8 +561,7 @@ contentPadding: EdgeInsets.all(2),
                                 ]
                             ),
                           ),
-                          Expanded(flex: 3, child: Text("\u{20B9}  ${itemtotal[i]}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.teal),
-                            textAlign: TextAlign.right,)),
+                          Expanded(flex: 3, child: Text("Rs. ${itemtotal[i]}",textAlign: TextAlign.center,)),
 
                         ],
                       )),
@@ -544,11 +587,35 @@ contentPadding: EdgeInsets.all(2),
                   flex: 3,
                   child: Column(
                     children: [
-                      Text(li5.details[i].itemName),
-                      Text(
+                      li5.details[i].itemCode!="General"?Text(li5.details[i].itemName):TextField(
+
+                        decoration:
+                      InputDecoration(fillColor: String_Values.primarycolor,
+                        hintText: "Item Name",
+                        contentPadding: EdgeInsets.only(left:10),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),),
+                        controller: li5.details[i].docNo==136?NameController1:li5.details[i].docNo==137?NameController2:li5.details[i].docNo==138?NameController3:li5.details[i].docNo==139?NameController4:NameController5,
+                      ),
+                      li5.details[i].itemCode!="General"?Text(
                         li5.details[i].price.toString(),
                         style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                      )
+                      ):Padding(
+                        padding: const EdgeInsets.only(top:8.0),
+                        child: TextField(decoration:
+                        InputDecoration(fillColor: String_Values.primarycolor,
+                          contentPadding: EdgeInsets.only(left:10),
+                          hintText: "Price",
+                          prefix: Text("\u{20B9}"),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),),
+                          keyboardType: TextInputType.number,
+                          controller: li5.details[i].docNo==136?cnt1controller:li5.details[i].docNo==137?cnt2controller:li5.details[i].docNo==138?cnt3controller:li5.details[i].docNo==139?cnt4controller:cnt5controller,
+
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -566,16 +633,28 @@ contentPadding: EdgeInsets.all(2),
                                 flex: 1,
                                 child: IconButton( icon: Icon(Icons.remove,color: Colors.red,),onPressed: ()
                                 {
+
                                   setState(() {
                                     print(cnt[i]);
                                     if(cnt[i]!=0)
                                       cnt[i]--;
-                                    itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                    if(li5.details[i].docNo==136)
+                                      itemtotal[i]=(double.parse(cnt1controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==137)
+                                      itemtotal[i]=(double.parse(cnt2controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==138)
+                                      itemtotal[i]=(double.parse(cnt3controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==139)
+                                      itemtotal[i]=(double.parse(cnt4controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==140)
+                                      itemtotal[i]=(double.parse(cnt5controller.text))*cnt[i];
+                                    else
+                                      itemtotal[i]=(li5.details[i].price)*cnt[i];
                                     controllers[i].text=cnt[i].toString();
                                     print(cnt[i]);
                                     total=0;
                                     for(int j=0;j<li5.details.length;j++)
-                                      total=total+(cnt[j]*li5.details[j].price);
+                                     total=total+(itemtotal[j]);
                                   });
                                 },),
                               ),
@@ -599,10 +678,21 @@ contentPadding: EdgeInsets.all(2),
                                     {
                                       setState(() {
                                         cnt[i]=int.parse(controllers[i].text);
-                                        itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                        if(li5.details[i].docNo==136)
+                                          itemtotal[i]=(double.parse(cnt1controller.text))*cnt[i];
+                                        else if(li5.details[i].docNo==137)
+                                          itemtotal[i]=(double.parse(cnt2controller.text))*cnt[i];
+                                        else if(li5.details[i].docNo==138)
+                                          itemtotal[i]=(double.parse(cnt3controller.text))*cnt[i];
+                                        else if(li5.details[i].docNo==139)
+                                          itemtotal[i]=(double.parse(cnt4controller.text))*cnt[i];
+                                        else if(li5.details[i].docNo==140)
+                                          itemtotal[i]=(double.parse(cnt5controller.text))*cnt[i];
+                                        else
+                                          itemtotal[i]=(li5.details[i].price)*cnt[i];
                                         total=0;
                                         for(int j=0;j<li5.details.length;j++)
-                                          total=total+(cnt[j]*li5.details[j].price);
+                                          total=total+(itemtotal[j]);
                                       });
                                     },
                                     enabled:true,
@@ -619,10 +709,21 @@ contentPadding: EdgeInsets.all(2),
                                     cnt[i]++;
                                     controllers[i].text=cnt[i].toString();
                                     print(cnt[i]);
-                                    itemtotal[i]=(li5.details[i].price)*cnt[i];
+                                    if(li5.details[i].docNo==136)
+                                      itemtotal[i]=(double.parse(cnt1controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==137)
+                                      itemtotal[i]=(double.parse(cnt2controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==138)
+                                      itemtotal[i]=(double.parse(cnt3controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==139)
+                                      itemtotal[i]=(double.parse(cnt4controller.text))*cnt[i];
+                                    else if(li5.details[i].docNo==140)
+                                      itemtotal[i]=(double.parse(cnt5controller.text))*cnt[i];
+                                    else
+                                      itemtotal[i]=(li5.details[i].price)*cnt[i];
                                     total=0;
                                     for(int j=0;j<li5.details.length;j++)
-                                      total=total+(cnt[j]*li5.details[j].price);
+                                      total=total+(itemtotal[j]);
 
 
                                   });
@@ -649,7 +750,7 @@ contentPadding: EdgeInsets.all(2),
 
         ])
       ),
-      bottomSheet:           Container(
+      bottomSheet: Container(
         height: AppBar().preferredSize.height+10,
 
         width: width,

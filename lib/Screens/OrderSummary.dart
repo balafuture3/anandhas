@@ -2791,7 +2791,7 @@ if(newValue=="Full/Balance Amount") {
   AdvanceController.text = widget.edit == 0 ? ((int.parse(vehtot) +
       (int.parse(vestot) + (int.parse(cattot)) +
           (((Order3State.total * 5) / 100) + Order3State.total))))
-      .toStringAsFixed(2) : widget.payment != 0
+      .round().toString() : widget.payment != 0
       ? ((int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
       (((Order3State.total * 5) / 100) + Order3State.total)) +
       li8.details[0].orderPrice) -
@@ -4345,7 +4345,8 @@ if(newValue=="Full/Balance Amount") {
                                     Expanded(
                                         flex: 3,
                                         child: Text(
-                                          li5.details[i].itemName,
+                                          li5.details[i].docNo==136?Order3State.NameController1.text:li5.details[i].docNo==137?Order3State.NameController2.text:li5.details[i].docNo==138?Order3State.NameController3.text:li5.details[i].docNo==139?Order3State.NameController4.text:li5.details[i].docNo==140?Order3State.NameController5.text:li5.details[i].itemName,
+
                                           textAlign: TextAlign.start,
                                         )),
                                     Expanded(
@@ -4357,7 +4358,7 @@ if(newValue=="Full/Balance Amount") {
                                     Expanded(
                                         flex: 1,
                                         child: Text(
-                                          "Rs.${(Order3State.cnt[i] * li5.details[i].price).toString()}",
+                                          "Rs.${(Order3State.itemtotal[i]).toString()}",
                                           textAlign: TextAlign.start,
                                         )),
                                   ],
