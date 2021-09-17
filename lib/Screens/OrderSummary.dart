@@ -2485,9 +2485,9 @@ else
 
   if(widget.edit!=0) {
     if (((int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
-        ((Order3State.total * 5) / 100) + Order3State.total) ) -  (OrderDetailsState.li8.details[0].advanceAmount+advanceamt)) == 0) {
+        ((Order3State.total * 5) / 100) + Order3State.total) ).round() -  (OrderDetailsState.li8.details[0].advanceAmount+advanceamt)) == 0) {
       print("widget  0 Status: ${(int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
-          ((Order3State.total * 5) / 100) + Order3State.total) ) -  (OrderDetailsState.li8.details[0].advanceAmount+advanceamt)}");
+          ((Order3State.total * 5) / 100) + Order3State.total) ).round() -  (OrderDetailsState.li8.details[0].advanceAmount+advanceamt)}");
       status = "C";
     }
     else {
@@ -2502,7 +2502,7 @@ else
   else
     {
       if (((int.parse(vehtot) + (int.parse(vestot) + (int.parse(cattot)) +
-          ((Order3State.total * 5) / 100) + Order3State.total)) - advanceamt) == 0) {
+          ((Order3State.total * 5) / 100) + Order3State.total)).round() - advanceamt) == 0) {
         print("Status: ${(int.parse(vehtot) +
             (int.parse(vestot) + (int.parse(cattot)) +
                 ((Order3State.total * 5) / 100) + Order3State.total)) -
@@ -2534,10 +2534,9 @@ if(widget.edit==0) {
     if (Order3State.cnt[i] != 0)
       bookingitem =
       "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5
-          .details[i].itemCode}</ItemCode><ItemName>${li5.details[i]
-          .itemName}</ItemName><Qty>${Order3State
-          .cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) *
-          (li5.details[i].price)).toString()}</Price><OrderFlag>$orderflag</OrderFlag><OrderFlagNo>$orderflagNo</OrderFlagNo></Table1>";
+          .details[i].itemCode}</ItemCode><ItemName>${ li5.details[i].docNo==136?Order3State.NameController1.text:li5.details[i].docNo==137?Order3State.NameController2.text:li5.details[i].docNo==138?Order3State.NameController3.text:li5.details[i].docNo==139?Order3State.NameController4.text:li5.details[i].docNo==140?Order3State.NameController5.text:li5.details[i].itemName
+  }</ItemName><Qty>${Order3State
+          .cnt[i]}</Qty><UOM></UOM><Price>${(Order3State.itemtotal[i]).toString()}</Price><OrderFlag>$orderflag</OrderFlag><OrderFlagNo>$orderflagNo</OrderFlagNo></Table1>";
 
   bookingitem = "<NewDataSet>$bookingitem</NewDataSet>";
 }
@@ -2576,7 +2575,7 @@ print(bookingitem);
       <VaselAmount>${double.parse(vestot)}</VaselAmount>
       <Vehicle>${Order2State.vehcheck==true?"Y":"N"}</Vehicle>
       <VechicleAmount>${double.parse(vehtot)}</VechicleAmount>
-      <OrderPrice>${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total))}</OrderPrice>
+      <OrderPrice>${(int.parse(vehtot)+(int.parse(vestot)+(int.parse(cattot))+((Order3State.total*5)/100)+Order3State.total)).round()}</OrderPrice>
       <AdvanceType>$dropdownValue1</AdvanceType>
       <AdvanceAmount>$advanceamt</AdvanceAmount>
       <PaymentType>$dropdownValue2</PaymentType>
@@ -4574,7 +4573,7 @@ if(newValue=="Full/Balance Amount") {
                           ],
                         )
                             : Container(),
-                        Order2State.vehcheck == true
+                        Order2State.vehcheck == true && Order2State.vehcostcontroller.text!="0"
                             ? Container(
                           margin: EdgeInsets.only(right: 16),
                           child: Row(

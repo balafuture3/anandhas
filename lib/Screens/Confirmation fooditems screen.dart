@@ -4501,7 +4501,7 @@ class OrderSummary1State extends State<OrderSummary1> {
                                 ],
                               )
                                   : Container(),
-                              Order2State.vehcheck == true
+                              Order2State.vehcheck == true && Order2State.vehcostcontroller.text!="0"
                                   ? Container(
                                 margin: EdgeInsets.only(right: 16),
                                 child: Row(

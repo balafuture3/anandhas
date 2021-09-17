@@ -203,6 +203,12 @@ class Order3State extends State<Order3> {
 
   @override
   void initState() {
+    itemtotal.clear();
+    NameController1.text="";
+    NameController2.text="";
+    NameController3.text="";
+    NameController4.text="";
+    NameController5.text="";
     print(widget.edit);
     print(widget.id);
 
