@@ -48,7 +48,8 @@ decoration: BoxDecoration(
             ),
 
             Container(
-              decoration: 
+              height: height,
+              decoration:
               BoxDecoration(
                 color: String_Values.primarycolor,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(width/6),topRight: Radius.circular(width/6))
