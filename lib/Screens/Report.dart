@@ -39,6 +39,12 @@ class _ReportsState extends State<Reports> {
   static var cnt = [0, 0, 0];
   static List<TextEditingController> controllers = List();
   String dateupload;
+  static double SumOfReportListTotal=0;
+  static double SumOfSalesTotal=0;
+  static double SumOfReceivableTotal=0;
+  static double SumOfDisscountTotal=0;
+  static double SumOfOrderReportTotal=0;
+  static double SumOfCancelledOrderReportTotal=0;
   TextEditingController EndDateController = new TextEditingController();
   TextEditingController StartDateController = new TextEditingController();
   TextEditingController EndDateController1 = new TextEditingController();
@@ -138,7 +144,8 @@ class _ReportsState extends State<Reports> {
                 ])),
             pw.Center(
                 child: pw.Text(
-                    "Cancelled Orders Report (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                    EndDateController5.text!=StartDateController5.text?"Cancelled Order Report (${StartDateController5.text} - ${EndDateController5.text})":"Cancelled Order Report (${StartDateController5.text})",
+
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -466,6 +473,44 @@ class _ReportsState extends State<Reports> {
     pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return        pw.Header(
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.end,
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Image(image, width: 150),
+                          pw.Text("Taste of Life",
+                              style: pw.TextStyle(fontSize: 10),
+                              textAlign: pw.TextAlign.right),
+                          pw.SizedBox(width: 10, height: 10),
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                              style: pw.TextStyle(
+                                  fontSize: 14,
+                                  color: PdfColor.fromHex("339B6F"))),
+                          pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.SizedBox(width: 10, height: 10),
+                          pw.Text(
+                              "Created at (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                              style: pw.TextStyle(fontSize: 12)),
+                        ]),
+                  ]));
+        },
         build: (pw.Context context) {
           return [
             pw.Header(
@@ -503,7 +548,8 @@ class _ReportsState extends State<Reports> {
                 ])),
             pw.Center(
                 child: pw.Text(
-                    "Sales Report (${StartDateController.text}) , (${EndDateController.text})",
+                    EndDateController.text!=StartDateController.text?"Sales Report (${StartDateController.text} - ${EndDateController.text})":"Sales Report (${StartDateController.text})",
+
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -621,6 +667,18 @@ class _ReportsState extends State<Reports> {
                 : pw.Padding(
                     padding: pw.EdgeInsets.only(top: 20),
                     child: pw.Text("No details"))
+          ,
+          pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.end,
+          children: [
+          pw.Text(
+          "Total:",
+          ),
+          pw.Text(
+          "$SumOfSalesTotal",
+          ),
+          ],
+          ),),
           ];
           // Center
         })); // Pa
@@ -666,6 +724,44 @@ class _ReportsState extends State<Reports> {
     pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return        pw.Header(
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.end,
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Image(image, width: 150),
+                          pw.Text("Taste of Life",
+                              style: pw.TextStyle(fontSize: 10),
+                              textAlign: pw.TextAlign.right),
+                          pw.SizedBox(width: 10, height: 10),
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                              style: pw.TextStyle(
+                                  fontSize: 14,
+                                  color: PdfColor.fromHex("339B6F"))),
+                          pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.SizedBox(width: 10, height: 10),
+                          pw.Text(
+                              "Created at (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                              style: pw.TextStyle(fontSize: 12)),
+                        ]),
+                  ]));
+        },
         build: (pw.Context context) {
           return [
             pw.Header(
@@ -700,7 +796,8 @@ class _ReportsState extends State<Reports> {
                 ])),
             pw.Center(
                 child: pw.Text(
-                    "Daily Settlement Report (${StartDateController.text}) , (${EndDateController.text})",
+                    EndDateController1.text!=StartDateController1.text?"Daily Settlement Report (${StartDateController1.text} - ${EndDateController1.text})":"Daily Settlement Report (${StartDateController1.text})",
+
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -1221,7 +1318,7 @@ class _ReportsState extends State<Reports> {
         });
   }
 
-  Future<void> receivablesReport() async {
+  Future<void> receivablesReport(context) async {
     final pdf = pw.Document();
 
     var data = await rootBundle.load("open-sans.ttf");
@@ -1233,6 +1330,44 @@ class _ReportsState extends State<Reports> {
     pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return        pw.Header(
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.end,
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Image(image, width: 150),
+                          pw.Text("Taste of Life",
+                              style: pw.TextStyle(fontSize: 10),
+                              textAlign: pw.TextAlign.right),
+                          pw.SizedBox(width: 10, height: 10),
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                              style: pw.TextStyle(
+                                  fontSize: 14,
+                                  color: PdfColor.fromHex("339B6F"))),
+                          pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.SizedBox(width: 10, height: 10),
+                          pw.Text(
+                              "Created at (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                              style: pw.TextStyle(fontSize: 12)),
+                        ]),
+                  ]));
+        },
         build: (pw.Context context) {
           return [
             pw.Header(
@@ -1267,7 +1402,8 @@ class _ReportsState extends State<Reports> {
                 ])),
             pw.Center(
                 child: pw.Text(
-                    "Receivables Report (${StartDateController.text}) , (${EndDateController.text})",
+                    EndDateController2.text!=StartDateController2.text?"Receivable Report (${StartDateController2.text} - ${EndDateController2.text})":"Receivable Report (${StartDateController2.text})",
+
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -1337,7 +1473,7 @@ class _ReportsState extends State<Reports> {
                               padding: pw.EdgeInsets.only(left: 5),
                               child: pw.Text((i + 1).toString())),
                           pw.Text(li10.details[i].orderNo),
-                          pw.Text(li6.details[i].invNo),
+                          pw.Text(li10.details[i].invNo.toString()),
                           pw.Text(
                               "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li10.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                           pw.Text(li10.details[i].name),
@@ -1352,7 +1488,18 @@ class _ReportsState extends State<Reports> {
                   )
                 : pw.Padding(
                     padding: pw.EdgeInsets.only(top: 20),
-                    child: pw.Text("No details"))
+                    child: pw.Text("No details")),
+            pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.end,
+              children: [
+                pw.Text(
+                  "Total:",
+                ),
+                pw.Text(
+                  "$SumOfReceivableTotal",
+                ),
+              ],
+            ),),
           ];
           // Center
         })); // Pa
@@ -1375,13 +1522,17 @@ class _ReportsState extends State<Reports> {
     //
     //   build: (format) => pdf.save(),
     // );
-    await Printing.layoutPdf(
-      format: PdfPageFormat.a4,
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PdfPreview(
+            initialPageFormat: PdfPageFormat.a4,
+            build: (format) => pdf.save(),
+          );
+        });
   }
 
-  Future<void> discountReport() async {
+  Future<void> discountReport(context) async {
     print("Didcount Report Called");
     final pdf = pw.Document();
 
@@ -1394,6 +1545,44 @@ class _ReportsState extends State<Reports> {
     pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.landscape,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return        pw.Header(
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.end,
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Image(image, width: 150),
+                          pw.Text("Taste of Life",
+                              style: pw.TextStyle(fontSize: 10),
+                              textAlign: pw.TextAlign.right),
+                          pw.SizedBox(width: 10, height: 10),
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                              style: pw.TextStyle(
+                                  fontSize: 14,
+                                  color: PdfColor.fromHex("339B6F"))),
+                          pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.SizedBox(width: 10, height: 10),
+                          pw.Text(
+                              "Created at (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                              style: pw.TextStyle(fontSize: 12)),
+                        ]),
+                  ]));
+        },
         build: (pw.Context context) {
           return [
             pw.Header(
@@ -1428,7 +1617,7 @@ class _ReportsState extends State<Reports> {
                 ])),
             pw.Center(
                 child: pw.Text(
-                    "Discount Report (${StartDateController.text}) , (${EndDateController.text})",
+                    EndDateController3.text!=StartDateController3.text?"Discount Report (${StartDateController3.text} - ${EndDateController3.text})":"Discount Report (${StartDateController3.text})",
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -1477,6 +1666,11 @@ class _ReportsState extends State<Reports> {
                                     color: PdfColor.fromHex("FFFFFF"),
                                     fontWeight: pw.FontWeight.bold,
                                     fontSize: 12)),
+                          pw.Text("Remarks",
+                              style: pw.TextStyle(
+                                  color: PdfColor.fromHex("FFFFFF"),
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 12)),
 
                             // pw.Text("Discount",
                             //     style: pw.TextStyle(
@@ -1501,19 +1695,32 @@ class _ReportsState extends State<Reports> {
                         padding: pw.EdgeInsets.only(left: 5),
                         child: pw.Text((i + 1).toString())),
                     pw.Text(li12.details[i].orderNo),
-                    pw.Text(li6.details[i].invNo),
+                    pw.Text(li12.details[i].invNo),
                     pw.Text(
                         "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li12.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
                     pw.Text(li12.details[i].name),
                     /* pw.Text(li12.details[i].invNo),*/
 
                     pw.Text(li12.details[i].orderPrice.toString()),
+                    pw.Text(li12.details[i].remarks.toString()),
                     // pw.Text(li12.details[i].disAmount.toString()),
                     // pw.Text(
                     //     "${li12.details[i].orderPrice - (li12.details[i].advanceAmount + li12.details[i].disAmount)}"),
                   ])
+
               ],
-            )
+            ),
+            pw.Padding(padding: pw.EdgeInsets.only(top: 20),child:pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.end,
+              children: [
+                pw.Text(
+                  "Total:",
+                ),
+                pw.Text(
+                  "$SumOfDisscountTotal",
+                ),
+              ],
+            ),),
           ];
           // Center
         })); // Pa
@@ -1536,13 +1743,17 @@ class _ReportsState extends State<Reports> {
     //
     //   build: (format) => pdf.save(),
     // );
-    await Printing.layoutPdf(
-      format: PdfPageFormat.a4,
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PdfPreview(
+            initialPageFormat: PdfPageFormat.a4,
+            build: (format) => pdf.save(),
+          );
+        });
   }
 
-  Future<void> OrderReport() async {
+  Future<void> OrderReport(context) async {
     final pdf = pw.Document();
 
     var data = await rootBundle.load("open-sans.ttf");
@@ -1554,6 +1765,44 @@ class _ReportsState extends State<Reports> {
     pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.portrait,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return        pw.Header(
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.end,
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Image(image, width: 150),
+                          pw.Text("Taste of Life",
+                              style: pw.TextStyle(fontSize: 10),
+                              textAlign: pw.TextAlign.right),
+                          pw.SizedBox(width: 10, height: 10),
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
+                        children: [
+                          pw.Text("Ratnaa Shree Anandhaas Hotels Private Limited",
+                              style: pw.TextStyle(
+                                  fontSize: 14,
+                                  color: PdfColor.fromHex("339B6F"))),
+                          pw.Text("747,Puliakulam Road, P.N. Palayam,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("Coimbatore 641 037, Tamilnadu,+91 9597210033,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.Text("GSTIN:33AADCR4127R1Z2  HSN/SAC : 996334,",
+                              style: pw.TextStyle(fontSize: 12)),
+                          pw.SizedBox(width: 10, height: 10),
+                          pw.Text(
+                              "Created at (${DateFormat("dd/MM/yyyy").format(DateTime.now())})",
+                              style: pw.TextStyle(fontSize: 12)),
+                        ]),
+                  ]));
+        },
         build: (pw.Context context) {
           return [
             pw.Header(
@@ -1588,7 +1837,8 @@ class _ReportsState extends State<Reports> {
                 ])),
             pw.Center(
                 child: pw.Text(
-                    "Order Report (${StartDateController.text}) , (${EndDateController.text})",
+                    EndDateController4.text!=StartDateController4.text?"Order Report (${StartDateController4.text} - ${EndDateController4.text})":"Order Report (${StartDateController4.text})",
+
                     style: pw.TextStyle(
                         color: PdfColor.fromHex("339B6F"),
                         fontWeight: pw.FontWeight.bold,
@@ -1655,8 +1905,9 @@ class _ReportsState extends State<Reports> {
                         pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Text("${li14.details[index].itemName}"),
-                            pw.Text("${li14.details[index].qty.round()}")
+                            pw.Expanded(flex: 3,child: pw.Text("${li14.details[index].itemName}") )
+                           ,
+                            pw.Expanded(flex: 1,child: pw.Text("${li14.details[index].qty.round()}",textAlign: pw.TextAlign.center))
                           ],
                         )
                       ],
@@ -1689,14 +1940,16 @@ class _ReportsState extends State<Reports> {
                   child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text(
+
+                    pw.Expanded(flex: 3,child:pw.Text(
                         "${controllers[i].text}",
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      ),
-                      pw.Text(
+                      )),
+                  pw.Expanded(flex: 1,child:pw.Text(
                         "${cnt[i]}",
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      ),
+                      textAlign: pw.TextAlign.center
+                      )),
                     ],
                   ),
                 )
@@ -1725,10 +1978,15 @@ class _ReportsState extends State<Reports> {
     //
     //   build: (format) => pdf.save(),
     // );
-    await Printing.layoutPdf(
-      format: PdfPageFormat.a4,
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PdfPreview(
+            initialPageFormat: PdfPageFormat.a4,
+            build: (format) => pdf.save(),
+          );
+        });
+
   }
 
   Future<bool> check() async {
@@ -1782,6 +2040,13 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li6 = ReportsModelList.fromJson(decoded);
+
+      SumOfSalesTotal=0;
+      for (int i = 0; i < li6.details.length; i++){
+
+        SumOfSalesTotal=SumOfSalesTotal+double.parse(li6.details[i].orderPrice.toStringAsFixed(0));
+
+      }
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -2082,6 +2347,12 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li10 = ReportsModelList.fromJson(decoded);
+      SumOfReceivableTotal=0;
+      for (int i = 0; i < li10.details.length; i++){
+
+        SumOfReceivableTotal=SumOfReceivableTotal+double.parse(li10.details[i].orderPrice.toStringAsFixed(0));
+
+      }
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -2142,6 +2413,12 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li12 = ReportsModelList.fromJson(decoded);
+      SumOfDisscountTotal=0;
+      for (int i = 0; i < li12.details.length; i++){
+
+        SumOfDisscountTotal=SumOfDisscountTotal+double.parse(li12.details[i].orderPrice.toStringAsFixed(0));
+
+      }
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -2202,6 +2479,13 @@ class _ReportsState extends State<Reports> {
       final decoded = json.decode(parsedXml.text);
 
       li16 = ReportsModelList.fromJson(decoded);
+      SumOfCancelledOrderReportTotal=0;
+      for (int i = 0; i < li16.details.length; i++){
+
+        SumOfCancelledOrderReportTotal=SumOfCancelledOrderReportTotal+double.parse(li16.details[i].orderPrice.toStringAsFixed(0));
+
+      }
+
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",
@@ -2417,6 +2701,7 @@ class _ReportsState extends State<Reports> {
 
   @override
   void initState() {
+    SumOfDisscountTotal=0;
     dateupload = DateFormat("yyyy-MM-dd 00:00:00").format(DateTime.now());
     dateupload1 = DateFormat("yyyy-MM-dd 23:59:59").format(DateTime.now());
     StartDateController.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
@@ -3189,6 +3474,35 @@ class _ReportsState extends State<Reports> {
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: Center(child: Text("No details")),
                                     ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total:",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        Text(
+                                          "$SumOfSalesTotal",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -6094,13 +6408,42 @@ class _ReportsState extends State<Reports> {
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: Center(child: Text("No details")),
                                     ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total:",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        Text(
+                                          "$SumOfReceivableTotal",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                ],
+                              ),
                             ],
                           ),
                         ),
                   floatingActionButton: FloatingActionButton.extended(
                       onPressed: () async {
                         // generateExcel();
-                        receivablesReport();
+                        receivablesReport(context);
                         //                Excel excel;
                         //                 excel = Excel.createExcel();
                         //                Sheet sheetObject = excel['Sales Report'];
@@ -6503,6 +6846,30 @@ class _ReportsState extends State<Reports> {
                                             //   });
                                             // }
                                           ),
+                                          DataColumn(
+                                            label: Center(
+                                                child: Wrap(
+                                                  direction:
+                                                  Axis.vertical, //default
+                                                  alignment: WrapAlignment.center,
+                                                  children: [
+                                                    Text("Remarks",
+                                                        softWrap: true,
+                                                        style:
+                                                        TextStyle(fontSize: 12),
+                                                        textAlign:
+                                                        TextAlign.center),
+                                                  ],
+                                                )),
+                                            numeric: false,
+
+                                            // onSort: (columnIndex, ascending) {
+                                            //   onSortColum(columnIndex, ascending);
+                                            //   setState(() {
+                                            //     sort = !sort;
+                                            //   });
+                                            // }
+                                          ),
 
                                           // DataColumn(
                                           //   label: Center(
@@ -6559,7 +6926,7 @@ class _ReportsState extends State<Reports> {
                                                           WrapAlignment.center,
                                                       children: [
                                                         Text(
-                                                          (li10.details.indexOf(
+                                                          (li12.details.indexOf(
                                                                       list) +
                                                                   1)
                                                               .toString(),
@@ -6658,7 +7025,21 @@ class _ReportsState extends State<Reports> {
                                                                 .center)
                                                       ]))),
                                                 ),
-
+                                                DataCell(
+                                                  Center(
+                                                      child: Center(
+                                                          child: Wrap(
+                                                              direction: Axis
+                                                                  .vertical, //default
+                                                              alignment: WrapAlignment.center,
+                                                              children: [
+                                                                Text(
+                                                                    list.remarks
+                                                                        .toString(),
+                                                                    textAlign: TextAlign
+                                                                        .center)
+                                                              ]))),
+                                                ),
                                                 // DataCell(
                                                 //   Center(
                                                 //       child: Center(
@@ -6697,13 +7078,42 @@ class _ReportsState extends State<Reports> {
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: Center(child: Text("No details")),
                                     ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total:",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        Text(
+                                          "$SumOfDisscountTotal",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                ],
+                              ),
                             ],
                           ),
                         ),
                   floatingActionButton: FloatingActionButton.extended(
                       onPressed: () async {
                         // generateExcel();
-                        discountReport();
+                        discountReport(context);
                         //                Excel excel;
                         //                 excel = Excel.createExcel();
                         //                Sheet sheetObject = excel['Sales Report'];
@@ -7422,7 +7832,7 @@ class _ReportsState extends State<Reports> {
                                                 child: FlatButton(
                                                   onPressed: () {
                                                     // pdf();
-                                                    OrderReport();
+                                                    OrderReport(context);
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text(
@@ -8224,6 +8634,38 @@ class _ReportsState extends State<Reports> {
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: Center(child: Text("No details")),
                                     ),
+                              SizedBox(
+                                height: height / 40,
+                              ),
+                              Column(
+                                children: [
+
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total:",
+                                          style: TextStyle(
+                                              color: String_Values.primarycolor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        Text(
+                                          "$SumOfCancelledOrderReportTotal",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height / 10,
+                              ),
                             ],
                           ),
                         ),

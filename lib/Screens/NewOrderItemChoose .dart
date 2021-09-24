@@ -757,7 +757,7 @@ class Order3State extends State<Order3> {
         ])
       ),
       bottomSheet: Container(
-        height: AppBar().preferredSize.height+10,
+        height: AppBar().preferredSize.height,
 
         width: width,
         color: String_Values.primarycolor,
@@ -766,7 +766,7 @@ class Order3State extends State<Order3> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(13.0),
                 child: total!=null?Text("Item Total :\u{20B9} $total ",style: TextStyle(color: Colors.white),):Text("Item Total :\u{20B9} 0 ",style: TextStyle(color: Colors.white),),
               ),
             ],

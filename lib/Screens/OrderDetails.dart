@@ -4276,7 +4276,7 @@ print(envelope);
                                     ),
                                     RaisedButton(
                                       child: Text(
-                                        "Generate Invoice",
+                                        li8.details[0].inVoiceNo!=""?"Generate Invoice":"Download Invoice",
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       elevation: 5,
