@@ -2470,7 +2470,6 @@ Future<http.Response> itemRequest() async {
     // print("response: ${response.body}");
     return response;
   }
-
 Future<http.Response> postRequest() async {
 
 
@@ -2700,8 +2699,6 @@ print(bookingitem);
     // print("response: ${response.body}");
     return response;
   }
-
-
   @override
   void initState() {
 
