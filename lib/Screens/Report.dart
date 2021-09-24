@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:anandhasapp/Models/ItemModel.dart';
 import 'package:anandhasapp/Models/ItemModel1.dart';
@@ -1835,6 +1836,91 @@ class _ReportsState extends State<Reports> {
                         pw.SizedBox(width: 10, height: 10),
                       ]),
                 ])),
+            // pw.SizedBox(width: 10, height: 10),
+            // pw.Table(
+            //   children: [
+            //    pw.TableRow(
+            //         decoration:
+            //         pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
+            //         children: [
+            //           pw.Text("SNo  ",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("FFFFFF"),
+            //                   fontWeight: pw.FontWeight.bold,
+            //                   fontSize: 12)),
+            //           pw.Text("Order No",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("FFFFFF"),
+            //                   fontWeight: pw.FontWeight.bold,
+            //                   fontSize: 12)),
+            //           pw.Text("Inv No  ",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("FFFFFF"),
+            //                   fontWeight: pw.FontWeight.bold,
+            //                   fontSize: 12)),
+            //           pw.Text("Bill Date",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("FFFFFF"),
+            //                   fontWeight: pw.FontWeight.bold,
+            //                   fontSize: 12)),
+            //           pw.Text("Name",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("FFFFFF"),
+            //                   fontWeight: pw.FontWeight.bold,
+            //                   fontSize: 12)),
+            //           // pw.Text("GST No",
+            //           //     style: pw.TextStyle(
+            //           //         color: PdfColor.fromHex("FFFFFF"),
+            //           //         fontWeight: pw.FontWeight.bold,
+            //           //         fontSize: 12)),
+            //
+            //           pw.Text("Bill Amount",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("FFFFFF"),
+            //                   fontWeight: pw.FontWeight.bold,
+            //                   fontSize: 12)),
+            //           pw.Text("Remarks",
+            //               style: pw.TextStyle(
+            //                   color: PdfColor.fromHex("FFFFFF"),
+            //                   fontWeight: pw.FontWeight.bold,
+            //                   fontSize: 12)),
+            //
+            //           // pw.Text("Discount",
+            //           //     style: pw.TextStyle(
+            //           //         color: PdfColor.fromHex("FFFFFF"),
+            //           //         fontWeight: pw.FontWeight.bold,
+            //           //         fontSize: 12)),
+            //           // pw.Text("Balance Receivable",
+            //           //     style: pw.TextStyle(
+            //           //         color: PdfColor.fromHex("FFFFFF"),
+            //           //         fontWeight: pw.FontWeight.bold,
+            //           //         fontSize: 12)),
+            //         ])
+            //       ,
+            //     pw.TableRow(children: [
+            //       pw.Text(""),
+            //     ]),
+            //     for (int i = 0; i < li14.details.length; i++)
+            //       pw.TableRow(children: [
+            //         pw.Padding(
+            //             padding: pw.EdgeInsets.only(left: 5),
+            //             child: pw.Text((i + 1).toString())),
+            //         pw.Text(li14.details[i].orderNo),
+            //         pw.Text(li14.details[i].invNo),
+            //         pw.Text(
+            //             "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+            //         pw.Text(li14.details[i].name),
+            //         /* pw.Text(li14.details[i].invNo),*/
+            //
+            //         pw.Text(li14.details[i].orderPrice.toString()),
+            //         pw.Text(li14.details[i].remarks.toString()),
+            //         // pw.Text(li12.details[i].disAmount.toString()),
+            //         // pw.Text(
+            //         //     "${li12.details[i].orderPrice - (li12.details[i].advanceAmount + li12.details[i].disAmount)}"),
+            //       ])
+            //
+            //   ],
+            // ),
             pw.Center(
                 child: pw.Text(
                     EndDateController4.text!=StartDateController4.text?"Order Report (${StartDateController4.text} - ${EndDateController4.text})":"Order Report (${StartDateController4.text})",
@@ -1844,24 +1930,76 @@ class _ReportsState extends State<Reports> {
                         fontWeight: pw.FontWeight.bold,
                         fontSize: 16))),
             pw.SizedBox(width: 10, height: 10),
-            pw.Table(
-              children: [
-                pw.TableRow(
-                    decoration:
-                        pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
-                    children: [
-                      pw.Text("Order Details",
-                          style: pw.TextStyle(
-                              color: PdfColor.fromHex("FFFFFF"),
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 12)),
-                    ]),
-              ],
-            ),
+            // pw.Table(
+            //
+            //   children: [
+            //     // pw.TableRow(
+            //     //     decoration:
+            //     //         pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
+            //     //     children: [
+            //     //       pw.Text("Order Details",
+            //     //           style: pw.TextStyle(
+            //     //               fontWeight: pw.FontWeight.bold,
+            //     //               fontSize: 12)),
+            //     //     ]),
+            //   ],
+            // ),
+
             pw.SizedBox(width: 10, height: 10),
             for (int index = 0; index < li14.details.length; index++)
               pw.Column(
                 children: [
+                  pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        pw.Text(
+                            "Order No: ${li14.details[index].docNo}",
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold,
+                                // color: PdfColor.fromHex("800080")
+                            )),
+                        pw.Text(
+                            "Order Date: ${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold,
+                                // color: PdfColor.fromHex("800080")
+                            ))
+                      ]),
+                  pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        pw.Text(
+                            "Delivery Date: ${DateFormat("dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                            style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              // color: PdfColor.fromHex("800080")
+                            )),
+                        pw.Text(
+                            "Delivery Time: ${DateFormat("hh:mm a").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}",
+                            style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              // color: PdfColor.fromHex("800080")
+                            ))
+                      ]),
+                  pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+
+                          pw.Text(
+                              "Customer Name: ${li14.details[index].name}",
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  // color: PdfColor.fromHex("800080")
+                              )),
+                        pw.Text(
+                            "Mobile No: ${li14.details[index].mobile}",
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold,
+                                // color: PdfColor.fromHex("800080")
+                            ))
+                      ]),
                   index != 0
                       ? li14.details[index].orderFlag != "Y"
                           ? li14.details[index].docNo !=
@@ -1975,15 +2113,96 @@ class _ReportsState extends State<Reports> {
                                             fontWeight: pw.FontWeight.bold,
                                             color: PdfColor.fromHex("800080")))
                                 ])
-                      : pw.Row(
+                      : pw.Column(
                           mainAxisAlignment: pw.MainAxisAlignment.start,
                           children: [
-                              pw.Text(
-                                "Order No : ${li14.details[index].docNo} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})",
-                                style: pw.TextStyle(
-                                    fontWeight: pw.FontWeight.bold,
-                                    color: PdfColor.fromHex("800080")),
-                              )
+                            pw.Table(
+                              children: [
+                                li14.details.isNotEmpty
+                                    ? pw.TableRow(
+                                    decoration:
+                                    pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
+                                    children: [
+                                      pw.Text("SNo  ",
+                                          style: pw.TextStyle(
+                                              color: PdfColor.fromHex("FFFFFF"),
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 12)),
+                                      pw.Text("Item Name",
+                                          style: pw.TextStyle(
+                                              color: PdfColor.fromHex("FFFFFF"),
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 12)),
+                                      pw.Text("Uom",
+                                          style: pw.TextStyle(
+                                              color: PdfColor.fromHex("FFFFFF"),
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 12)),
+                                      pw.Text("Bill Date",
+                                          style: pw.TextStyle(
+                                              color: PdfColor.fromHex("FFFFFF"),
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 12)),
+                                      pw.Text("Name",
+                                          style: pw.TextStyle(
+                                              color: PdfColor.fromHex("FFFFFF"),
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 12)),
+                                      // pw.Text("GST No",
+                                      //     style: pw.TextStyle(
+                                      //         color: PdfColor.fromHex("FFFFFF"),
+                                      //         fontWeight: pw.FontWeight.bold,
+                                      //         fontSize: 12)),
+
+                                      pw.Text("Bill Amount",
+                                          style: pw.TextStyle(
+                                              color: PdfColor.fromHex("FFFFFF"),
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 12)),
+                                      pw.Text("Remarks",
+                                          style: pw.TextStyle(
+                                              color: PdfColor.fromHex("FFFFFF"),
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 12)),
+
+                                      // pw.Text("Discount",
+                                      //     style: pw.TextStyle(
+                                      //         color: PdfColor.fromHex("FFFFFF"),
+                                      //         fontWeight: pw.FontWeight.bold,
+                                      //         fontSize: 12)),
+                                      // pw.Text("Balance Receivable",
+                                      //     style: pw.TextStyle(
+                                      //         color: PdfColor.fromHex("FFFFFF"),
+                                      //         fontWeight: pw.FontWeight.bold,
+                                      //         fontSize: 12)),
+                                    ])
+                                    : pw.Padding(
+                                    padding: pw.EdgeInsets.only(top: 20),
+                                    child: pw.Text("No details")),
+                                pw.TableRow(children: [
+                                  pw.Text(""),
+                                ]),
+                                for (int i = 0; i < li12.details.length; i++)
+                                  pw.TableRow(children: [
+                                    pw.Padding(
+                                        padding: pw.EdgeInsets.only(left: 5),
+                                        child: pw.Text((i + 1).toString())),
+                                    pw.Text(li12.details[i].orderNo),
+                                    pw.Text(li12.details[i].invNo),
+                                    pw.Text(
+                                        "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li12.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+                                    pw.Text(li12.details[i].name),
+                                    /* pw.Text(li12.details[i].invNo),*/
+
+                                    pw.Text(li12.details[i].orderPrice.toString()),
+                                    pw.Text(li12.details[i].remarks.toString()),
+                                    // pw.Text(li12.details[i].disAmount.toString()),
+                                    // pw.Text(
+                                    //     "${li12.details[i].orderPrice - (li12.details[i].advanceAmount + li12.details[i].disAmount)}"),
+                                  ])
+
+                              ],
+                            ),
                             ]),
                   pw.Padding(
                     padding: const pw.EdgeInsets.only(left: 24.0, right: 24),
@@ -2763,10 +2982,11 @@ class _ReportsState extends State<Reports> {
       });
 
       xml.XmlDocument parsedXml = xml.XmlDocument.parse(response.body);
-      print(parsedXml.text);
-      final decoded = json.decode(parsedXml.text);
 
+      final decoded = json.decode(parsedXml.text);
+      // log(json.encode(decoded.toString()));
       li14 = ItemModelList1.fromJson(decoded);
+      log(json.encode(decoded));
     } else {
       Fluttertoast.showToast(
           msg: "Http error!, Response code ${response.statusCode}",

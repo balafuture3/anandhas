@@ -2534,7 +2534,7 @@ if(widget.edit==0) {
     if (Order3State.cnt[i] != 0)
       bookingitem =
       "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5
-          .details[i].itemCode}</ItemCode><ItemName>${ li5.details[i].docNo==136?Order3State.NameController1.text:li5.details[i].docNo==137?Order3State.NameController2.text:li5.details[i].docNo==138?Order3State.NameController3.text:li5.details[i].docNo==139?Order3State.NameController4.text:li5.details[i].docNo==140?Order3State.NameController5.text:li5.details[i].itemName
+          .details[i].itemCode}</ItemCode><ItemName>${ li5.details[i].docNo==136?Order3State.NameController1.text.replaceAll('&', "&amp;"):li5.details[i].docNo==137?Order3State.NameController2.text.replaceAll('&', "&amp;"):li5.details[i].docNo==138?Order3State.NameController3.text.replaceAll('&', "&amp;"):li5.details[i].docNo==139?Order3State.NameController4.text.replaceAll('&', "&amp;"):li5.details[i].docNo==140?Order3State.NameController5.text.replaceAll('&', "&amp;"):li5.details[i].itemName.replaceAll('&', "&amp;")
   }</ItemName><Qty>${Order3State
           .cnt[i]}</Qty><UOM></UOM><Price>${(Order3State.itemtotal[i]).toString()}</Price><OrderFlag>$orderflag</OrderFlag><OrderFlagNo>$orderflagNo</OrderFlagNo></Table1>";
 
@@ -2551,7 +2551,7 @@ else
         bookingitem =
         "$bookingitem<Table1><RowID>0</RowID><LineID>0</LineID><ItemCode>${li5
             .details[i].itemCode}</ItemCode><ItemName>${li5.details[i]
-            .itemName}</ItemName><Qty>${Order3State
+            .itemName.replaceAll('&', "&amp;")}</ItemName><Qty>${Order3State
             .cnt[i]}</Qty><UOM></UOM><Price>${((Order3State.cnt[i]) *
             (li5.details[i].price)).toString()}</Price><OrderFlag>$orderflag</OrderFlag><OrderFlagNo>$orderflagNo</OrderFlagNo></Table1>";
 
@@ -2581,12 +2581,12 @@ print(bookingitem);
       <PaymentType>$dropdownValue2</PaymentType>
       <OrderStatus>$status</OrderStatus>
       <Branch>${LoginPageState.branchid}</Branch>
-      <Remarks>${remarkscontroller.text}</Remarks>
+      <Remarks>${remarkscontroller.text.replaceAll('&', "&amp;")}</Remarks>
       <ItemDetailXML><![CDATA[${bookingitem.toString()}]]></ItemDetailXML>
       <ItemDetailXMLID>${widget.payment}</ItemDetailXMLID>
       <UserID>1</UserID>
       <CategoryID>0</CategoryID>
-      <Name>${Order4State.Namecontroller.text}</Name>
+      <Name>${Order4State.Namecontroller.text.replaceAll('&', "&amp;")}</Name>
       <Mobile>${Order4State.Mobilecontroller.text}</Mobile>
       <Email>${Order4State.Emailcontroller.text}</Email>
       <Address>${Order4State.Addresscontroller.text}</Address>
