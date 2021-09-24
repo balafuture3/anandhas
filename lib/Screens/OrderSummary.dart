@@ -4756,7 +4756,7 @@ if(newValue=="Full/Balance Amount") {
                 (double.parse(AdvanceController.text) <= (int.parse(vehtot) +
                     (int.parse(vestot) + (int.parse(cattot)) +
                         (((Order3State.total * 5) / 100) +
-                            Order3State.total)))))
+                            Order3State.total))).round()))
               showDialog<void>(
                   context: context,
                   barrierDismissible: true,

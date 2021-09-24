@@ -1874,7 +1874,94 @@ class _ReportsState extends State<Reports> {
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             color: PdfColor.fromHex("800080")),
-                                      )
+                                      ),
+                                    pw.Table(
+                                      children: [
+                                        li14.details.isNotEmpty
+                                            ? pw.TableRow(
+                                            decoration:
+                                            pw.BoxDecoration(color: PdfColor.fromHex("339B6F")),
+                                            children: [
+                                              pw.Text("SNo  ",
+                                                  style: pw.TextStyle(
+                                                      color: PdfColor.fromHex("FFFFFF"),
+                                                      fontWeight: pw.FontWeight.bold,
+                                                      fontSize: 12)),
+                                              pw.Text("Order No",
+                                                  style: pw.TextStyle(
+                                                      color: PdfColor.fromHex("FFFFFF"),
+                                                      fontWeight: pw.FontWeight.bold,
+                                                      fontSize: 12)),
+                                              pw.Text("Inv No  ",
+                                                  style: pw.TextStyle(
+                                                      color: PdfColor.fromHex("FFFFFF"),
+                                                      fontWeight: pw.FontWeight.bold,
+                                                      fontSize: 12)),
+                                              pw.Text("Bill Date",
+                                                  style: pw.TextStyle(
+                                                      color: PdfColor.fromHex("FFFFFF"),
+                                                      fontWeight: pw.FontWeight.bold,
+                                                      fontSize: 12)),
+                                              pw.Text("Name",
+                                                  style: pw.TextStyle(
+                                                      color: PdfColor.fromHex("FFFFFF"),
+                                                      fontWeight: pw.FontWeight.bold,
+                                                      fontSize: 12)),
+                                              // pw.Text("GST No",
+                                              //     style: pw.TextStyle(
+                                              //         color: PdfColor.fromHex("FFFFFF"),
+                                              //         fontWeight: pw.FontWeight.bold,
+                                              //         fontSize: 12)),
+
+                                              pw.Text("Bill Amount",
+                                                  style: pw.TextStyle(
+                                                      color: PdfColor.fromHex("FFFFFF"),
+                                                      fontWeight: pw.FontWeight.bold,
+                                                      fontSize: 12)),
+                                              pw.Text("Remarks",
+                                                  style: pw.TextStyle(
+                                                      color: PdfColor.fromHex("FFFFFF"),
+                                                      fontWeight: pw.FontWeight.bold,
+                                                      fontSize: 12)),
+
+                                              // pw.Text("Discount",
+                                              //     style: pw.TextStyle(
+                                              //         color: PdfColor.fromHex("FFFFFF"),
+                                              //         fontWeight: pw.FontWeight.bold,
+                                              //         fontSize: 12)),
+                                              // pw.Text("Balance Receivable",
+                                              //     style: pw.TextStyle(
+                                              //         color: PdfColor.fromHex("FFFFFF"),
+                                              //         fontWeight: pw.FontWeight.bold,
+                                              //         fontSize: 12)),
+                                            ])
+                                            : pw.Padding(
+                                            padding: pw.EdgeInsets.only(top: 20),
+                                            child: pw.Text("No details")),
+                                        pw.TableRow(children: [
+                                          pw.Text(""),
+                                        ]),
+                                        for (int i = 0; i < li12.details.length; i++)
+                                          pw.TableRow(children: [
+                                            pw.Padding(
+                                                padding: pw.EdgeInsets.only(left: 5),
+                                                child: pw.Text((i + 1).toString())),
+                                            pw.Text(li12.details[i].orderNo),
+                                            pw.Text(li12.details[i].invNo),
+                                            pw.Text(
+                                                "${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li12.details[i].docDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))}"),
+                                            pw.Text(li12.details[i].name),
+                                            /* pw.Text(li12.details[i].invNo),*/
+
+                                            pw.Text(li12.details[i].orderPrice.toString()),
+                                            pw.Text(li12.details[i].remarks.toString()),
+                                            // pw.Text(li12.details[i].disAmount.toString()),
+                                            // pw.Text(
+                                            //     "${li12.details[i].orderPrice - (li12.details[i].advanceAmount + li12.details[i].disAmount)}"),
+                                          ])
+
+                                      ],
+                                    ),
                                     ])
                               : pw.Container()
                           : pw.Row(
@@ -7942,7 +8029,7 @@ class _ReportsState extends State<Reports> {
                                                                                 ? Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                                                                                     Text(
                                                                                       "Order No : ${li14.details[index].docNo} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})",
-                                                                                      style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 12),
+                                                                                      style: TextStyle(fontWeight: FontWeight.w500, color: String_Values.primarycolor, fontSize: 16),
                                                                                     )
                                                                                   ])
                                                                                 : Container()
@@ -7952,12 +8039,12 @@ class _ReportsState extends State<Reports> {
                                                                         : Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                                                                             Text(
                                                                               "Order No : ${li14.details[index].docNo} (${DateFormat("hh:mm a, dd-MM-yyyy").format(DateTime.fromMillisecondsSinceEpoch(int.parse(li14.details[index].bookingDate.toString().replaceAll("/Date(", "").replaceAll(")/", ""))))})",
-                                                                              style: TextStyle(fontWeight: FontWeight.w500, color: String_Values.primarycolor, fontSize: 12),
+                                                                              style: TextStyle(fontWeight: FontWeight.w500, color: String_Values.primarycolor, fontSize: 16),
                                                                             )
                                                                           ]),
                                                                     Padding(
                                                                       padding:
-                                                                          const EdgeInsets.all(
+                                                                          const EdgeInsets.only(right:
                                                                               8.0),
                                                                       child:
                                                                           Column(
@@ -7978,7 +8065,7 @@ class _ReportsState extends State<Reports> {
                                                                               Expanded(
                                                                                   flex:1,
                                                                                   child: Padding(
-                                                                                    padding: const EdgeInsets.all(18.0),
+                                                                                    padding: const EdgeInsets.all(5.0),
                                                                                     child: Text("${li14.details[index].qty.round()}",textAlign: TextAlign.center,),
                                                                                   ))
                                                                             ],
@@ -8041,7 +8128,7 @@ class _ReportsState extends State<Reports> {
                                                                         Expanded(
                                                                           flex:1,
                                                                           child: Padding(
-                                                                            padding: const EdgeInsets.all(18.0),
+                                                                            padding: const EdgeInsets.all(5.0),
                                                                             child: Text(
                                                                               "${cnt[i]}",
                                                                               style:

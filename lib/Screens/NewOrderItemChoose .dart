@@ -416,8 +416,9 @@ class Order3State extends State<Order3> {
                           Expanded(
                             flex: 3,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                li5.details[i].itemCode!="General"?Text(li5.details[i].itemName):TextField(
+                                li5.details[i].itemCode!="General"?Text(li5.details[i].itemName,style: TextStyle(fontWeight: FontWeight.w500),):TextField(
 
                                   decoration:
                                   InputDecoration(fillColor: String_Values.primarycolor,
@@ -429,9 +430,9 @@ class Order3State extends State<Order3> {
                                   controller: li5.details[i].docNo==136?NameController1:li5.details[i].docNo==137?NameController2:li5.details[i].docNo==138?NameController3:li5.details[i].docNo==139?NameController4:NameController5,
                                 ),
                                 li5.details[i].itemCode!="General"?Text(
-                                  li5.details[i].price.toString(),
-                                  style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                                ):Padding(
+                                    "\u{20B9} "+li5.details[i].price.toString(),
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(160, 27, 37, 1))):Padding(
                                   padding: const EdgeInsets.only(top:8.0),
                                   child: TextField(decoration:
                                   InputDecoration(fillColor: String_Values.primarycolor,
@@ -491,13 +492,13 @@ class Order3State extends State<Order3> {
                                         Expanded(
                                           flex: 2,
                                           child: Container(
-                                            height: 30,
+                                            height: 40,
                                             child: TextField(
                                               // enableInteractiveSelection:false,
                                               decoration: InputDecoration
                                                 (
 
-// contentPadding: EdgeInsets.only(left:10,right: 10,),
+contentPadding: EdgeInsets.only(left:10,right: 10,),
                                                 border: OutlineInputBorder(
                                                   borderRadius: BorderRadius.circular(5.0),
                                                 ),
@@ -567,7 +568,8 @@ class Order3State extends State<Order3> {
                                 ]
                             ),
                           ),
-                          Expanded(flex: 3, child: Text("Rs. ${itemtotal[i]}",textAlign: TextAlign.center,)),
+                          Expanded(flex: 3, child: Text("\u{20B9}  ${itemtotal[i]}",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.teal),
+                            textAlign: TextAlign.right,)),
 
                         ],
                       )),
@@ -592,8 +594,9 @@ class Order3State extends State<Order3> {
                 Expanded(
                   flex: 3,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      li5.details[i].itemCode!="General"?Text(li5.details[i].itemName):TextField(
+                      li5.details[i].itemCode!="General"?Text(li5.details[i].itemName,style: TextStyle(fontWeight: FontWeight.w500),):TextField(
 
                         decoration:
                       InputDecoration(fillColor: String_Values.primarycolor,
@@ -605,9 +608,9 @@ class Order3State extends State<Order3> {
                         controller: li5.details[i].docNo==136?NameController1:li5.details[i].docNo==137?NameController2:li5.details[i].docNo==138?NameController3:li5.details[i].docNo==139?NameController4:NameController5,
                       ),
                       li5.details[i].itemCode!="General"?Text(
-                        li5.details[i].price.toString(),
-                        style: TextStyle(color: Color.fromRGBO(160, 27, 37, 1)),
-                      ):Padding(
+                          "\u{20B9} "+li5.details[i].price.toString(),
+                          style: TextStyle(
+                              color: Color.fromRGBO(160, 27, 37, 1))):Padding(
                         padding: const EdgeInsets.only(top:8.0),
                         child: TextField(decoration:
                         InputDecoration(fillColor: String_Values.primarycolor,
